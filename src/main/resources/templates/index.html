@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: headerPorquinho('login')"></head>
+<head th:replace="~{fragments/header :: headerPorquinho('login')}">
+    <th:block th:fragment="misc">
+        <style>
+        </style>
+    </th:block>
+</head>
+
     <body>
 
         <div class="container mt-5">
@@ -18,14 +24,14 @@
                             <input type="password" class="form-control" placeholder="">
                             <label>Senha</label>
                         </div>
-                        <button type="submit" class="btn btn-light  form-control">Submit</button>
+                        <button type="submit" class="btn btn-light form-control">Submit</button>
                     </form>
-                    <a href="cadastro.html" class="link-body-emphasis  link-offset-1">Crie uma nova conta</a>
+                    <a th:href="@{/cadastro}" class="link-body-emphasis  link-offset-1">Crie uma nova conta</a>
                     
                 </div>
                 
                 <div class="col">
-                    <img src="../static/images/porquinhoMiniaturaVerde.png" alt="alt"/>
+                    <img src="/images/porquinhoMiniaturaVerde.png" alt="alt"/>
                 </div>
             </div>
         </div>

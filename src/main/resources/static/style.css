@@ -5,7 +5,15 @@ body {
      font-size: 20px
 }
 
-.btn:hover {
+.btn-green {
+    background-color: #b4f166;
+}
+
+.btn-green:hover {
+    background-color: #a2d166;
+}
+
+.btn ,.btn:hover {
     border-color: black;
 }
 
