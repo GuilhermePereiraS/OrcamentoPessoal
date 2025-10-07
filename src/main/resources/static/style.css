@@ -23,7 +23,7 @@ body {
 
 
 .form-control:focus {
-            border-color: #b4f166;        /* muda a cor da borda */
+            border-color: black;        /* muda a cor da borda */
             box-shadow: none;  /* adiciona uma sombra suave */
             background-color: #fff;   /* mantém o fundo branco */
             outline: none;            /* remove o contorno padrão do navegador */

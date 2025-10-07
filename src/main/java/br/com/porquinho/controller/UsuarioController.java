@@ -1,5 +1,6 @@
 package br.com.porquinho.controller;
 
+import br.com.porquinho.Repository.UsuarioDao;
 import br.com.porquinho.Repository.UsuarioRepository;
 import br.com.porquinho.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioDao usuarioDao;
+
     @GetMapping("/cadastro")
     public String cadastro(Model model) {
         model.addAttribute("usuario", new Usuario());
@@ -21,9 +25,31 @@ class UsuarioController {
     }
 
     @PostMapping("/persistir")
-    @ResponseBody
-    public String persistir(@ModelAttribute  Usuario usuario) {
+    public String persistir(@ModelAttribute  Usuario usuario, Model model) {
         usuarioRepository.save(usuario);
-        return "<h1>Cadastrado!</h1>";
+        model.addAttribute("alerta", true);
+        model.addAttribute("mensagem", "Cadastro efetuado com sucesso!");
+        return "index";
+    }
+
+    @GetMapping("/")
+    public String paginaLogin(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "index";
+    }
+
+    @PostMapping("/login")
+    public String logar(@ModelAttribute  Usuario usuarioForm, Model model) {
+         Usuario usuario = usuarioDao.findByLoginESenha(usuarioForm.getLogin(), usuarioForm.getSenha());
+
+         if (usuario == null) {
+             model.addAttribute("alertaRuim", true);
+             model.addAttribute("mensagem", "Usuario não encontrado!");
+         } else {
+             model.addAttribute("alerta", true);
+             model.addAttribute("mensagem", "Usuario Logado com sucesso!");
+         }
+
+        return "index";
     }
 }
