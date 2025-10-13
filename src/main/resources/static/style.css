@@ -5,7 +5,21 @@ body {
      font-size: 20px
 }
 
+.botaoGordo {
+    border-radius: 15px;
+    width: 18rem;
+    height: 18rem;
+    align-content: center;
+    font-size: 1.8rem;
+    margin: 0 2rem;
+    transition: 0.15s;
+}
+
 .btn-green {
+    background-color: #b4f166;
+}
+
+.green {
     background-color: #b4f166;
 }
 

@@ -11,4 +11,9 @@ public class SiteController {
         return "index";
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
+    }
+
 }

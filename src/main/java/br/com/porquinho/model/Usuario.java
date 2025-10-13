@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

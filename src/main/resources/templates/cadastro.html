@@ -23,7 +23,7 @@
 <body>
 
 <div class="container-fluid">
-    <a th:href="@{/index}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
+    <a th:href="@{/}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
 
     <form th:action="@{/persistir}" th:object="${usuario}" method="post">
         <div class="row vh-100">
@@ -86,7 +86,7 @@
                     <li>Escolha uma senha que você não irá esquecer facilmente</li>
                 </ul>
                 <br>
-                <button class="btn btn-light">Ok</button>
+                <button class="btn btn-light btn-lg">Gravar</button>
             </div>
 
 
