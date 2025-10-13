@@ -80,7 +80,7 @@
 <div class="modal fade" id="modalMetaEditar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content modal-dialog-centered p-3">
-            <form th:action="@{/atualizarPorquinho}" method="post" th:object="${porquinhoModel}">
+            <form th:action="@{/acaoPorquinho}" method="post" th:object="${porquinhoModel}">
             <div class="text-center">
                 <h1>Editar meta</h1><br>
                 <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >
@@ -102,7 +102,7 @@
                     <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button class="btn btn-danger m-2 me-5">Excluir</button> <button class="btn btn-green m-2 ms-5">Editar</button>
+                    <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Editar</button>
                 </div>
             </div>
             </form>

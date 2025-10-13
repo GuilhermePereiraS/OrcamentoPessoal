@@ -45,4 +45,13 @@ public class PorquinhoRepository {
             e.printStackTrace();
         }
     }
+
+    public void delete(Porquinho porquinho) {
+        try {
+            String sql = "DELETE FROM porquinho WHERE id_porquinho = ?";
+            template.update(sql, porquinho.getId_porquinho());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

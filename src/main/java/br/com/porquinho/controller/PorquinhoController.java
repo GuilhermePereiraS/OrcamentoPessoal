@@ -30,9 +30,25 @@ public class PorquinhoController {
         return "redirect:/porquinho";
     }
 
-    @PostMapping("/atualizarPorquinho")
-    public String atualizarPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
+    @PostMapping("/editarPorquinho")
+    public String editarPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
         porquinhoRepository.update(porquinho);
+        return "redirect:/porquinho";
+    }
+
+    @PostMapping("/excluirPorquinho")
+    public String excluirPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
+        porquinhoRepository.delete(porquinho);
+        return "redirect:/porquinho";
+    }
+
+    @PostMapping("/acaoPorquinho")
+    public String acaoPorquinho(@RequestParam String acao) {
+        if (acao.equals("excluir")) {
+            return "forward:/excluirPorquinho";
+        } else if (acao.equals("editar")) {
+            return "forward:/editarPorquinho";
+        }
         return "redirect:/porquinho";
     }
 
