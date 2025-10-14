@@ -41,13 +41,14 @@ class UsuarioController {
 
          if (usuario == null) {
              model.addAttribute("alertaRuim", true);
-             model.addAttribute("mensagem", "Usuario não encontrado!");
+             model.addAttribute("mensagem", "Usuário não encontrado!");
              return "index";
          } else {
              model.addAttribute("alerta", true);
-             model.addAttribute("mensagem", "Usuario Logado com sucesso!");
+             model.addAttribute("mensagem", "Usuário logado com sucesso!");
 
              session.setAttribute("usuarioLogado", usuario);
+             session.setAttribute("nomeUsuario", usuario.getLogin());
             return "redirect:dashboard";
          }
 

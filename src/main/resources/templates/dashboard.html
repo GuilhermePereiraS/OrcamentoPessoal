@@ -16,7 +16,7 @@
     </style>
 </th:block>
 <body>
-    <nav th:replace="~{fragments/navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
     <div id="board" class="container-fluid">
         <a th:href="@{/porquinho}" class="btn btn-green botaoGordo" >Porquinho</a>
         <a class="btn btn-green botaoGordo">Orçamento</a>

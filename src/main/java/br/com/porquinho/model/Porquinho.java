@@ -15,8 +15,8 @@ public class Porquinho implements Serializable {
 
     private Integer id_usuario;
     private String nome_meta;
-    private BigDecimal dinheiro_alcancado;
-    private BigDecimal dinheiro_necessario;
+    private BigDecimal vl_alcancado;
+    private BigDecimal vl_necessario;
     private LocalDate dt_meta;
 
     public Integer getId_porquinho() {
@@ -43,27 +43,27 @@ public class Porquinho implements Serializable {
         this.nome_meta = nome_meta;
     }
 
-    public BigDecimal getDinheiro_alcancado() {
-        return dinheiro_alcancado;
-    }
-
-    public void setDinheiro_alcancado(BigDecimal dinheiro_alcancado) {
-        this.dinheiro_alcancado = dinheiro_alcancado;
-    }
-
-    public BigDecimal getDinheiro_necessario() {
-        return dinheiro_necessario;
-    }
-
-    public void setDinheiro_necessario(BigDecimal dinheiro_necessario) {
-        this.dinheiro_necessario = dinheiro_necessario;
-    }
-
     public LocalDate getDt_meta() {
         return dt_meta;
     }
 
     public void setDt_meta(LocalDate dt_meta) {
         this.dt_meta = dt_meta;
+    }
+
+    public BigDecimal getVl_alcancado() {
+        return vl_alcancado;
+    }
+
+    public void setVl_alcancado(BigDecimal vl_alcancado) {
+        this.vl_alcancado = vl_alcancado;
+    }
+
+    public BigDecimal getVl_necessario() {
+        return vl_necessario;
+    }
+
+    public void setVl_necessario(BigDecimal vl_necessario) {
+        this.vl_necessario = vl_necessario;
     }
 }

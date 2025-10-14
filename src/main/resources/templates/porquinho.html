@@ -5,12 +5,11 @@
     <style>
         .meta {
             border-radius: 5px;
-            width: 30rem;
-            height: 20rem;
+            max-width: 30rem;
+            max-height: 20rem;
             font-size: 1.8rem;
             margin: 0 2rem;
             transition: 0.15s;
-            overflow: hidden;
         }
 
         .meta:hover {
@@ -32,7 +31,7 @@
         }
 
         .barra {
-            border-right: solid 1px;
+            box-shadow: 0 0 0 1px #000 inset;
             border-radius: 10px;
             font-size: 1.4rem;
         }
@@ -72,6 +71,7 @@
             gap: 1rem;
         }
 
+
     </style>
 
 
@@ -88,13 +88,13 @@
                 <span>Alcançado:</span>
                 <div class="d-flex">
                     <button type="button" class="btn btn-danger btn-operacao">-</button>
-                    <input th:field="*{dinheiro_alcancado}" class="valorOperacao" name="dinheiro_alcancado" type="number">
+                    <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number">
                     <button type="button" class="btn btn-green btn-operacao">+</button>
                 </div>
                 <span>Necessário:</span>
                 <div class="d-flex">
                     <button type="button" class="btn btn-danger btn-operacao">-</button>
-                    <input th:field="*{dinheiro_necessario}" class="valorOperacao" name="dinheiro_necessario" type="number">
+                    <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number">
                     <button type="button"  class="btn btn-green btn-operacao">+</button>
                 </div>
                 <span>Data objetivo:</span>
@@ -121,7 +121,7 @@
 
                     <div class="d-flex">
                         <button type="button" class="btn btn-danger btn-operacao">-</button>
-                        <input th:field="*{dinheiro_alcancado}" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
+                        <input th:field="*{vl_alcancado}" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
                         <button class="btn btn-green btn-operacao">+</button>
                     </div>
 
@@ -129,7 +129,7 @@
 
                     <div class="d-flex">
                         <button type="button" class="btn btn-danger btn-operacao">-</button>
-                        <input th:field="*{dinheiro_necessario}" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number">
+                        <input th:field="*{vl_necessario}" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number">
                         <button class="btn btn-green btn-operacao">+</button>
                     </div>
 
@@ -146,26 +146,24 @@
     </div>
 </div>
 
-    <nav th:replace="~{fragments/navbar}"></nav>
+    <nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
     <div id="board" class="d-flex flex-wrap mt-5">
-        <button th:each="porquinho : ${listaPorquinhos}" class="meta btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar"
+            <div th:each="porquinho : ${listaPorquinhos}" class="meta btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar"
                 th:attr="data-id=${porquinho.id_porquinho},
                            data-nome=${porquinho.nome_meta},
-                           data-alcancado=${porquinho.dinheiro_alcancado},
-                           data-necessario=${porquinho.dinheiro_necessario},
+                           data-alcancado=${porquinho.vl_alcancado},
+                           data-necessario=${porquinho.vl_necessario},
                            data-data=${porquinho.dt_meta}">
 
-            <span th:text="${porquinho.nome_meta}">Celular Novo</span> <br>
+            <span th:text="${porquinho.nome_meta}">Celular Novo</span>
             <div class="d-flex justify-content-center">
                 <span class="textoMeta">
                     Alcançado:
-                    <br>
-                    <span th:text="${porquinho.dinheiro_alcancado}">R$2</span>
+                    <span class="vl_alcancado" th:text="${porquinho.vl_alcancado}">R$2</span>
                 </span>
                 <span class="textoMeta">
                     Necessário:
-                    <br>
-                    <span th:text="${porquinho.dinheiro_necessario}">R$2</span>
+                    <span class="vl_necessario" th:text="${porquinho.vl_necessario}">R$2</span>
                 </span>
             </div>
             <div class="porcentagem mt-4 mb-2">
@@ -178,11 +176,39 @@
                 Data limite: <br>
                 26/02/2006
             </div>
-        </button>
+        </div>
         <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
     </div>
 
 <script>
+
+    window.onload = function() {
+        let metas = document.querySelectorAll(".meta")
+    debugger
+
+
+        metas.forEach(meta => {
+
+            let porcentagem = meta.querySelector(".porcentagem")
+            let barra = meta.querySelector(".barra")
+
+            let vlNecessario = meta.querySelector(".vl_necessario").textContent
+            let vlAlcancado = meta.querySelector(".vl_alcancado").textContent
+
+            vlNecessario = parseFloat(vlNecessario.replace(/[^\d.,]/g, '').replace(',', '.'));
+            vlAlcancado = parseFloat(vlAlcancado.replace(/[^\d.,]/g, '').replace(',', '.'));
+
+            let porcentagemResultado = vlAlcancado * 100 / vlNecessario;
+
+            if (porcentagemResultado > 100) {
+                porcentagemResultado = 100
+            }
+
+            barra.innerText = porcentagemResultado.toFixed(2) + "%";
+            barra.style.width = porcentagemResultado + '%'
+        })
+    }
+
     document.getElementById('modalMetaEditar').addEventListener('show.bs.modal', function (event) {
 
         const button = event.relatedTarget;
@@ -198,8 +224,8 @@
 
         form.querySelector('[name="id_porquinho"]').value = id;
         form.querySelector('[name="nome_meta"]').value = nome;
-        form.querySelector('[name="dinheiro_alcancado"]').value = alcancado;
-        form.querySelector('[name="dinheiro_necessario"]').value = necessario;
+        form.querySelector('[name="vl_alcancado"]').value = alcancado;
+        form.querySelector('[name="vl_necessario"]').value = necessario;
         form.querySelector('[name="dt_meta"]').value = data;
     });
 </script>

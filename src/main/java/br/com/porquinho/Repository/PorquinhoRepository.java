@@ -20,8 +20,8 @@ public class PorquinhoRepository {
 
     public void save(Porquinho porquinho) {
         try {
-            String sql = "INSERT INTO porquinho (id_usuario, nome_meta, dinheiro_alcancado, dinheiro_necessario, dt_meta) VALUES (?,?,?,?,?)";
-            template.update(sql, porquinho.getId_usuario(), porquinho.getNome_meta(), porquinho.getDinheiro_alcancado(), porquinho.getDinheiro_necessario(), porquinho.getDt_meta());
+            String sql = "INSERT INTO porquinho (id_usuario, nome_meta, vl_alcancado, vl_necessario, dt_meta) VALUES (?,?,?,?,?)";
+            template.update(sql, porquinho.getId_usuario(), porquinho.getNome_meta(), porquinho.getVl_alcancado(), porquinho.getVl_necessario(), porquinho.getDt_meta());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class PorquinhoRepository {
 
     public List<Porquinho> findAll(Integer idUsuario) {
         try {
-            String sql = "SELECT id_porquinho, nome_meta, dinheiro_alcancado, dinheiro_necessario, dt_meta FROM porquinho WHERE id_usuario = ?";
+            String sql = "SELECT id_porquinho, nome_meta, vl_alcancado, vl_necessario, dt_meta FROM porquinho WHERE id_usuario = ?";
             return (List<Porquinho>) template.query(sql, new BeanPropertyRowMapper<>(Porquinho.class), idUsuario);
         } catch(Exception e) {
             e.printStackTrace();
@@ -39,8 +39,8 @@ public class PorquinhoRepository {
 
     public void update(Porquinho porquinho) {
         try {
-            String sql = "UPDATE porquinho SET nome_meta = ?, dinheiro_alcancado = ?, dinheiro_necessario = ?, dt_meta = ? WHERE id_porquinho = ?";
-            template.update(sql, porquinho.getNome_meta(), porquinho.getDinheiro_alcancado(), porquinho.getDinheiro_necessario(), porquinho.getDt_meta(), porquinho.getId_porquinho());
+            String sql = "UPDATE porquinho SET nome_meta = ?, vl_alcancado = ?, vl_necessario = ?, dt_meta = ? WHERE id_porquinho = ?";
+            template.update(sql, porquinho.getNome_meta(), porquinho.getVl_alcancado(), porquinho.getVl_necessario(), porquinho.getDt_meta(), porquinho.getId_porquinho());
         } catch (Exception e) {
             e.printStackTrace();
         }
