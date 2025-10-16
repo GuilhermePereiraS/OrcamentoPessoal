@@ -1,8 +1,9 @@
 package br.com.porquinho.controller;
 
-import br.com.porquinho.Repository.PorquinhoRepository;
+import br.com.porquinho.repository.PorquinhoRepository;
 import br.com.porquinho.model.Porquinho;
 import br.com.porquinho.model.Usuario;
+import br.com.porquinho.service.PorquinhoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,34 +12,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
 public class PorquinhoController {
 
-    @Autowired
-    private PorquinhoRepository porquinhoRepository;
+    private final PorquinhoService porquinhoService;
+
+    public PorquinhoController(PorquinhoService porquinhoService) {
+        this.porquinhoService = porquinhoService;
+    }
 
     @PostMapping("/persistirPorquinho")
     public String persistirPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
-        Usuario usuariolLogado = (Usuario) session.getAttribute("usuarioLogado");
-        porquinho.setId_usuario(usuariolLogado.getId_usuario());
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
-        porquinhoRepository.save(porquinho);
+        porquinhoService.salvar(porquinho);
         return "redirect:/porquinho";
     }
 
     @PostMapping("/editarPorquinho")
     public String editarPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
-        porquinhoRepository.update(porquinho);
+        porquinhoService.atualizar(porquinho);
         return "redirect:/porquinho";
     }
 
     @PostMapping("/excluirPorquinho")
     public String excluirPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
-        porquinhoRepository.delete(porquinho);
+        porquinhoService.excluir(porquinho);
         return "redirect:/porquinho";
     }
 
@@ -57,7 +60,7 @@ public class PorquinhoController {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         model.addAttribute("porquinhoModel", new Porquinho());
 
-        List<Porquinho> listaPorquinhos = porquinhoRepository.findAll(usuarioLogado.getId_usuario());
+        List<Porquinho> listaPorquinhos = porquinhoService.listarTodos(usuarioLogado.getId_usuario());
         model.addAttribute("listaPorquinhos", listaPorquinhos);
         return "porquinho";
     }

@@ -1,8 +1,9 @@
 package br.com.porquinho.controller;
 
 
-import br.com.porquinho.Repository.UsuarioRepository;
+import br.com.porquinho.repository.UsuarioRepository;
 import br.com.porquinho.model.Usuario;
+import br.com.porquinho.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @GetMapping("/cadastro")
     public String cadastro(Model model) {
@@ -23,7 +24,7 @@ class UsuarioController {
 
     @PostMapping("/persistir")
     public String persistir(@ModelAttribute  Usuario usuario, Model model) {
-        usuarioRepository.save(usuario);
+        usuarioService.salvar(usuario);
         model.addAttribute("alerta", true);
         model.addAttribute("mensagem", "Cadastro efetuado com sucesso!");
         return "index";
@@ -37,7 +38,7 @@ class UsuarioController {
 
     @PostMapping("/login")
     public String logar(@ModelAttribute  Usuario usuarioForm, Model model, HttpSession session) {
-         Usuario usuario = usuarioRepository.findByLoginESenha(usuarioForm.getLogin(), usuarioForm.getSenha());
+         Usuario usuario = usuarioService.encontraPorLoginESenha(usuarioForm.getLogin(), usuarioForm.getSenha());
 
          if (usuario == null) {
              model.addAttribute("alertaRuim", true);
