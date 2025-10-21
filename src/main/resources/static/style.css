@@ -1,3 +1,13 @@
+.swal2-confirm {
+    background-color: #b4f166;
+    color: black;
+    border: solid 1px;
+}
+
+.swal2-confirm:focus-visible {
+    box-shadow: none;
+}
+
 body {
     background-color: #444942;
     font-family: "Courier New", Courier, monospace;
@@ -23,7 +33,7 @@ body {
     background-color: #b4f166;
 }
 
-.btn-green:hover {
+.btn-green:hover, .swal2-confirm:hover {
     background-color: #a2d166;
 }
 

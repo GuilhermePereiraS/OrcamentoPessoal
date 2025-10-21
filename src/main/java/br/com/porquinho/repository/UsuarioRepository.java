@@ -24,6 +24,16 @@ public class UsuarioRepository {
         }
     }
 
+    public Usuario encontraPorLogin(String login) {
+        try {
+            String sql = "SELECT * FROM usuario WHERE login = ?";
+            return template.queryForObject(sql, new Object[]{login}, new BeanPropertyRowMapper<>(Usuario.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void salvar(Usuario usuario) {
         try {
             String sql = "INSERT INTO usuario (login, senha, nome, dt_nascimento) VALUES (?,?,?,?)";

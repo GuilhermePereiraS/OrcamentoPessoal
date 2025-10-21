@@ -3,7 +3,7 @@
 CREATE TABLE Usuario (
     Id_usuario serial PRIMARY KEY,
     login varchar(21),
-    senha varchar(21),
+    senha varchar(60),
     dt_nascimento date,
     nome varchar(200),
     saldo numeric(7,2)

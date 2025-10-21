@@ -38,7 +38,7 @@ class UsuarioController {
 
     @PostMapping("/login")
     public String logar(@ModelAttribute  Usuario usuarioForm, Model model, HttpSession session) {
-         Usuario usuario = usuarioService.encontraPorLoginESenha(usuarioForm.getLogin(), usuarioForm.getSenha());
+         Usuario usuario = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
 
          if (usuario == null) {
              model.addAttribute("alertaRuim", true);

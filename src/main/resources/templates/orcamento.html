@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: headerPorquinho('dashboard')}"></head>
+<th:block th:fragment="misc">
+    <style>
+        .meta {
+            border-radius: 5px;
+            max-height: 20rem;
+            font-size: 1.8rem;
+            margin: 0 2rem;
+            transition: 0.15s;
+            min-width: 90rem;
+        }
+
+        .meta:hover {
+            transform: scale(1.05);
+        }
+
+        .textoMeta {
+            border: solid 1px;
+            border-radius: 3px;
+            padding: 15px 35px;
+            font-size: 1.4rem;
+            margin: 0.5rem;
+        }
+
+        .porcentagem {
+            width: 20rem;
+            border: solid 1px;
+            border-radius: 10px;
+        }
+
+        .barra {
+            box-shadow: 0 0 0 1px #000 inset;
+            border-radius: 10px;
+            font-size: 1.4rem;
+        }
+
+        .btn-operacao {
+            width: 3rem;
+            height: 3rem;
+            margin: 1rem;
+        }
+
+        .valorOperacao {
+            margin: 1rem;
+            height: 3rem;
+            text-align: center;
+        }
+
+        .nomeMeta {
+            text-align: center;
+        }
+
+        .botaoGordo {
+            height: 7rem;
+            width: 7rem;
+        }
+
+        .botaoGordo:hover {
+            transform: scale(1.05);
+        }
+
+        #board {
+            align-items: center;
+        }
+
+        .d-flex {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+
+    </style>
+
+
+</th:block>
+<body>
+<!--<div class="modal fade" id="modalMetaEditar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content modal-dialog-centered p-3">-->
+<!--            <form th:action="@{/acaoPorquinho}" method="post" th:object="${porquinhoModel}">-->
+<!--            <div class="text-center">-->
+<!--                <h1>Editar meta</h1><br>-->
+<!--                <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >-->
+<!--                <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta"/><br>-->
+<!--                <span>Alcançado:</span>-->
+<!--                <div class="d-flex">-->
+<!--                    <button type="button" class="btn btn-danger btn-operacao">-</button>-->
+<!--                    <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number">-->
+<!--                    <button type="button" class="btn btn-green btn-operacao">+</button>-->
+<!--                </div>-->
+<!--                <span>Necessário:</span>-->
+<!--                <div class="d-flex">-->
+<!--                    <button type="button" class="btn btn-danger btn-operacao">-</button>-->
+<!--                    <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number">-->
+<!--                    <button type="button"  class="btn btn-green btn-operacao">+</button>-->
+<!--                </div>-->
+<!--                <span>Data objetivo:</span>-->
+<!--                <div class="d-flex justify-content-center">-->
+<!--                    <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date">-->
+<!--                </div>-->
+<!--                <div class="d-flex justify-content-center">-->
+<!--                    <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="modal fade" id="modalMetaAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content modal-dialog-centered p-3">-->
+<!--            <form th:action="@{/persistirPorquinho}" method="post" th:object="${porquinhoModel}">-->
+<!--                <div class="text-center">-->
+<!--                    <h1>Adicionar meta</h1><br>-->
+<!--                    <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" placeholder="nome meta"/><br>-->
+<!--                    <span>Alcançado:</span>-->
+
+<!--                    <div class="d-flex">-->
+<!--                        <button type="button" class="btn btn-danger btn-operacao">-</button>-->
+<!--                        <input th:field="*{vl_alcancado}" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">-->
+<!--                        <button class="btn btn-green btn-operacao">+</button>-->
+<!--                    </div>-->
+
+<!--                    <span>Necessário:</span>-->
+
+<!--                    <div class="d-flex">-->
+<!--                        <button type="button" class="btn btn-danger btn-operacao">-</button>-->
+<!--                        <input th:field="*{vl_necessario}" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number">-->
+<!--                        <button class="btn btn-green btn-operacao">+</button>-->
+<!--                    </div>-->
+
+<!--                    <span>Data objetivo:</span>-->
+<!--                    <div class="d-flex justify-content-center">-->
+<!--                        <input th:field="*{dt_meta}" class="valorOperacao"  type="date">-->
+<!--                    </div>-->
+<!--                    <div class="d-flex justify-content-center">-->
+<!--                        <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+    <nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
+
+<div id="board" class="d-flex flex-wrap mt-5">
+    <div class="justify-content-center w-100 d-flex">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal"
+             class="meta btn btn-light form-control d-flex flex-row align-items-center justify-content-center ">
+
+            <div class="d-flex flex-column
+    mt-5 mb-5 w-75   ">
+
+                <div class="d-flex flex-row">
+                    <h1>Limite</h1>
+                    <div class="porcentagem ">
+                        <div class="barra green" style="width: 100%;">100.00%</div>
+                    </div>
+                </div>
+                <div class="d-flex flex-row">
+                    <h1>Gasto</h1>
+                    <div class="porcentagem ">
+                        <div class="barra green" style="width: 100%;">100.00%</div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
+</div>
+
+<script>
+
+    window.onload = function() {
+        let metas = document.querySelectorAll(".meta")
+
+
+        metas.forEach(meta => {
+
+            let porcentagem = meta.querySelector(".porcentagem")
+            let barra = meta.querySelector(".barra")
+
+            let vlNecessario = meta.querySelector(".vl_necessario").textContent
+            let vlAlcancado = meta.querySelector(".vl_alcancado").textContent
+
+            vlNecessario = parseFloat(vlNecessario.replace(/[^\d.,]/g, '').replace(',', '.'));
+            vlAlcancado = parseFloat(vlAlcancado.replace(/[^\d.,]/g, '').replace(',', '.'));
+
+            let porcentagemResultado = vlAlcancado * 100 / vlNecessario;
+
+            if (porcentagemResultado > 100) {
+                porcentagemResultado = 100
+            }
+
+            barra.innerText = porcentagemResultado.toFixed(2) + "%";
+            barra.style.width = porcentagemResultado + '%'
+        })
+    }
+    document.getElementById('modalMetaEditar').addEventListener('show.bs.modal', function (event) {
+
+        const button = event.relatedTarget;
+
+
+        const id = button.getAttribute('data-id');
+        const nome = button.getAttribute('data-nome');
+        const alcancado = button.getAttribute('data-alcancado');
+        const necessario = button.getAttribute('data-necessario');
+        const data = button.getAttribute('data-data');
+
+        const form = this.querySelector('form');
+
+        form.querySelector('[name="id_porquinho"]').value = id;
+        form.querySelector('[name="nome_meta"]').value = nome;
+        form.querySelector('[name="vl_alcancado"]').value = alcancado;
+        form.querySelector('[name="vl_necessario"]').value = necessario;
+        form.querySelector('[name="dt_meta"]').value = data;
+    });
+
+
+</script>
+
+</body>
+</html>
