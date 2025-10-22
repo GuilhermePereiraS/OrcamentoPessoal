@@ -51,4 +51,9 @@ public class UsuarioRepository {
             e.printStackTrace();
         }
     }
+
+    public Usuario encontraUsuarioPorLogin(String login) {
+        String sql = "SELECT * FROM usuario WHERE login = ? A";
+        return template.queryForObject(sql, new Object[]{login}, new BeanPropertyRowMapper<>(Usuario.class));
+    }
 }

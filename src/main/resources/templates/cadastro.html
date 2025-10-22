@@ -34,7 +34,7 @@
                     <div class="col">
                         <label class="text-white">Nome</label>
                         <div class="form-floating mb-5">
-                            <input th:field="*{nome}" type="text" class="form-control" placeholder="">
+                            <input th:field="*{nome}" type="text" class="form-control" placeholder="" required>
                             <label>Nome</label>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                     <div class="col">
                         <label class="text-white">Login</label>
                         <div class="form-floating mb-5">
-                            <input th:field="*{login}" type="text" class="form-control" placeholder="">
+                            <input th:field="*{login}" type="text" class="form-control" placeholder="" required>
                             <label>Insira seu login</label>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                     <div class="col">
                         <label class="text-white">Senha</label>
                         <div class="form-floating mb-5">
-                            <input th:field="*{senha}" type="password" class="form-control" placeholder="">
+                            <input th:field="*{senha}" type="password" class="form-control" placeholder="" required>
                             <label>Insira sua senha</label>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                     <div class="col">
                         <label class="text-white">Nasc.</label>
                         <div class="form-floating ">
-                            <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="">
+                            <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="" required>
                             <label>Nasc</label>
                         </div>
                     </div>

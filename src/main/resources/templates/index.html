@@ -6,7 +6,7 @@
 </head>
 
 <body>
-
+<p th:text="${mensagemAlerta}">sem mensagem</p>
 
 <div class="container mt-5">
     <div class="row">
@@ -16,13 +16,13 @@
                 <h2 class="mb-3">Sistema de orçamento pessoal</h2>
                 <label>Login</label>
                 <div class="form-floating mb-3">
-                    <input th:field="*{login}" type="text" class="form-control" placeholder="">
+                    <input th:field="*{login}" type="text" class="form-control" placeholder="" required>
                     <label>Login</label>
                 </div>
 
                 <label>Senha</label>
                 <div class="form-floating mb-3">
-                    <input th:field="*{senha}" type="password" class="form-control" placeholder="">
+                    <input th:field="*{senha}" type="password" class="form-control" placeholder="" required>
                     <label>Senha</label>
                 </div>
                 <button type="submit" class="btn btn-light form-control">Entrar</button>
@@ -39,24 +39,16 @@
 <script th:inline="javascript">
 
     let alerta = /*[[${alerta}]]*/ false;
-    let mensagem = /*[[${mensagem}]]*/ "deu ruim";
 
-    let alertaRuim = /*[[${alertaRuim}]]*/ false;
+    let tituloAlerta = /*[[${tituloAlerta}]]*/ "deu ruim!!";
+    let mensagemAlerta = /*[[${mensagemAlerta}]]*/ "deu ruim";
+    let iconeAlerta = /*[[${iconeAlerta}]]*/ "warning";
 
     if (alerta) {
         Swal.fire({
-            title: 'Sucesso!',
-            text: mensagem,
-            icon: 'success',
-            confirmButtonText: 'Ok'
-        })
-    }
-
-    if (alertaRuim) {
-        Swal.fire({
-            title: 'Erro!',
-            text: mensagem,
-            icon: 'warning',
+            title: tituloAlerta,
+            text: mensagemAlerta,
+            icon: iconeAlerta,
             confirmButtonText: 'Ok'
         })
     }

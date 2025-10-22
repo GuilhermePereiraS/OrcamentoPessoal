@@ -52,7 +52,7 @@ public class PorquinhoController {
         } else if (acao.equals("editar")) {
             return "forward:/editarPorquinho";
         }
-        return "redirect:/porquinho";aa
+        return "redirect:/porquinho";
     }
 
     @GetMapping("/porquinho")

@@ -1,7 +1,6 @@
 package br.com.porquinho.controller;
 
 
-import br.com.porquinho.repository.UsuarioRepository;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 class UsuarioController {
@@ -23,10 +23,12 @@ class UsuarioController {
     }
 
     @PostMapping("/persistir")
-    public String persistir(@ModelAttribute  Usuario usuario, Model model) {
+    public String persistir(@ModelAttribute  Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
         usuarioService.salvar(usuario);
-        model.addAttribute("alerta", true);
-        model.addAttribute("mensagem", "Cadastro efetuado com sucesso!");
+
+        redirectAttributes.addFlashAttribute("alerta", true);
+        redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
+        redirectAttributes.addFlashAttribute("iconeAlerta", "success");
         return "index";
     }
 
@@ -37,21 +39,24 @@ class UsuarioController {
     }
 
     @PostMapping("/login")
-    public String logar(@ModelAttribute  Usuario usuarioForm, Model model, HttpSession session) {
-         Usuario usuario = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
+    public String logar(@ModelAttribute  Usuario usuarioForm, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+         Usuario usuarioEncotrado = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
 
-         if (usuario == null) {
-             model.addAttribute("alertaRuim", true);
-             model.addAttribute("mensagem", "Usuário não encontrado!");
-             return "index";
-         } else {
-             model.addAttribute("alerta", true);
-             model.addAttribute("mensagem", "Usuário logado com sucesso!");
+        redirectAttributes.addFlashAttribute("alerta", true);
+        if (usuarioEncotrado == null) {
+            redirectAttributes.addFlashAttribute("tituloAlerta", "Deu ruim!");
+            redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuario ou senha incorretos!");
+            redirectAttributes.addFlashAttribute("iconeAlerta", "warning");
+            return "redirect:/";
+        } else {
+            redirectAttributes.addFlashAttribute("tituloAlerta", "Sucesso!");
+            redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuário logado com sucesso!");
+            redirectAttributes.addFlashAttribute("iconeAlerta", "success");
+        }
 
-             session.setAttribute("usuarioLogado", usuario);
-             session.setAttribute("nomeUsuario", usuario.getLogin());
-            return "redirect:dashboard";
-         }
-
+        session.setAttribute("usuarioLogado", usuarioEncotrado);
+        session.setAttribute("nomeUsuario", usuarioEncotrado.getLogin());
+        return "redirect:/dashboard";
     }
+
 }

@@ -28,7 +28,7 @@ public class PorquinhoRepository {
 
     public List<Porquinho> listarTodos(Integer idUsuario) {
         try {
-            String sql = "SELECT id_porquinho, nome_meta, vl_alcancado, vl_necessario, dt_meta FROM porquinho pq WHERE id_usuario = ? ORDER BY pq.dt_meta DESC";
+            String sql = "SELECT id_porquinho, nome_meta, vl_alcancado, vl_necessario, dt_meta FROM porquinho pq WHERE id_usuario = ? ORDER BY pq.dt_meta ASC";
             return (List<Porquinho>) template.query(sql, new BeanPropertyRowMapper<>(Porquinho.class), idUsuario);
         } catch(Exception e) {
             e.printStackTrace();

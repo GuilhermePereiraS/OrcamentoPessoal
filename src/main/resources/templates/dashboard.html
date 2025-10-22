@@ -22,5 +22,24 @@
         <a th:href="@{/orcamento}" class="btn btn-green botaoGordo">Orçamento</a>
         <a class="btn btn-green botaoGordo">Extrato</a>
     </div>
+
+<script th:inline="javascript">
+
+    let alerta = /*[[${alerta}]]*/ false;
+
+    let tituloAlerta = /*[[${tituloAlerta}]]*/ "deu ruim!!";
+    let mensagemAlerta = /*[[${mensagemAlerta}]]*/ "deu ruim";
+    let iconeAlerta = /*[[${iconeAlerta}]]*/ "warning";
+
+    if (alerta) {
+        Swal.fire({
+            title: tituloAlerta,
+            text: mensagemAlerta,
+            icon: iconeAlerta,
+            confirmButtonText: 'Ok'
+        })
+    }
+
+</script>
 </body>
 </html>
