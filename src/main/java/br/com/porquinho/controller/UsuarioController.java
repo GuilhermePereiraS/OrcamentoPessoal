@@ -26,10 +26,17 @@ class UsuarioController {
     public String persistir(@ModelAttribute  Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
         usuarioService.salvar(usuario);
 
-        redirectAttributes.addFlashAttribute("alerta", true);
-        redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
-        redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-        return "index";
+        if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
+            redirectAttributes.addFlashAttribute("iconeAlerta", "success");
+        } else {
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro não efetuado!");
+            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
+        }
+
+        return "redirect:/";
     }
 
     @GetMapping("/")

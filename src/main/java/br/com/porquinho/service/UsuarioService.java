@@ -37,6 +37,8 @@ public class UsuarioService {
             return;
         }
 
+
+
         //criptografia
         usuario.setSenha(encoder.encode(usuario.getSenha()));
 
@@ -63,9 +65,6 @@ public class UsuarioService {
     public Usuario encontraPorLoginEHashSenha(String login, String senha) {
         Usuario usuario = usuarioRepository.encontraPorLogin(login);
 
-        if (usuario == null) {
-            return null;
-        }
         if (validaSenhaUsuarioUsuario(senha, usuario.getSenha())) {
             return usuario;
         }
@@ -73,6 +72,12 @@ public class UsuarioService {
             //msg
             return null;
         }
+    }
+
+    public Usuario encontraPorLogin(String login) {
+        Usuario usuario = usuarioRepository.encontraPorLogin(login);
+
+        return usuario;
     }
 
 }
