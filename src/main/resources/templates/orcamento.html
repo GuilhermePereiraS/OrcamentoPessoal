@@ -3,7 +3,7 @@
 <head th:replace="~{fragments/header :: headerPorquinho('dashboard')}"></head>
 <th:block th:fragment="misc">
     <style>
-        .meta {
+        .orcamentoMensal {
             border-radius: 5px;
             max-height: 20rem;
             font-size: 1.8rem;
@@ -12,8 +12,26 @@
             min-width: 90rem;
         }
 
-        .meta:hover {
+        .orcamentoMensal:hover {
+            transform: scale(1.009);
+        }
+
+        .orcamentoSecundario {
+            border-radius: 5px;
+            max-width: 30rem;
+            max-height: 20rem;
+            font-size: 1.8rem;
+            margin: 0 2rem;
+            transition: 0.15s;
+        }
+
+        .orcamentoSecundario:hover {
             transform: scale(1.05);
+        }
+
+
+        .orcamentoSecundario:hover {
+            transform: scale(1.009);
         }
 
         .textoMeta {
@@ -24,13 +42,25 @@
             margin: 0.5rem;
         }
 
-        .porcentagem {
-            width: 20rem;
+        .porcentagemOrcamentoPrincipal {
+            width: 80rem;
             border: solid 1px;
             border-radius: 10px;
         }
 
-        .barra {
+        .porcentagemOrcamentoSecundario {
+            width: 15rem;
+            border: solid 1px;
+            border-radius: 10px;
+        }
+
+        .barraOrcamentoPrincipal {
+            box-shadow: 0 0 0 1px #000 inset;
+            border-radius: 10px;
+            font-size: 1.4rem;
+        }
+
+        .barraOrcamentoSecundario {
             box-shadow: 0 0 0 1px #000 inset;
             border-radius: 10px;
             font-size: 1.4rem;
@@ -146,42 +176,57 @@
 <!--    </div>-->
 <!--</div>-->
 
-    <nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
+<nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
 
 <div id="board" class="d-flex flex-wrap mt-5">
     <div class="justify-content-center w-100 d-flex">
-        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal"
-             class="meta btn btn-light form-control d-flex flex-row align-items-center justify-content-center ">
-
-            <div class="d-flex flex-column
-    mt-5 mb-5 w-75   ">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+        <h1>Orçamento mensal</h1>
+            <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
 
                 <div class="d-flex flex-row">
                     <h1>Limite</h1>
-                    <div class="porcentagem ">
-                        <div class="barra green" style="width: 100%;">100.00%</div>
+                    <div class="porcentagemOrcamentoPrincipal ">
+                        <div class="barraOrcamentoPrincipal green" style="width: 100%;">100.00%</div>
                     </div>
                 </div>
                 <div class="d-flex flex-row">
                     <h1>Gasto</h1>
-                    <div class="porcentagem ">
-                        <div class="barra green" style="width: 100%;">100.00%</div>
+                    <div class="porcentagemOrcamentoPrincipal ">
+                        <div class="barraOrcamentoPrincipal yellow" style="width: 100%;">100.00%</div>
                     </div>
                 </div>
-
-
             </div>
-
-
         </div>
     </div>
+</div>
+
+<div id="boardSecundario" class="d-flex flex-wrap mt-5">
+    <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar">
+    <h1>Mercado</h1>
+    <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
+        <div class="d-flex flex-row">
+            <h3>Limite</h3>
+            <div class="porcentagemOrcamentoSecundario ">
+                <div class="barraOrcamentoSecundario green" style="width: 100%;">100.00%</div>
+            </div>
+        </div>
+        <div class="d-flex flex-row">
+            <h3>Gasto</h3>
+            <div class="porcentagemOrcamentoSecundario ">
+                <div class="barraOrcamentoSecundario yellow" style="width: 100%;">100.00%</div>
+            </div>
+        </div>
+    </div>
+    </div>
+
 
     <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
 </div>
 
 <script>
 
-    window.onload = function() {
+    window.onload = function () {
         let metas = document.querySelectorAll(".meta")
 
 
