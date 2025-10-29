@@ -13,9 +13,21 @@
             <li class="nav-item"></li>
         </ul>
 
-        <ul class="navbar-nav ml-auto">
-            Usuário:<li class="nav-item me-2" th:text="${userName}"></li>
-            <li class="nav-item">Saldo:</li>
+        <ul class="navbar-nav ml-auto align-items-center">
+            <li class="nav-item">
+                Usuário:
+            </li>
+            <li class="nav-item me-2" th:text="${userName}"></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Saldo: <span>aaa</span>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Registrar entrada</a></li>
+                    <li><a class="dropdown-item" href="#">Registrar saída</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
