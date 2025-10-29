@@ -30,22 +30,34 @@ services:
     networks:
       - rede_postgres
 
-  app:
-    build: .
-    container_name: porquinho-app
+  # --- Serviço de Backend (Spring Boot + Thymeleaf em modo Dev) ---
+  backend:
+    # Usamos a imagem do Maven que já tem Java 21
+    image: maven:3.9-eclipse-temurin-21 
+    container_name: porquinho-backend-dev
+    working_dir: /app
+    # Mapeamos TODO o projeto para /app no contêiner
+    volumes:
+      - .:/app
+      # Adicionamos um volume "anônimo" para o cache do Maven, para acelerar builds
+      - maven-cache:/root/.m2 
+    # Comando para rodar o Spring Boot em modo "dev"
+    # Ele vai assistir por mudanças nos arquivos Java
+    command: ./mvnw spring-boot:run
     ports:
       - "8080:8080"
     networks:
       - rede_postgres
     depends_on:
       - postgres
-    # --- Variáveis de Ambiente ---
-    # Aqui nós definimos as variáveis que o application.properties vai ler
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/porquinhoProjeto
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-    # Opcional: reiniciar automaticamente se falhar
+      # Habilita o "live reload" do Spring Boot DevTools
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      # Habilita o LIVE RELOAD (para mudanças em static/templates)
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
     restart: unless-stopped
 
 networks:
@@ -54,3 +66,4 @@ networks:
 
 volumes:
   pgdata:
+  maven-cache:
