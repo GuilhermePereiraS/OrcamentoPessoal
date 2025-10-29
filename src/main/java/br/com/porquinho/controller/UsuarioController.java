@@ -16,26 +16,14 @@ class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping("/cadastro")
-    public String cadastro(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "cadastro";
-    }
-
     @PostMapping("/persistir")
-    public String persistir(@ModelAttribute  Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
+    public String persistir(@ModelAttribute Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
         usuarioService.salvar(usuario);
 
         redirectAttributes.addFlashAttribute("alerta", true);
         redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
         redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-        return "index";
-    }
-
-    @GetMapping("/")
-    public String paginaLogin(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "index";
+        return "pages/index";
     }
 
     @PostMapping("/login")

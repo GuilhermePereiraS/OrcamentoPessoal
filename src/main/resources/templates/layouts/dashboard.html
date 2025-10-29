@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Porquinho</title>
+
+    <link rel="stylesheet" th:href="@{/_src/scss/main.css}">
+    <link rel="icon" th:href="@{/images/porquinhoMiniaturaVerde.png}">
+
+    <th:block layout:fragment="styles"></th:block>
+</head>
+
+<body class="bg-light">
+
+<!--<header th:replace="~{fragments/navbar :: navbar}"></header>-->
+
+<main class="container-fluid py-4">
+    <div class="row">
+
+        <div class="col-md-3 col-lg-2 bg-white border-end">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/dashboard}">
+                        <i class="fa-solid fa-chart-line"></i> Visão geral
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-9 col-lg-10">
+            <div layout:fragment="content">
+                <p>Conteúdo padrão do layout.</p>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script th:src="@{/_src/ts/main.js}"></script>
+
+<th:block layout:fragment="scripts"></th:block>
+
+</body>
+</html>

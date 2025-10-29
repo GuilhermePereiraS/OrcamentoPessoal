@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: headerPorquinho('cadastro')}">
+<head th:replace="~{components/dashboard :: headerPorquinho('cadastro')}">
     <th:block th:fragment="misc">
         <style>
             #botaoVoltar {
@@ -23,7 +23,7 @@
 <body>
 
 <div class="container-fluid">
-    <a th:href="@{/}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
+    <a th:href="@{/static}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
 
     <form th:action="@{/persistir}" th:object="${usuario}" method="post" onsubmit="return validaForm(this)">
         <div class="row vh-100">

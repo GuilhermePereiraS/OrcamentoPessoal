@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{fragments/header :: headerPorquinho('dashboard')}"></head>
+<head th:replace="~{components/dashboard :: headerPorquinho('dashboard')}"></head>
 <th:block th:fragment="misc">
     <style>
         .meta {
@@ -146,7 +146,7 @@
 <!--    </div>-->
 <!--</div>-->
 
-    <nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
+    <nav th:replace="~{components/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
 
 <div id="board" class="d-flex flex-wrap mt-5">
     <div class="justify-content-center w-100 d-flex">

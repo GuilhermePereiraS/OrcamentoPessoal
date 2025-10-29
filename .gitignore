@@ -29,5 +29,59 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### NODE ###
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Vite cache
+.vite/
+vite.config.ts.timestamp*
+vite.config.js.timestamp*
+vite.config.mjs.timestamp*
+vite.config.cjs.timestamp*
+
+# Vite compiled files
+src/main/resources/static/_src/
+
+# Optional build output
+dist/
+dist-ssr/
+out/
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# SCSS/SASS
+.sass-cache/
+*.css.map
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Editor configs
 ### VS Code ###
 .vscode/
+.history/
+*.code-workspace
+
+### SYSTEM ###
+.DS_Store
+Thumbs.db

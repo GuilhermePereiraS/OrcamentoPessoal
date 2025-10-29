@@ -8,7 +8,7 @@ public class OrcamentoController {
 
     @GetMapping("/orcamento")
     public String index() {
-        return "orcamento";
+        return "pages/admin/orcamento/orcamento";
     }
 
 

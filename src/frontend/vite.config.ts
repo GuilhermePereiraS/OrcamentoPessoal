@@ -11,7 +11,8 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 'ts/main': path.resolve(__dirname, 'src/ts/main.ts'),
-                'src/ts/pages/porquinho/porquinho': path.resolve(__dirname, 'src/ts/pages/porquinho/porquinho.ts'),
+                'ts/pages/porquinho/porquinho': path.resolve(__dirname, 'src/ts/pages/porquinho/porquinho.ts'),
+                'scss/main': path.resolve(__dirname, 'src/scss/main.scss'),
             },
 
             // Isto remove os hashes dos nomes dos ficheiros.
