@@ -1,33 +1,84 @@
-<nav th:fragment="nomeUsuario(userName)" class="navbar navbar-expand-lg green">
-    <div class="container-fluid">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/dashboard}">
-                    <img height="40" src="/images/icons/casa.png" alt="">
-                </a>
-            </li>
-        </ul>
 
-        <ul class="navbar-nav mx-auto">
-            <li class="nav-item me-2"></li>
-            <li class="nav-item"></li>
-        </ul>
 
-        <ul class="navbar-nav ml-auto align-items-center">
-            <li class="nav-item">
-                Usuário:
-            </li>
-            <li class="nav-item me-2" th:text="${userName}"></li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Saldo: <span>aaa</span>
-                </a>
+<th:block th:fragment="nomeUsuario(userName)">
+    <nav class="navbar navbar-expand-lg green">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/dashboard}">
+                        <img height="40" src="/images/icons/casa.png" alt="">
+                    </a>
+                </li>
+            </ul>
 
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Registrar entrada</a></li>
-                    <li><a class="dropdown-item" href="#">Registrar saída</a></li>
-                </ul>
-            </li>
-        </ul>
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item me-2"></li>
+                <li class="nav-item"></li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto align-items-center">
+                <li class="nav-item">
+                    Usuário:
+                </li>
+                <li class="nav-item me-2" th:text="${session.usuarioLogado.getNome()}"></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Saldo: R$
+                        <span th:if="${session.usuarioLogado.getSaldo() != null}">
+                        <span th:text="${session.usuarioLogado.getSaldo()}"></span>
+
+                    </span>
+                        <span th:unless="${session.usuarioLogado.getSaldo() != null}">
+                        <span>0,00</span>
+                    </span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalTransacaoEntrada">Registrar transação</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="modalTransacaoEntrada" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-dialog-centered p-3">
+                <form th:action="@{/registraTransacao}" method="post">
+                    <div class="text-center">
+                        <h1>Registrar transação</h1><br>
+
+                        <span>Descrição</span><br>
+                        <input name="descricao" class="mb-3 descricaoTransacao" type="text" placeholder="nome meta"/><br>
+
+                        <span>Tipo de transação:</span><br>
+                        <select name="tipoTransacao" required>
+                            <option value="">Selecione</option>
+                            <option value="entrada">Entrada</option>
+                            <option value="saida">Saída</option>
+                        </select><br>
+
+                        <span>Valor da transação:</span><br>
+                        <div class="d-flex justify-content-center gap-2">
+                            <button type="button" class="btn btn-danger btn-operacao">-</button>
+                            <input name="valor" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
+                            <button class="btn btn-green btn-operacao">+</button>
+                        </div>
+
+                        <span>Data da transação:</span>
+                        <div class="d-flex justify-content-center">
+                            <input name="dataTransacao" class="valorOperacao"  type="date" required>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</nav>
+</th:block>
+
+

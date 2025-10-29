@@ -62,7 +62,10 @@ class UsuarioController {
         }
 
         session.setAttribute("usuarioLogado", usuarioEncotrado);
-        session.setAttribute("nomeUsuario", usuarioEncotrado.getLogin());
+
+        // adiciona o transacaoDTO na sessão, descobrir uma forma mais elegante de manipulação
+        session.setAttribute("usuario", usuarioEncotrado.getLogin());
+
         return "redirect:/dashboard";
     }
 

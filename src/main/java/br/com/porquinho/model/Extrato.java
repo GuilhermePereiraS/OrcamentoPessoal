@@ -15,9 +15,24 @@ public class Extrato {
     Integer id_forma_pgmt;
     Integer id_tipo_gasto ;
     String  descricao ;
-    String tp_transacao;
     BigDecimal vl_transacao;
     LocalDate dt_transacao;
+    String tp_transacao;
+
+    public enum tipoTransacao {
+        ENTRADA("entrada"),
+        SAIDA("saida");
+
+        private String operacao;
+
+        tipoTransacao(String operacao) {
+            this.operacao = operacao;
+        }
+
+        public String getOperacao() {
+            return operacao;
+        }
+    }
 
 
     public Integer getId_extrato() {
