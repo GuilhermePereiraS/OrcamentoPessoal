@@ -1,9 +1,29 @@
-version: '3.8'
+version: "3.8"
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring_app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/porquinhoProjeto
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - spring_net
+
   postgres:
     image: postgres:18.0
-    container_name: postgres
+    container_name: spring_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -12,26 +32,18 @@ services:
       - "5433:5432"
     volumes:
       - ./init-db:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d porquinhoProjeto"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
-      - rede_postgres
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "8081:80"
-    depends_on:
-      - postgres
-    networks:
-      - rede_postgres
+      - spring_net
 
 networks:
-  rede_postgres:
+  spring_net:
     driver: bridge
 
 volumes:
-  pgdata:
+  postgres_data:

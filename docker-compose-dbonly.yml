@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:18.0
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: porquinhoProjeto
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql
+    networks:
+      - rede_postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    networks:
+      - rede_postgres
+
+networks:
+  rede_postgres:
+    driver: bridge
+
+volumes:
+  pgdata:
