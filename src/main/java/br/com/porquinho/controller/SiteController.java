@@ -10,7 +10,7 @@ public class SiteController {
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "dashboard";
+        return "home";
     }
 
     @GetMapping("/")

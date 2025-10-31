@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{components/dashboard :: headerPorquinho('dashboard')}"></head>
+<head th:replace="~{fragments/header :: headerPorquinho('dashboard')}"></head>
 <th:block th:fragment="misc">
     <style>
         .orcamentoMensal {
@@ -176,57 +176,37 @@
 <!--    </div>-->
 <!--</div>-->
 
-    <nav th:replace="~{components/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
+<nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
 
-<div id="board" class="d-flex flex-wrap mt-5">
-    <div class="justify-content-center w-100 d-flex">
+<div id="board" class="d-flex flex-wrap mt-5 justify-content-center ">
+    <div class="justify-content-center w-100 d-flex ">
         <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
-        <h1>Orçamento mensal</h1>
-            <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
-
-                <div class="d-flex flex-row">
-                    <h1>Limite</h1>
-                    <div class="porcentagemOrcamentoPrincipal ">
-                        <div class="barraOrcamentoPrincipal green" style="width: 100%;">100.00%</div>
-                    </div>
-                </div>
-                <div class="d-flex flex-row">
-                    <h1>Gasto</h1>
-                    <div class="porcentagemOrcamentoPrincipal ">
-                        <div class="barraOrcamentoPrincipal yellow" style="width: 100%;">100.00%</div>
-                    </div>
-                </div>
+            <div class="d-flex w-100">
+                <h3>Necessário</h3>
+            </div>
+            <div class="d-flex align-items-center w-100 position-relative mb-5">
+                <h1 class="position-absolute start-50 translate-middle-x m-0">Mercado</h1>
+                <h1 class="ms-auto m-0">R$ 5,00</h1>
             </div>
         </div>
     </div>
-</div>
-
-<div id="boardSecundario" class="d-flex flex-wrap mt-5">
-    <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar">
-    <h1>Mercado</h1>
-    <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
-        <div class="d-flex flex-row">
-            <h3>Limite</h3>
-            <div class="porcentagemOrcamentoSecundario ">
-                <div class="barraOrcamentoSecundario green" style="width: 100%;">100.00%</div>
+    <div class="justify-content-center w-100 d-flex ">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+            <div class="d-flex w-100">
+                <h3>Supérfluo</h3>
             </div>
-        </div>
-        <div class="d-flex flex-row">
-            <h3>Gasto</h3>
-            <div class="porcentagemOrcamentoSecundario ">
-                <div class="barraOrcamentoSecundario yellow" style="width: 100%;">100.00%</div>
+            <div class="d-flex align-items-center w-100 position-relative mb-5">
+                <h1 class="position-absolute start-50 translate-middle-x m-0">Lanchonete</h1>
+                <h1 class="ms-auto m-0">R$ 5,00</h1>
             </div>
         </div>
     </div>
-    </div>
-
-
-    <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
+        <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
 </div>
 
 <script>
 
-    window.onload = function() {
+    window.onload = function () {
         let metas = document.querySelectorAll(".meta")
 
 

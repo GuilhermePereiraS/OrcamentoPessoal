@@ -16,14 +16,33 @@ class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @GetMapping("/cadastro")
+    public String cadastro(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "cadastro";
+    }
+
     @PostMapping("/persistir")
     public String persistir(@ModelAttribute Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
         usuarioService.salvar(usuario);
 
-        redirectAttributes.addFlashAttribute("alerta", true);
-        redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
-        redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-        return "pages/index";
+        if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
+            redirectAttributes.addFlashAttribute("iconeAlerta", "success");
+        } else {
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro não efetuado!");
+            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
+        }
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String paginaLogin(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "pages/login";
     }
 
     @PostMapping("/login")

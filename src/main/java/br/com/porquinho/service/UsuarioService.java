@@ -60,19 +60,25 @@ public class UsuarioService {
         return encoder.matches(senhaInserida, hash);
     }
 
-    public Usuario encontraPorLoginEHashSenha(String login, String senha) {
-        Usuario usuario = usuarioRepository.encontraPorLogin(login);
+    public Usuario encontraPorLoginEHashSenha(String login, String senhaForm) {
+        Usuario usuarioNoBanco = usuarioRepository.encontraPorLogin(login);
 
-        if (usuario == null) {
+        if (usuarioNoBanco == null) {
             return null;
         }
-        if (validaSenhaUsuarioUsuario(senha, usuario.getSenha())) {
-            return usuario;
+        if (validaSenhaUsuarioUsuario(senhaForm, usuarioNoBanco.getSenha())) {
+            return usuarioNoBanco;
         }
         else {
             //msg
             return null;
         }
+    }
+
+    public Usuario encontraPorLogin(String login) {
+        Usuario usuario = usuarioRepository.encontraPorLogin(login);
+
+        return usuario;
     }
 
 }
