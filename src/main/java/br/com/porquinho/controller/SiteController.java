@@ -16,7 +16,7 @@ public class SiteController {
     @GetMapping("/")
     public String paginaLogin(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "pages/index";
+        return "pages/admin/login";
     }
 
     @GetMapping("/cadastro")

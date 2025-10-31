@@ -23,7 +23,7 @@ public class PorquinhoController {
     }
 
     @PostMapping("/persistirPorquinho")
-    public String persistirPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
+    public String persistirPorquinho(Porquinho porquinho, HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
@@ -32,19 +32,19 @@ public class PorquinhoController {
     }
 
     @PostMapping("/editarPorquinho")
-    public String editarPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
+    public String editarPorquinho(Porquinho porquinho, HttpSession session) {
         porquinhoService.atualizar(porquinho);
         return "redirect:/porquinho";
     }
 
     @PostMapping("/excluirPorquinho")
-    public String excluirPorquinho(@ModelAttribute Porquinho porquinho, HttpSession session) {
+    public String excluirPorquinho(Porquinho porquinho, HttpSession session) {
         porquinhoService.excluir(porquinho);
         return "redirect:/porquinho";
     }
 
     @PostMapping("/acaoPorquinho")
-    public String acaoPorquinho(@RequestParam String acao) {
+    public String acaoPorquinho(@RequestParam String acao, Porquinho porquinho) {
         if (acao.equals("excluir")) {
             return "forward:/excluirPorquinho";
         } else if (acao.equals("editar")) {
