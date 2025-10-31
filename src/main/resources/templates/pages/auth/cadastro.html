@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{components/dashboard :: headerPorquinho('cadastro')}">
+<html lang="pt"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+
+<head>
+    <title layout:fragment="title">Cadastro</title>
     <th:block th:fragment="misc">
         <style>
             #botaoVoltar {
@@ -22,7 +27,7 @@
 </head>
 <body>
 
-<div class="container-fluid">
+<div layout:fragment="content">
     <a th:href="@{/static}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
 
     <form th:action="@{/persistir}" th:object="${usuario}" method="post" onsubmit="return validaForm(this)">
@@ -95,77 +100,6 @@
     </form>
 </div>
 
-<script>
-
-    function validaForm(form) {
-        let nome = form["nome"].value
-        let login = form["login"].value
-        let dt_nascimento = form["dt_nascimento"].value
-        let senha = form["senha"].value
-
-
-        if (estaVazioOuNulo(nome)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever o nome",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-
-            return false;
-        }
-        if (estaVazioOuNulo(login)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever o login",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }if (estaVazioOuNulo(dt_nascimento)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever a data de nascimento",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }
-        if (estaVazioOuNulo(senha)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever a senha",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }
-
-        if (nome.length <= 3) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Nome deve ter pelo menos quatro caracteres",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }
-        if (senha.length <= 4) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Senha deve ter pelo menos 5 caracteres",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }
-    }
-
-    function estaVazioOuNulo(string) {
-        if (string === "" || string == null) {
-            return true
-        }
-    }
-</script>
+<script></script>
 </body>
 </html>
