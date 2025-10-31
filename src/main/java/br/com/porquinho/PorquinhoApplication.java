@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class PorquinhoApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Iniciando servidor em http://localhost:8080/");
 		SpringApplication.run(PorquinhoApplication.class, args);
 	}
 

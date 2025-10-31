@@ -4,11 +4,14 @@ package br.com.porquinho.controller;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import br.com.porquinho.service.LoginJaExistenteException;
 
 @Controller
 class UsuarioController {
@@ -18,25 +21,44 @@ class UsuarioController {
 
     @GetMapping("/cadastro")
     public String cadastro(Model model) {
-        model.addAttribute("usuario", new Usuario());
+        if (!model.containsAttribute("usuario")) {
+            model.addAttribute("usuario", new Usuario());
+        }
         return "cadastro";
     }
 
     @PostMapping("/persistir")
-    public String persistir(@ModelAttribute  Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
-        usuarioService.salvar(usuario);
+    public String persistir(@Valid @ModelAttribute("usuario")  Usuario usuario, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
-        if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
+        if(bindingResult.hasErrors()) {
+
+            String primeiraMensagem = bindingResult.getAllErrors().getFirst().getDefaultMessage();
+
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", primeiraMensagem);
+            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
+
+            redirectAttributes.addFlashAttribute("usuario", usuario);
+
+            return "redirect:/cadastro";
+        }
+
+        try {
+            usuarioService.salvar(usuario);
+
             redirectAttributes.addFlashAttribute("alerta", true);
             redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
             redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-        } else {
-            redirectAttributes.addFlashAttribute("alerta", true);
-            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro não efetuado!");
-            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
-        }
+            return "redirect:/";
 
-        return "redirect:/";
+        } catch (LoginJaExistenteException e) {
+
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", e.getMessage());
+            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
+            redirectAttributes.addFlashAttribute("usuario", usuario);
+            return "redirect:/cadastro";
+        }
     }
 
     @GetMapping("/")

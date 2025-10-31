@@ -1,12 +1,34 @@
 <head th:fragment="headerPorquinho(titulo)">
+
     <title th:text="${titulo}">erro</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" th:href="@{/style.css}">
-    <script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Pega os valores enviados pelo Controller via RedirectAttributes
+        var exibirAlerta = /*[[${alerta}]]*/ null;
+        var tituloAlerta = /*[[${tituloAlerta}]]*/ 'Atenção!'; // Um título padrão
+        var mensagemAlerta = /*[[${mensagemAlerta}]]*/ null;
+        var iconeAlerta = /*[[${iconeAlerta}]]*/ 'info'; // Um ícone padrão
+
+        // Se a flag 'alerta' for verdadeira, exibe o SweetAlert
+        if (exibirAlerta) {
+            Swal.fire({
+                title: tituloAlerta,
+                text: mensagemAlerta,
+                icon: iconeAlerta,
+                confirmButtonText: 'Ok'
+            });
+        }
+        /*]]>*/
     </script>
     <th:block th:insert="~{::misc}"/>
 </head>

@@ -19,6 +19,7 @@
             }
         </style>
     </th:block>
+    <title></title>
 </head>
 <body>
 
@@ -98,77 +99,88 @@
 <script>
 
     function validaForm(form) {
+        debugger
         let nome = form["nome"].value
         let login = form["login"].value
         let dt_nascimento = form["dt_nascimento"].value
         let senha = form["senha"].value
 
-
         if (estaVazioOuNulo(nome)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever o nome",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-
+            exibirErro("Deve escrever o nome");
             return false;
         }
+
         if (estaVazioOuNulo(login)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever o login",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }if (estaVazioOuNulo(dt_nascimento)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever a data de nascimento",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
+            exibirErro("Deve escrever login");
             return false;
         }
+
+        if (estaVazioOuNulo(dt_nascimento)) {
+            exibirErro("Deve escrever a data de nascimento");
+            return false;
+        }
+
         if (estaVazioOuNulo(senha)) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Deve escrever a senha",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
+            exibirErro("Deve escrever a senha");
             return false;
         }
 
-        if (nome.length <= 3) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Nome deve ter pelo menos quatro caracteres",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
-            return false;
-        }
-        if (senha.length <= 4) {
-            Swal.fire({
-                title: 'Atenção!',
-                text: "Senha deve ter pelo menos 5 caracteres",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            })
+        let hoje = new Date();
+
+        // Input type="date" retorna "YYYY-MM-DD".
+        // Adicionar 'T00:00:00' força o JS a interpretar na timezone local
+        // e evita bugs de "um dia a menos" causados por fuso horário (UTC).
+        let dataNascimento = new Date(dt_nascimento + 'T00:00:00');
+
+        // Zeramos a hora de "hoje" para comparar apenas o dia, mês e ano.
+        hoje.setHours(0, 0, 0, 0);
+
+        // Se a data de nascimento for HOJE ou no FUTURO, é inválida.
+        if (dataNascimento >= hoje) {
+            exibirErro("A data de nascimento deve ser no passado");
             return false;
         }
 
+        if (nome.length < 4) { // @Size(min=4)
+            exibirErro("Nome deve ter pelo menos quatro caracteres");
+            return false;
+        }
 
+        if (login.length < 4) { // @Size(min=4)
+            exibirErro("Login deve ter pelo menos quatro caracteres");
+            return false;
+        }
 
+        if (senha.length < 5) { // @Size(min=4)
+            exibirErro("Senha deve ter pelo menos cinco caracteres");
+            return false;
+        }
+
+        let regexCaracterEspecial = /[^a-zA-Z0-9]/;
+        if (!regexCaracterEspecial.test(senha)) {
+            exibirErro("A senha deve conter pelo menos um caracter especial");
+            return false;
+        }
+
+        return true;
+    }
+
+    function exibirErro(mensagem) {
+        debugger
+        Swal.fire({
+            title: 'Atenção!',
+            text: mensagem,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
     }
 
     function estaVazioOuNulo(string) {
-        if (string === "" || string == null) {
-            return true
-        }
+        debugger
+        // String.trim() remove espaços em branco do início e fim
+        return !string || string.trim() === "";
     }
+
 </script>
 </body>
 </html>
