@@ -4,7 +4,8 @@ import path from 'path'
 export default defineConfig({
     base: '/',
     build: {
-        manifest: false,
+        // manifest: false,
+        manifest: true,
         outDir: path.resolve(__dirname, '../main/resources/static/_src'),
         emptyOutDir: true,
 
@@ -12,18 +13,19 @@ export default defineConfig({
             input: {
                 'ts/main': path.resolve(__dirname, 'src/ts/main.ts'),
                 'ts/dashboard/dashboard': path.resolve(__dirname, 'src/ts/dashboard/dashboard.ts'),
+                'ts/pages/admin/cadastro/cadastro': path.resolve(__dirname, 'src/ts/pages/admin/cadastro/cadastro.ts'),
                 'scss/dashboard/dashboard': path.resolve(__dirname, 'src/scss/dashboard/dashboard.scss'),
             },
 
             // Isto remove os hashes dos nomes dos ficheiros.
-            output: {
-                // [name].js -> main.js, login.js, dashboard.js
-                entryFileNames: `[name].js`,
-                // Outros pedaços de código partilhado
-                chunkFileNames: `[name].js`,
-                // [name].css -> main.css, login.css, dashboard.css
-                assetFileNames: `[name].[ext]`
-            }
+            // output: {
+            //     // [name].js -> main.js, login.js, dashboard.js
+            //     entryFileNames: `[name].js`,
+            //     // Outros pedaços de código partilhado
+            //     chunkFileNames: `[name].js`,
+            //     // [name].css -> main.css, login.css, dashboard.css
+            //     assetFileNames: `[name].[ext]`
+            // }
         },
     },
     server: {

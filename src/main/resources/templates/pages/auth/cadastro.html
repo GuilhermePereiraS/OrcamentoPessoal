@@ -30,7 +30,7 @@
 <div layout:fragment="content">
     <a th:href="@{/static}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
 
-    <form th:action="@{/persistir}" th:object="${usuario}" method="post" onsubmit="return validaForm(this)">
+    <form th:action="@{/persistir}" th:object="${usuario}" method="post" id="cadastro-form">
         <div class="row vh-100">
 
             <div class="col mt-8">
@@ -39,7 +39,7 @@
                     <div class="col">
                         <label class="text-white">Nome</label>
                         <div class="form-floating mb-5">
-                            <input th:field="*{nome}" type="text" class="form-control" placeholder="" required>
+                            <input th:field="*{nome}" type="text" class="form-control" placeholder="" >
                             <label>Nome</label>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="col">
                         <label class="text-white">Login</label>
                         <div class="form-floating mb-5">
-                            <input th:field="*{login}" type="text" class="form-control" placeholder="" required>
+                            <input th:field="*{login}" type="text" class="form-control" placeholder="" >
                             <label>Insira seu login</label>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                     <div class="col">
                         <label class="text-white">Senha</label>
                         <div class="form-floating mb-5">
-                            <input th:field="*{senha}" type="password" class="form-control" placeholder="" required>
+                            <input th:field="*{senha}" type="password" class="form-control" placeholder="" >
                             <label>Insira sua senha</label>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="col">
                         <label class="text-white">Nasc.</label>
                         <div class="form-floating ">
-                            <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="" required>
+                            <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="" >
                             <label>Nasc</label>
                         </div>
                     </div>
@@ -100,6 +100,15 @@
     </form>
 </div>
 
-<script></script>
+
+<th:block layout:fragment="scripts">
+    <th:block th:if="${viteServer != null}">
+        <script type="module" th:src="${viteServer + '/src/ts/pages/admin/cadastro/cadastro.ts'}"></script>
+    </th:block>
+    <th:block th:if="${viteServer == null}">
+        <script type="module" th:src="@{${@vite.asset('src/ts/pages/admin/cadastro/cadastro.ts')}}"></script>
+    </th:block>
+</th:block>
+
 </body>
 </html>

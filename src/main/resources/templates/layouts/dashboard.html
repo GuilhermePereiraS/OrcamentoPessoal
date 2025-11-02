@@ -2,16 +2,35 @@
 <html lang="pt"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Porquinho</title>
 
-    <link rel="stylesheet" th:href="@{/_src/scss/dashboard/dashboard.css}">
     <link rel="icon" th:href="@{/images/porquinhoMiniaturaVerde.png}">
+    
+    <th:block th:with="viteServer=${@environment.getProperty('vite.server.url')}">
+        <th:block th:if="${viteServer != null}">
+            <script type="module" th:src="${viteServer + '/@vite/client'}"></script>
 
-    <th:block layout:fragment="styles"></th:block>
+            <link rel="stylesheet" th:href="${viteServer + '/src/scss/dashboard/dashboard.scss'}"> 
+            
+            <th:block layout:fragment="styles"></th:block>
+
+            <script type="module" th:src="${viteServer + '/src/ts/dashboard/dashboard.ts'}"></script>
+        </th:block>
+        
+        <th:block th:if="${viteServer == null}">
+            <link rel="stylesheet" th:href="@{${@vite.asset('src/scss/dashboard/dashboard.scss')}}">
+
+            <th:block layout:fragment="styles"></th:block>
+
+            <script type="module" th:src="@{${@vite.asset('src/ts/dashboard/dashboard.ts')}}"></script>
+        </th:block>
+    </th:block>
+    
 </head>
 
 <body class="bg-light">
@@ -28,9 +47,18 @@
     </div>
 </main>
 
-<script th:src="@{/_src/dashboard/dashboard.js}"></script>
 
-<th:block layout:fragment="scripts"></th:block>
+<th:block th:with="viteServer=${@environment.getProperty('vite.server.url')}">
+    <th:block th:if="${viteServer != null}">
+        <script type="module" th:src="${viteServer + '/@vite/client'}"></script>
+
+        <th:block layout:fragment="scripts"></th:block>
+    </th:block>
+    
+    <th:block th:if="${viteServer == null}">
+        <th:block layout:fragment="scripts"></th:block>
+    </th:block>
+</th:block>
 
 </body>
 </html>
