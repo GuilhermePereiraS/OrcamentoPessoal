@@ -30,6 +30,7 @@ public class ExtratoController {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         model.addAttribute("listaExtrato", extratoService.listarTodos(usuario.getId_usuario()));
+        System.out.println("lista extrato ->" +extratoService.listarTodos( usuario.getId_usuario()).size());
         model.addAttribute("listaTipoGasto", tipoGastoService.listarTodos(usuario.getId_usuario()));
 
         return "extrato";
