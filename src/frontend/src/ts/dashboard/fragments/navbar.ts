@@ -55,3 +55,5 @@ function exibeOpcoes(): void {
     selectCategoria.disabled = isEntrada;
     selectFormaPagamento.disabled = isEntrada;
 }
+
+(window as any).exibeOpcoes = exibeOpcoes;
