@@ -1,7 +1,3 @@
-
-
-alert('estoy aqui 7');
-
 // --- SUAS INTERFACES (Serão removidas pelo build, está correto) ---
 interface FormElement {
     value: string;
@@ -23,7 +19,6 @@ function estaVazioOuNulo(str: string | null | undefined): boolean {
 }
 
 function validaForm(form: UserForm): boolean {
-    alert('estoy aqui 8'); // Este alerta agora será mantido
     const nome: string = form["nome"].value;
     const login: string = form["login"].value;
     const dt_nascimento: string = form["dt_nascimento"].value;
