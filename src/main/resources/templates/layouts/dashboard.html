@@ -35,26 +35,30 @@
 
 <body>
 
-<!--<header th:replace="~{fragments/navbar :: navbar}"></header>-->
+    <header th:if="${session.usuarioLogado != null}"
+            th:include="~{layouts/fragments/navbar :: navbar}"></header>
 
-<main class="container-fluid py-4">
-    <div layout:fragment="content">
-        <p>Conteúdo padrão do layout.</p>
-    </div>
-</main>
+    <main class="container-fluid py-4">
+        <div layout:fragment="content">
+            <p>Conteúdo padrão do layout.</p>
+        </div>
+    </main>
 
 
-<th:block th:with="viteServer=${@environment.getProperty('vite.server.url')}">
-    <th:block th:if="${viteServer != null}">
-        <script type="module" th:src="${viteServer + '/@vite/client'}"></script>
+    <th:block th:with="viteServer=${@environment.getProperty('vite.server.url')}">
+        <th:block th:if="${viteServer != null}">
 
-        <th:block layout:fragment="scripts"></th:block>
+            <script type="module" th:src="${viteServer + '/src/ts/dashboard/fragments/navbar.ts'}"></script>
+
+            <th:block layout:fragment="scripts"></th:block>
+        </th:block>
+
+        <th:block th:if="${viteServer == null}">
+            <script type="module" th:src="@{${@vite.asset('src/ts/dashboard/fragments/navbar.ts')}}"></script>
+
+            <th:block layout:fragment="scripts"></th:block>
+        </th:block>
     </th:block>
-    
-    <th:block th:if="${viteServer == null}">
-        <th:block layout:fragment="scripts"></th:block>
-    </th:block>
-</th:block>
 
 </body>
 </html>

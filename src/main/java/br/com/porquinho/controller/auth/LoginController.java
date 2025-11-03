@@ -42,9 +42,12 @@ public class LoginController {
         }
 
         session.setAttribute("usuarioLogado", usuarioEncotrado);
-        session.setAttribute("nomeUsuario", usuarioEncotrado.getLogin());
-
         return "redirect:/admin/home";
     }
 
+    @PostMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+        session.removeAttribute("usuarioLogado");
+        return "redirect:/admin/home";
+    }
 }

@@ -107,8 +107,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
-   -- trigger abaixo
-
+-- trigger abaixo
 CREATE TRIGGER trigger_atualiza_saldo
     AFTER INSERT OR
     UPDATE OR
@@ -118,7 +117,7 @@ FOR EACH ROW EXECUTE FUNCTION atualizaSaldo();
 
 INSERT INTO tipo_gasto (descricao)
 VALUES ('Supérfluo'),
-       ('Nessesário'),
+       ('Necessário'),
        ('Mercado');
 
 INSERT INTO forma_pgmt (descricao)

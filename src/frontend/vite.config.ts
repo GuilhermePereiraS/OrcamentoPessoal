@@ -13,6 +13,7 @@ export default defineConfig({
             input: {
                 'ts/main': path.resolve(__dirname, 'src/ts/main.ts'),
                 'ts/dashboard/dashboard': path.resolve(__dirname, 'src/ts/dashboard/dashboard.ts'),
+                'ts/dashboard/fragments/navbar': path.resolve(__dirname, 'src/ts/dashboard/fragments/navbar.ts'),
                 'ts/pages/auth/cadastro/cadastro': path.resolve(__dirname, 'src/ts/pages/auth/cadastro/cadastro.ts'),
                 'ts/pages/auth/login/login': path.resolve(__dirname, 'src/ts/pages/auth/login/login.ts'),
                 'scss/dashboard/dashboard': path.resolve(__dirname, 'src/scss/dashboard/dashboard.scss'),
