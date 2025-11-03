@@ -25,7 +25,7 @@ public class ExtratoController {
         this.tipoGastoService = tipoGastoService;
     }
 
-    @GetMapping("/extrato")
+    @GetMapping("/admin/extrato")
     public String extrato(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
@@ -33,10 +33,10 @@ public class ExtratoController {
         System.out.println("lista extrato ->" +extratoService.listarTodos( usuario.getId_usuario()).size());
         model.addAttribute("listaTipoGasto", tipoGastoService.listarTodos(usuario.getId_usuario()));
 
-        return "extrato";
+        return "pages/admin/extrato/index";
     }
 
-    @PostMapping("/registraTransacao")
+    @PostMapping("/admin/extrato")
     public String registraTransacao(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 

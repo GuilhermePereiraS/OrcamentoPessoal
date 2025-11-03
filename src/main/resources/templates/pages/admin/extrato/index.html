@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+
+<head>
+  <title layout:fragment="title">Extrato</title>
+</head>
+
+<body>
+  <div layout:fragment="content">
+
+    <div id="board" class="d-flex flex-wrap mt-5 justify-content-center ">
+      <div th:each="extrato : ${listaExtrato}" class="justify-content-center w-100 d-flex ">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+          <div class="d-flex w-100">
+            <div th:each="categoria : ${listaTipoGasto}" th:if="${categoria.id_tipo_gasto == extrato.id_tipo_gasto}">
+              <h3 th:text="${categoria.descricao}">Necessário</h3>
+            </div>
+          </div>
+          <div class="d-flex align-items-center w-100 position-relative mb-5">
+            <h1 class="position-absolute start-50 translate-middle-x m-0" th:text="${extrato.descricao}">Mercado</h1>
+            <h1 class="ms-auto m-0" th:text="(${extrato.tp_transacao} == 'entrada' ? '+ R$: ' : '- R$: ') + ${extrato.vl_transacao}">R$ 5,00</h1>
+          </div>
+        </div>
+      </div>
+      <div class="justify-content-center w-100 d-flex ">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+          <div class="d-flex w-100">
+            <h3>Supérfluo</h3>
+          </div>
+          <div class="d-flex align-items-center w-100 position-relative mb-5">
+            <h1 class="position-absolute start-50 translate-middle-x m-0">Lanchonete</h1>
+            <h1 class="ms-auto m-0">R$ 5,00</h1>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
+    </div>
+
+  </div>
+
+<!--<th:block layout:fragment="scripts">-->
+<!--    <th:block th:if="${viteServer != null}">-->
+<!--        <script type="module" th:src="${viteServer + '/src/ts/pages/auth/cadastro/cadastro.ts'}"></script>-->
+<!--    </th:block>-->
+<!--    <th:block th:if="${viteServer == null}">-->
+<!--        <script type="module" th:src="@{${@vite.asset('src/ts/pages/auth/cadastro/cadastro.ts')}}"></script>-->
+<!--    </th:block>-->
+<!--</th:block>-->
+
+</body>
+</html>
