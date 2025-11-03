@@ -1,0 +1,29 @@
+package br.com.porquinho.repository;
+
+import br.com.porquinho.model.FormaPagamento;
+import br.com.porquinho.model.TipoGasto;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class TipoGastoRepository {
+
+    private final JdbcTemplate template;
+
+    public TipoGastoRepository(JdbcTemplate jdbcTemplate) {
+        this.template = jdbcTemplate;
+    }
+
+    public List<TipoGasto> listarTodos() {
+        try {
+            String sql = "SELECT id_tipo_gasto, descricao FROM tipo_gasto ORDER BY tipo_gasto.descricao";
+            return template.query(sql, new BeanPropertyRowMapper<>(TipoGasto.class));
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}

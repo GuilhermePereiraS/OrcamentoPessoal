@@ -65,6 +65,9 @@ public class UsuarioService {
     public Usuario encontraPorLoginEHashSenha(String login, String senhaForm) {
         Usuario usuarioNoBanco = usuarioRepository.encontraPorLogin(login);
 
+        if (usuarioNoBanco == null) {
+            return null;
+        }
         if (validaSenhaUsuarioUsuario(senhaForm, usuarioNoBanco.getSenha())) {
             return usuarioNoBanco;
         }
