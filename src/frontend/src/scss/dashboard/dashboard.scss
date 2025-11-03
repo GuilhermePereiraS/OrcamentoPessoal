@@ -231,3 +231,103 @@ body {
   text-align: center;
   margin-top: 15rem;
 }
+
+//------extrato------
+
+.orcamentoMensal {
+  border-radius: 5px;
+  max-height: 20rem;
+  font-size: 1.8rem;
+  margin: 0 2rem;
+  transition: 0.15s;
+  min-width: 90rem;
+}
+
+.orcamentoMensal:hover {
+  transform: scale(1.009);
+}
+
+.orcamentoSecundario {
+  border-radius: 5px;
+  max-width: 30rem;
+  max-height: 20rem;
+  font-size: 1.8rem;
+  margin: 0 2rem;
+  transition: 0.15s;
+}
+
+.orcamentoSecundario:hover {
+  transform: scale(1.05);
+}
+
+
+.orcamentoSecundario:hover {
+  transform: scale(1.009);
+}
+
+.textoMeta {
+  border: solid 1px;
+  border-radius: 3px;
+  padding: 15px 35px;
+  font-size: 1.4rem;
+  margin: 0.5rem;
+}
+
+.porcentagemOrcamentoPrincipal {
+  width: 80rem;
+  border: solid 1px;
+  border-radius: 10px;
+}
+
+.porcentagemOrcamentoSecundario {
+  width: 15rem;
+  border: solid 1px;
+  border-radius: 10px;
+}
+
+.barraOrcamentoPrincipal {
+  box-shadow: 0 0 0 1px #000 inset;
+  border-radius: 10px;
+  font-size: 1.4rem;
+}
+
+.barraOrcamentoSecundario {
+  box-shadow: 0 0 0 1px #000 inset;
+  border-radius: 10px;
+  font-size: 1.4rem;
+}
+
+.btn-operacao {
+  width: 3rem;
+  height: 3rem;
+  margin: 1rem;
+}
+
+.valorOperacao {
+  margin: 1rem;
+  height: 3rem;
+  text-align: center;
+}
+
+.nomeMeta {
+  text-align: center;
+}
+
+.botaoGordo {
+  height: 7rem;
+  width: 7rem;
+}
+
+.botaoGordo:hover {
+  transform: scale(1.05);
+}
+
+#board {
+  align-items: center;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
