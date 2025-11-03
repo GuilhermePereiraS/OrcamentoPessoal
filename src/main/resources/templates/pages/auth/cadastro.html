@@ -71,10 +71,10 @@
 
     <th:block layout:fragment="scripts">
         <th:block th:if="${viteServer != null}">
-            <script type="module" th:src="${viteServer + '/src/ts/pages/admin/cadastro/cadastro.ts'}"></script>
+            <script type="module" th:src="${viteServer + '/src/ts/pages/auth/cadastro/cadastro.ts'}"></script>
         </th:block>
         <th:block th:if="${viteServer == null}">
-            <script type="module" th:src="@{${@vite.asset('src/ts/pages/admin/cadastro/cadastro.ts')}}"></script>
+            <script type="module" th:src="@{${@vite.asset('src/ts/pages/auth/cadastro/cadastro.ts')}}"></script>
         </th:block>
     </th:block>
 
