@@ -94,11 +94,11 @@
             <div class="d-flex justify-content-center">
                 <span class="textoMeta">
                     Alcançado:
-                    <span class="vl_alcancado" th:text="${porquinho.vl_alcancado}">R$2</span>
+                    <span class="vl_alcancado" th:text="'R$: ' + ${porquinho.vl_alcancado}">R$2</span>
                 </span>
                 <span class="textoMeta">
                     Necessário:
-                    <span class="vl_necessario" th:text="${porquinho.vl_necessario}">R$2</span>
+                    <span class="vl_necessario" th:text="'R$: ' + ${porquinho.vl_necessario}">R$2</span>
                 </span>
             </div>
             <div class="porcentagem mt-4 mb-2">

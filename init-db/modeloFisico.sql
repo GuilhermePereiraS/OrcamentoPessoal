@@ -116,6 +116,16 @@ CREATE TRIGGER trigger_atualiza_saldo
     ON extrato
 FOR EACH ROW EXECUTE FUNCTION atualizaSaldo();
 
+INSERT INTO tipo_gasto (descricao)
+VALUES ('Supérfluo'),
+       ('Nessesário'),
+       ('Mercado');
+
+INSERT INTO forma_pgmt (descricao)
+VALUES ('Dinheiro'),
+       ('Debito'),
+       ('Credito'),
+       ('Pix');
 
 
 
