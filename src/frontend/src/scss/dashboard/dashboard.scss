@@ -67,3 +67,18 @@
   align-items: center;
   gap: 1rem;
 }
+
+#botaoVoltar {
+    position: absolute;
+    width: 5rem;
+    top: 1rem;
+}
+
+li {
+    font-size: 25px;
+    margin-bottom: 40px;;
+}
+
+.linhaInvisivel {
+    height: 8.5rem;
+}

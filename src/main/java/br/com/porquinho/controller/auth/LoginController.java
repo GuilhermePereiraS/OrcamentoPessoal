@@ -1,54 +1,40 @@
-package br.com.porquinho.controller;
+package br.com.porquinho.controller.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-class UsuarioController {
-
+public class LoginController {
+    
     @Autowired
     private UsuarioService usuarioService;
-
-    @PostMapping("/persistir")
-    public String persistir(@ModelAttribute Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
-        usuarioService.salvar(usuario);
-
-        if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
-            redirectAttributes.addFlashAttribute("alerta", true);
-            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
-            redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-        } else {
-            redirectAttributes.addFlashAttribute("alerta", true);
-            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro não efetuado!");
-            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
-        }
-
-        return "redirect:/login";
-    }
 
     @GetMapping("/login")
     public String paginaLogin(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "pages/login";
+        return "pages/auth/login";
     }
 
     @PostMapping("/login")
     public String logar(@ModelAttribute  Usuario usuarioForm, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-         Usuario usuarioEncotrado = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
+        Usuario usuarioEncotrado = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
 
         redirectAttributes.addFlashAttribute("alerta", true);
         if (usuarioEncotrado == null) {
             redirectAttributes.addFlashAttribute("tituloAlerta", "Deu ruim!");
             redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuario ou senha incorretos!");
             redirectAttributes.addFlashAttribute("iconeAlerta", "warning");
-            return "redirect:/";
+
+            return "redirect:/login";
         } else {
             redirectAttributes.addFlashAttribute("tituloAlerta", "Sucesso!");
             redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuário logado com sucesso!");
@@ -57,7 +43,8 @@ class UsuarioController {
 
         session.setAttribute("usuarioLogado", usuarioEncotrado);
         session.setAttribute("nomeUsuario", usuarioEncotrado.getLogin());
-        return "redirect:/dashboard";
+
+        return "redirect:/admin/home";
     }
 
 }

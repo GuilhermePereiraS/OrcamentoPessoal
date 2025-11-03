@@ -6,109 +6,77 @@
 
 <head>
     <title layout:fragment="title">Cadastro</title>
-    <th:block th:fragment="misc">
-        <style>
-            #botaoVoltar {
-                position: absolute;
-                width: 5rem;
-                top: 1rem;
-            }
-
-            li {
-                font-size: 25px;
-                margin-bottom: 40px;;
-            }
-
-            .linhaInvisivel {
-                height: 8.5rem;
-            }
-        </style>
-    </th:block>
 </head>
+
 <body>
+    <div layout:fragment="content">
+        <div class="container d-flex justify-content-center">
+            <div class="col-lg-6 p-4 p-lg-5 rounded-5 bg-success shadow">
 
-<div layout:fragment="content">
-    <a th:href="@{/static}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
+                <a th:href="@{/static}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
+                
+                <legend class="mt-0 mb-5 text-center">Cadastrar</legend>
 
-    <form th:action="@{/persistir}" th:object="${usuario}" method="post" id="cadastro-form">
-        <div class="row vh-100">
-
-            <div class="col mt-8">
-
-                <div class="row">
-                    <div class="col">
+                <form th:action="@{/persistir}" th:object="${usuario}" method="post" id="cadastro-form">            
+                    
+                    <div class="mb-3">
                         <label class="text-white">Nome</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{nome}" type="text" class="form-control" placeholder="" >
                             <label>Nome</label>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
+                
+                    <div class="mb-3">
+                        <label class="form-label"><small>O login deve ter no minimo 4 digitos</small></label>
                         <label class="text-white">Login</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{login}" type="text" class="form-control" placeholder="" >
                             <label>Insira seu login</label>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
+        
+                    <div class="mb-3">
+                        <label class="form-label"><small>A senha deve ter conter caracteres especiais e no minimo 5 digitos</small></label>
                         <label class="text-white">Senha</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{senha}" type="password" class="form-control" placeholder="" >
                             <label>Insira sua senha</label>
                         </div>
                     </div>
-                </div>
-
-            </div>
-
-            <div class="col mt-8">
-                <div class="linhaInvisivel row ">
-                </div>
-
-                <div class="row">
-                    <div class="col">
+        
+                    <div class="mb-3">
                         <label class="text-white">Nasc.</label>
-                        <div class="form-floating ">
+                        <div class="form-floating mb-5">
                             <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="" >
                             <label>Nasc</label>
                         </div>
                     </div>
-                </div>
-
-
+        
+                    <div class="mb-3 d-flex justify-content-center">
+                    <!-- <div id="painelLateral" class="col bg-success flex-column d-flex justify-content-center align-items-center">
+                        <ul>
+                            <li>O login deve ter no minimo 4 digitos</li>
+                            <li>A senha deve ter conter caracteres especiais e no minimo 5 digitos</li>
+                            <li>Escolha uma senha que você não irá esquecer facilmente</li>
+                        </ul>
+                        <br> -->
+                        <button type="submit" class="btn btn-light btn-lg">Gravar</button>
+                    </div>
+        
+                </form>
             </div>
-
-            <div id="painelLateral" class="col bg-success flex-column d-flex justify-content-center align-items-center">
-                <ul>
-                    <li>O login deve ter no minimo 4 digitos</li>
-                    <li>A senha deve ter conter caracteres especiais e no minimo 5 digitos</li>
-                    <li>Escolha uma senha que você não irá esquecer facilmente</li>
-                </ul>
-                <br>
-                <button class="btn btn-light btn-lg">Gravar</button>
-            </div>
-
-
         </div>
+    </div>
 
-    </form>
-</div>
-
-
-<th:block layout:fragment="scripts">
-    <th:block th:if="${viteServer != null}">
-        <script type="module" th:src="${viteServer + '/src/ts/pages/admin/cadastro/cadastro.ts'}"></script>
+    <th:block layout:fragment="scripts">
+        <th:block th:if="${viteServer != null}">
+            <script type="module" th:src="${viteServer + '/src/ts/pages/admin/cadastro/cadastro.ts'}"></script>
+        </th:block>
+        <th:block th:if="${viteServer == null}">
+            <script type="module" th:src="@{${@vite.asset('src/ts/pages/admin/cadastro/cadastro.ts')}}"></script>
+        </th:block>
     </th:block>
-    <th:block th:if="${viteServer == null}">
-        <script type="module" th:src="@{${@vite.asset('src/ts/pages/admin/cadastro/cadastro.ts')}}"></script>
-    </th:block>
-</th:block>
 
 </body>
 </html>

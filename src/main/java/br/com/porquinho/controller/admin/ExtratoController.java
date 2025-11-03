@@ -1,13 +1,10 @@
-package br.com.porquinho.controller;
+package br.com.porquinho.controller.admin;
 
 import br.com.porquinho.dto.TransacaoDTO;
-import br.com.porquinho.model.Extrato;
 import br.com.porquinho.service.ExtratoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import br.com.porquinho.model.Extrato.tipoTransacao;
 
 @Controller
 public class ExtratoController {

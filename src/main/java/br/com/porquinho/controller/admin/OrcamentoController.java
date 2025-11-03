@@ -1,4 +1,4 @@
-package br.com.porquinho.controller;
+package br.com.porquinho.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,5 @@ public class OrcamentoController {
     public String index() {
         return "pages/admin/orcamento/orcamento";
     }
-
-
 
 }

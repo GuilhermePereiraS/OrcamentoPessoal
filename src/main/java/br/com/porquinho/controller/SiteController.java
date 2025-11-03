@@ -1,6 +1,5 @@
 package br.com.porquinho.controller;
 
-import br.com.porquinho.model.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,20 +7,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SiteController {
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "home";
-    }
-
     @GetMapping("/")
-    public String paginaLogin(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "pages/admin/login";
+    public String index(Model model) {   
+        if (model.containsAttribute("usuario")) {
+            return "redirect:/admin/home";
+        } else {
+            return "redirect:/login";
+        }
     }
 
-    @GetMapping("/cadastro")
-    public String cadastro(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "pages/auth/cadastro";
+    @GetMapping("/admin")
+    public String admin(Model model) {
+        if (model.containsAttribute("usuario")) {
+            return "redirect:/admin/home";
+        } else {
+            return "redirect:/login";
+        }
     }
+
 }
