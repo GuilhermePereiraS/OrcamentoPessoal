@@ -6,6 +6,8 @@ import br.com.porquinho.repository.ExtratoRepository;
 import org.springframework.stereotype.Service;
 import br.com.porquinho.model.Extrato.tipoTransacao;
 
+import java.util.List;
+
 @Service
 public class ExtratoService {
 
@@ -29,6 +31,8 @@ public class ExtratoService {
             extratoRepository.salvarEntrada(extrato);
         } else {
             extrato.setTp_transacao(tipoTransacao.SAIDA.getOperacao());
+            extrato.setId_tipo_gasto(extratoForm.getId_tipo_gasto());
+            extrato.setId_forma_pgmt(extratoForm.getId_forma_pgmt());
 
             if (extratoForm.getVl_transacao().compareTo(usuario.getSaldo()) > 0) {
                 // alguma mensagem de erro
@@ -36,6 +40,10 @@ public class ExtratoService {
             }
             extratoRepository.salvarSaida(extrato);
         }
+    }
+
+    public List<Extrato> listarTodos(Integer idUsuario) {
+        return extratoRepository.listarTodos(idUsuario);
     }
 
 }

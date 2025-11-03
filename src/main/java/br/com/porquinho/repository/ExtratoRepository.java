@@ -1,9 +1,13 @@
 package br.com.porquinho.repository;
 
 import br.com.porquinho.model.Extrato;
+import br.com.porquinho.model.Porquinho;
 import br.com.porquinho.model.Usuario;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class ExtratoRepository {
@@ -29,6 +33,11 @@ public class ExtratoRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Extrato> listarTodos(Integer idUsuario) {
+        String sql = "SELECT * FROM extrato WHERE id_usuario = ?";
+        return (List<Extrato>) template.query(sql, new BeanPropertyRowMapper<>(Extrato.class), idUsuario);
     }
 
 

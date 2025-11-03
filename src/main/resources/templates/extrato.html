@@ -107,86 +107,20 @@
 
 </th:block>
 <body>
-<!--<div class="modal fade" id="modalMetaEditar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content modal-dialog-centered p-3">-->
-<!--            <form th:action="@{/acaoPorquinho}" method="post" th:object="${porquinhoModel}">-->
-<!--            <div class="text-center">-->
-<!--                <h1>Editar meta</h1><br>-->
-<!--                <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >-->
-<!--                <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta"/><br>-->
-<!--                <span>Alcançado:</span>-->
-<!--                <div class="d-flex">-->
-<!--                    <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                    <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number">-->
-<!--                    <button type="button" class="btn btn-green btn-operacao">+</button>-->
-<!--                </div>-->
-<!--                <span>Necessário:</span>-->
-<!--                <div class="d-flex">-->
-<!--                    <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                    <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number">-->
-<!--                    <button type="button"  class="btn btn-green btn-operacao">+</button>-->
-<!--                </div>-->
-<!--                <span>Data objetivo:</span>-->
-<!--                <div class="d-flex justify-content-center">-->
-<!--                    <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date">-->
-<!--                </div>-->
-<!--                <div class="d-flex justify-content-center">-->
-<!--                    <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="modal fade" id="modalMetaAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content modal-dialog-centered p-3">-->
-<!--            <form th:action="@{/persistirPorquinho}" method="post" th:object="${porquinhoModel}">-->
-<!--                <div class="text-center">-->
-<!--                    <h1>Adicionar meta</h1><br>-->
-<!--                    <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" placeholder="nome meta"/><br>-->
-<!--                    <span>Alcançado:</span>-->
-
-<!--                    <div class="d-flex">-->
-<!--                        <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                        <input th:field="*{vl_alcancado}" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">-->
-<!--                        <button class="btn btn-green btn-operacao">+</button>-->
-<!--                    </div>-->
-
-<!--                    <span>Necessário:</span>-->
-
-<!--                    <div class="d-flex">-->
-<!--                        <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                        <input th:field="*{vl_necessario}" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number">-->
-<!--                        <button class="btn btn-green btn-operacao">+</button>-->
-<!--                    </div>-->
-
-<!--                    <span>Data objetivo:</span>-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <input th:field="*{dt_meta}" class="valorOperacao"  type="date">-->
-<!--                    </div>-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
 
 <div id="board" class="d-flex flex-wrap mt-5 justify-content-center ">
-    <div class="justify-content-center w-100 d-flex ">
+    <div th:each="extrato : ${listaExtrato}" class="justify-content-center w-100 d-flex ">
         <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
             <div class="d-flex w-100">
-                <h3>Necessário</h3>
+                <div th:each="categoria : ${listaTipoGasto}" th:if="${categoria.id_tipo_gasto == extrato.id_tipo_gasto}">
+                    <h3 th:text="${categoria.descricao}">Necessário</h3>
+                </div>
             </div>
             <div class="d-flex align-items-center w-100 position-relative mb-5">
-                <h1 class="position-absolute start-50 translate-middle-x m-0">Mercado</h1>
-                <h1 class="ms-auto m-0">R$ 5,00</h1>
+                <h1 class="position-absolute start-50 translate-middle-x m-0" th:text="${extrato.descricao}">Mercado</h1>
+                <h1 class="ms-auto m-0" th:text="(${extrato.tp_transacao} == 'entrada' ? '+ R$: ' : '- R$: ') + ${extrato.vl_transacao}">R$ 5,00</h1>
             </div>
         </div>
     </div>
@@ -196,11 +130,12 @@
                 <h3>Supérfluo</h3>
             </div>
             <div class="d-flex align-items-center w-100 position-relative mb-5">
-                <h1 class="position-absolute start-50 translate-middle-x m-0">Lanchonete</h1>
+                <h1 class="position-absolute start-50 translate-middle-x m-0" th:text="${extrato.descricao}">Lanchonete</h1>
                 <h1 class="ms-auto m-0">R$ 5,00</h1>
             </div>
         </div>
     </div>
+
         <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
 </div>
 
