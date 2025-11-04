@@ -53,7 +53,7 @@ public class UsuarioRepository {
     }
 
     public Usuario encontraUsuarioPorLogin(String login) {
-        String sql = "SELECT * FROM usuario WHERE login = ? A";
+        String sql = "SELECT * FROM usuario WHERE login = ? ";
         return template.queryForObject(sql, new Object[]{login}, new BeanPropertyRowMapper<>(Usuario.class));
     }
 }

@@ -16,6 +16,7 @@ export default defineConfig({
                 'ts/dashboard/fragments/navbar': path.resolve(__dirname, 'src/ts/dashboard/fragments/navbar.ts'),
                 'ts/pages/auth/cadastro/cadastro': path.resolve(__dirname, 'src/ts/pages/auth/cadastro/cadastro.ts'),
                 'ts/pages/auth/login/login': path.resolve(__dirname, 'src/ts/pages/auth/login/login.ts'),
+                'ts/pages/admin/extrato/extrato': path.resolve(__dirname, 'src/ts/pages/admin/extrato/extrato.ts'),
                 'scss/dashboard/dashboard': path.resolve(__dirname, 'src/scss/dashboard/dashboard.scss'),
             },
 

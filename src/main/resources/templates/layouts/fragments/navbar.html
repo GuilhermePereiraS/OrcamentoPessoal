@@ -48,7 +48,7 @@
     <div class="modal fade" id="modalTransacao" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content modal-dialog-centered p-3">
-                <form th:action="@{/registraTransacao}" method="post">
+                <form th:action="@{/admin/extrato}" method="post">
                     <div class="text-center">
                         <h1>Registrar transação</h1>
 
@@ -82,7 +82,7 @@
                         </div>
 
                         <span>Descrição</span><br>
-                        <input name="descricao" class="mb-3 descricaoTransacao" type="text" placeholder=""/><br>
+                        <input name="descricao" class="mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/><br>
 
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>

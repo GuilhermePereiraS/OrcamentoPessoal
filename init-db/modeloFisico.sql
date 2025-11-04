@@ -75,13 +75,10 @@ CREATE FUNCTION atualizaSaldo()
     RETURNS TRIGGER AS $$
 DECLARE
 linha RECORD;
-	valor
-NUMERIC := 0;
-	argIdUsuario
-INT;
+valor NUMERIC := 0;
+argIdUsuario INT;
 BEGIN
-	argIdUsuario
-:= COALESCE(NEW.id_usuario, OLD.id_usuario);
+	argIdUsuario := COALESCE(NEW.id_usuario, OLD.id_usuario);
 
 FOR linha IN
     SELECT tp_transacao, vl_transacao
@@ -92,9 +89,9 @@ LOOP
 	IF linha.tp_transacao = 'entrada'
 	THEN
         valor := valor + linha.vl_transacao;
-    ELSIF
-        linha.tp_transacao = 'saida' THEN
-                    valor := valor - linha.vl_transacao;
+    ELSIF linha.tp_transacao = 'saida'
+    THEN
+        valor := valor - linha.vl_transacao;
     END IF;
 END LOOP;
 

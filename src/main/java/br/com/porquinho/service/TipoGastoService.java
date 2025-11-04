@@ -18,4 +18,8 @@ public class TipoGastoService {
     public List<TipoGasto> listarTodos(Integer idUsuario) {
         return tipoGastoRepository.listarTodos(idUsuario);
     }
+
+    public List<TipoGasto> listarTiposGastoPadrao() {
+        return tipoGastoRepository.pegarTiposDeGastoPadrao();
+    }
 }

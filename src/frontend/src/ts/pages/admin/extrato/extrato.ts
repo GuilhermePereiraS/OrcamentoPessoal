@@ -1,5 +1,5 @@
 // Obtém o modal com tipagem correta
-const modal = document.getElementById("modalTransacao") as HTMLElement | null;
+const modalExtrato = document.getElementById("modalTransacaoAdicionar") as HTMLElement | null;
 
 // Tipos para os dados vindos do backend
 interface Categoria {
@@ -12,8 +12,8 @@ interface FormaPagamento {
     descricao: string;
 }
 
-if (modal) {
-    modal.addEventListener("show.bs.modal", async () => {
+if (modalExtrato) {
+    modalExtrato.addEventListener("show.bs.modal", async () => {
         const form = document.forms[0];
         const selectCategoria = form.querySelector("#categoria") as HTMLSelectElement;
         const selectFormaPagamento = form.querySelector("#formaPagamento") as HTMLSelectElement;
@@ -54,7 +54,7 @@ if (modal) {
     });
 }
 
-function exibeOpcoes(): void {
+function exibeOpcoesModalExtrato(): void {
     const form = document.forms[0];
     const valorTipoTransacao = (form["tp_transacao"] as HTMLSelectElement).value;
     const selectCategoria = form.querySelector("#categoria") as HTMLSelectElement;

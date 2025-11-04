@@ -36,7 +36,8 @@
 <body>
 
     <header th:if="${session.usuarioLogado != null}"
-            th:include="~{layouts/fragments/navbar :: navbar}"></header>
+            th:include="~{layouts/fragments/navbar :: navbar}">
+    </header>
 
     <main class="container-fluid py-4">
         <div layout:fragment="content">

@@ -36,7 +36,7 @@ public class ExtratoRepository {
     }
 
     public List<Extrato> listarTodos(Integer idUsuario) {
-        String sql = "SELECT * FROM extrato WHERE id_usuario = ?";
+        String sql = "SELECT * FROM extrato WHERE id_usuario = ? ORDER BY extrato.dt_transacao DESC, extrato.id_extrato DESC";
         return (List<Extrato>) template.query(sql, new BeanPropertyRowMapper<>(Extrato.class), idUsuario);
     }
 

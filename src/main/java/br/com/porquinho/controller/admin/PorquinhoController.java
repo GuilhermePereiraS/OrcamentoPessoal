@@ -27,13 +27,13 @@ public class PorquinhoController {
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
         porquinhoService.salvar(porquinho);
-        return "redirect:/porquinho";
+        return "redirect:/admin/porquinho";
     }
 
     @PostMapping("/editarPorquinho")
     public String editarPorquinho(Porquinho porquinho, HttpSession session) {
         porquinhoService.atualizar(porquinho);
-        return "redirect:/porquinho";
+        return "redirect:/admin/porquinho";
     }
 
     @PostMapping("/excluirPorquinho")
@@ -52,13 +52,13 @@ public class PorquinhoController {
         return "redirect:/porquinho";
     }
 
-    @GetMapping("/porquinho")
+    @GetMapping("/admin/porquinho")
     public String porquinho(HttpSession session, Model model) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         model.addAttribute("porquinhoModel", new Porquinho());
 
         List<Porquinho> listaPorquinhos = porquinhoService.listarTodos(usuarioLogado.getId_usuario());
         model.addAttribute("listaPorquinhos", listaPorquinhos);
-        return "porquinho";
+        return "pages/admin/porquinho/porquinho";
     }
 }

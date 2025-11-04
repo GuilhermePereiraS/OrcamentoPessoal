@@ -1,90 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="~{components/dashboard :: headerPorquinho('dashboard')}"></head>
-<th:block th:fragment="misc">
-    <style>
+<html lang="pt"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
 
+<head>
+    <title layout:fragment="title">Porquinho</title>
+</head>
 
-
-    </style>
-
-
-</th:block>
 <body>
-<div class="modal fade" id="modalMetaEditar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-dialog-centered p-3">
-            <form th:action="@{/acaoPorquinho}" method="post" th:object="${porquinhoModel}">
-            <div class="text-center">
-                <h1>Editar meta</h1><br>
-                <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >
-                <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta" required/><br>
-                <span>Alcançado:</span>
-                <div class="d-flex">
-                    <button type="button" class="btn btn-danger btn-operacao">-</button>
-                    <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number" >
-                    <button type="button" class="btn btn-green btn-operacao">+</button>
-                </div>
-                <span>Necessário:</span>
-                <div class="d-flex">
-                    <button type="button" class="btn btn-danger btn-operacao">-</button>
-                    <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number" required>
-                    <button type="button"  class="btn btn-green btn-operacao">+</button>
-                </div>
-                <span>Data objetivo:</span>
-                <div class="d-flex justify-content-center">
-                    <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date" required>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>
-                </div>
+
+<div layout:fragment="content">
+    <div class="modal fade" id="modalMetaEditar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-dialog-centered p-3">
+                <form th:action="@{/acaoPorquinho}" method="post" th:object="${porquinhoModel}">
+                    <div class="text-center">
+                        <h1>Editar meta</h1><br>
+                        <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >
+                        <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta" required/><br>
+                        <span>Alcançado:</span>
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-danger btn-operacao">-</button>
+                            <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number" >
+                            <button type="button" class="btn btn-green btn-operacao">+</button>
+                        </div>
+                        <span>Necessário:</span>
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-danger btn-operacao">-</button>
+                            <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number" required>
+                            <button type="button"  class="btn btn-green btn-operacao">+</button>
+                        </div>
+                        <span>Data objetivo:</span>
+                        <div class="d-flex justify-content-center">
+                            <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date" required>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="modalMetaAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content modal-dialog-centered p-3">
-            <form th:action="@{/persistirPorquinho}" method="post">
-                <div class="text-center">
-                    <h1>Adicionar meta</h1><br>
-                    <input name="nome_meta" class="mb-3 nomeMeta" type="text" placeholder="nome meta" required/><br>
-                    <span>Alcançado:</span>
+    <div class="modal fade" id="modalMetaAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-dialog-centered p-3">
+                <form th:action="@{/persistirPorquinho}" method="post">
+                    <div class="text-center">
+                        <h1>Adicionar meta</h1><br>
+                        <input name="nome_meta" class="mb-3 nomeMeta" type="text" placeholder="nome meta" required/><br>
+                        <span>Alcançado:</span>
 
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-danger btn-operacao">-</button>
-                        <input name="vl_alcancado" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
-                        <button class="btn btn-green btn-operacao">+</button>
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-danger btn-operacao">-</button>
+                            <input name="vl_alcancado" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
+                            <button class="btn btn-green btn-operacao">+</button>
+                        </div>
+
+                        <span>Necessário:</span>
+
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-danger btn-operacao">-</button>
+                            <input name="vl_necessario" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number" required>
+                            <button class="btn btn-green btn-operacao">+</button>
+                        </div>
+
+                        <span>Data objetivo:</span>
+                        <div class="d-flex justify-content-center">
+                            <input name="dt_meta" class="valorOperacao"  type="date" required>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
+                        </div>
                     </div>
-
-                    <span>Necessário:</span>
-
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-danger btn-operacao">-</button>
-                        <input name="vl_necessario" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number" required>
-                        <button class="btn btn-green btn-operacao">+</button>
-                    </div>
-
-                    <span>Data objetivo:</span>
-                    <div class="d-flex justify-content-center">
-                        <input name="dt_meta" class="valorOperacao"  type="date" required>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-    <nav th:replace="~{components/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
 
     <div id="board" class="d-flex flex-wrap mt-5">
-            <div th:each="porquinho : ${listaPorquinhos}" class="meta btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar"
-                th:attr="data-id=${porquinho.id_porquinho},
+        <div th:each="porquinho : ${listaPorquinhos}" class="meta btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar"
+             th:attr="data-id=${porquinho.id_porquinho},
                            data-nome=${porquinho.nome_meta},
                            data-alcancado=${porquinho.vl_alcancado},
                            data-necessario=${porquinho.vl_necessario},
@@ -115,60 +113,63 @@
         <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
     </div>
 
-<script>
+    <script>
 
-    window.onload = function() {
-        let metas = document.querySelectorAll(".meta")
-
-
-        metas.forEach(meta => {
-
-            let porcentagem = meta.querySelector(".porcentagem")
-            let barra = meta.querySelector(".barra")
-
-            let vlNecessario = meta.querySelector(".vl_necessario").textContent
-            let vlAlcancado = meta.querySelector(".vl_alcancado").textContent
-
-            vlNecessario = parseFloat(vlNecessario.replace(/[^\d.,]/g, '').replace(',', '.'));
-            vlAlcancado = parseFloat(vlAlcancado.replace(/[^\d.,]/g, '').replace(',', '.'));
-
-            let porcentagemResultado = vlAlcancado * 100 / vlNecessario;
+        window.onload = function() {
+            let metas = document.querySelectorAll(".meta")
 
 
-            if (isNaN(porcentagemResultado)) {
-                porcentagemResultado = 0
-            }
+            metas.forEach(meta => {
 
-            barra.innerText = porcentagemResultado.toFixed(2) + "%";
-            if (porcentagemResultado > 100) {
-                barra.style.width = '100%'
-            } else {
-                barra.style.width = porcentagemResultado + '%'
-            }
-        })
-    }
-    document.getElementById('modalMetaEditar').addEventListener('show.bs.modal', function (event) {
+                let porcentagem = meta.querySelector(".porcentagem")
+                let barra = meta.querySelector(".barra")
 
-        const button = event.relatedTarget;
+                let vlNecessario = meta.querySelector(".vl_necessario").textContent
+                let vlAlcancado = meta.querySelector(".vl_alcancado").textContent
+
+                vlNecessario = parseFloat(vlNecessario.replace(/[^\d.,]/g, '').replace(',', '.'));
+                vlAlcancado = parseFloat(vlAlcancado.replace(/[^\d.,]/g, '').replace(',', '.'));
+
+                let porcentagemResultado = vlAlcancado * 100 / vlNecessario;
 
 
-        const id = button.getAttribute('data-id');
-        const nome = button.getAttribute('data-nome');
-        const alcancado = button.getAttribute('data-alcancado');
-        const necessario = button.getAttribute('data-necessario');
-        const data = button.getAttribute('data-data');
+                if (isNaN(porcentagemResultado)) {
+                    porcentagemResultado = 0
+                }
 
-        const form = this.querySelector('form');
+                barra.innerText = porcentagemResultado.toFixed(2) + "%";
+                if (porcentagemResultado > 100) {
+                    barra.style.width = '100%'
+                } else {
+                    barra.style.width = porcentagemResultado + '%'
+                }
+            })
+        }
+        document.getElementById('modalMetaEditar').addEventListener('show.bs.modal', function (event) {
 
-        form.querySelector('[name="id_porquinho"]').value = id;
-        form.querySelector('[name="nome_meta"]').value = nome;
-        form.querySelector('[name="vl_alcancado"]').value = alcancado;
-        form.querySelector('[name="vl_necessario"]').value = necessario;
-        form.querySelector('[name="dt_meta"]').value = data;
-    });
+            const button = event.relatedTarget;
 
 
-</script>
+            const id = button.getAttribute('data-id');
+            const nome = button.getAttribute('data-nome');
+            const alcancado = button.getAttribute('data-alcancado');
+            const necessario = button.getAttribute('data-necessario');
+            const data = button.getAttribute('data-data');
+
+            const form = this.querySelector('form');
+
+            form.querySelector('[name="id_porquinho"]').value = id;
+            form.querySelector('[name="nome_meta"]').value = nome;
+            form.querySelector('[name="vl_alcancado"]').value = alcancado;
+            form.querySelector('[name="vl_necessario"]').value = necessario;
+            form.querySelector('[name="dt_meta"]').value = data;
+        });
+
+
+    </script>
+</div>
+
+
 
 </body>
 </html>

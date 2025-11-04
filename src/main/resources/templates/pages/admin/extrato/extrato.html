@@ -25,31 +25,61 @@
                     </div>
                 </div>
             </div>
-            <div class="justify-content-center w-100 d-flex ">
-                <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
-                    <div class="d-flex w-100">
-                        <h3>Supérfluo</h3>
-                    </div>
-                    <div class="d-flex align-items-center w-100 position-relative mb-5">
-                        <h1 class="position-absolute start-50 translate-middle-x m-0">Lanchonete</h1>
-                        <h1 class="ms-auto m-0">R$ 5,00</h1>
-                    </div>
-                </div>
-            </div>
 
-            <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
+            <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalTransacaoAdicionar">+</button>
         </div>
-
     </div>
 
-<!--<th:block layout:fragment="scripts">-->
-<!--    <th:block th:if="${viteServer != null}">-->
-<!--        <script type="module" th:src="${viteServer + '/src/ts/pages/auth/cadastro/cadastro.ts'}"></script>-->
-<!--    </th:block>-->
-<!--    <th:block th:if="${viteServer == null}">-->
-<!--        <script type="module" th:src="@{${@vite.asset('src/ts/pages/auth/cadastro/cadastro.ts')}}"></script>-->
-<!--    </th:block>-->
-<!--</th:block>-->
+<div class="modal fade" id="modalTransacaoAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-dialog-centered p-3">
+            <form th:action="@{/admin/extrato}" method="post">
+                <div class="text-center">
+                    <h1>Registrar transação</h1>
+
+                    <span>Tipo de transação:</span><br>
+                    <select name="tp_transacao" onchange="exibeOpcoes()" required>
+                        <option value="">Selecione</option>
+                        <option value="entrada">Entrada</option>
+                        <option value="saida">Saída</option>
+                    </select><br>
+
+                    <span>Categoria:</span><br>
+                    <select name="id_tipo_gasto" id="categoria">
+                        <option value="">Selecione</option>
+                    </select><br>
+
+                    <span>Forma de pagamento:</span><br>
+                    <select name="id_forma_pgmt" id="formaPagamento"required>
+                        <option value="">Selecione</option>
+                    </select><br>
+
+                    <span>Valor da transação:</span><br>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-danger btn-operacao">-</button>
+                        <input name="vl_transacao" class="valorOperacao text-center" type="number" step="0.01" min="0" placeholder="0,00">
+                        <button class="btn btn-green btn-operacao">+</button>
+                    </div>
+
+                    <span>Data da transação:</span>
+                    <div class="d-flex justify-content-center">
+                        <input name="dt_transacao" class="valorOperacao"  type="date" required>
+                    </div>
+
+                    <span>Descrição</span><br>
+                    <input name="descricao" class="mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/><br>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
+
+<!--entrada em verde saida em vermelho-->

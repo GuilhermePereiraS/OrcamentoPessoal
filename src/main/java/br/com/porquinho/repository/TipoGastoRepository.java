@@ -32,4 +32,16 @@ public class TipoGastoRepository {
             return null;
         }
     }
+
+    public List<TipoGasto> pegarTiposDeGastoPadrao() {
+        try {
+            String sql =
+                    "SELECT * FROM tipo_gasto " +
+                            "WHERE tipo_gasto.id_tipo_gasto IN (1,2,3)";
+            return template.query(sql, new BeanPropertyRowMapper<>(TipoGasto.class));
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
