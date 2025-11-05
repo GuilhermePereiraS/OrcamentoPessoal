@@ -19,6 +19,7 @@ public class TipoGastoRepository {
 
     public List<TipoGasto> listarTodos(Integer idUsuario) {
         try {
+            //alterar pra pegar o tipo gasto por uma relação de usuario -> orçamento até tipo gasto
             String sql =
                     "SELECT tipo_gasto.id_tipo_gasto, tipo_gasto.descricao " +
                     "FROM tipo_gasto, usuario, extrato " +

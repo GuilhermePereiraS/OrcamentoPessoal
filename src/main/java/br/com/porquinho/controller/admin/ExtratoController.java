@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/admin")
 public class ExtratoController {
 
     private final ExtratoService extratoService;
@@ -25,7 +27,7 @@ public class ExtratoController {
         this.tipoGastoService = tipoGastoService;
     }
 
-    @GetMapping("/admin/extrato")
+    @GetMapping("/extrato")
     public String extrato(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
@@ -35,7 +37,7 @@ public class ExtratoController {
         return "pages/admin/extrato/index";
     }
 
-    @PostMapping("/admin/extrato")
+    @PostMapping("/extrato")
     public String registraTransacao(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
