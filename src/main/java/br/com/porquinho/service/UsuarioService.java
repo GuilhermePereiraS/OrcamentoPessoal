@@ -17,29 +17,11 @@ public class UsuarioService {
     }
 
     public void salvar(Usuario usuario) {
-        if (PorquinhoUtils.estaVazioOuNulo(usuario.getNome())
-                || PorquinhoUtils.estaVazioOuNulo(usuario.getLogin())
-                || PorquinhoUtils.estaVazioOuNulo(usuario.getSenha())
-                || usuario.getDt_nascimento() == null) {
-            //logica pra enviar mensagem que ta faltando coisa
-            return;
-        }
-        if (usuario.getNome().length() <= 3) {
-            //Enviar mensagem que precisa de pelo menos 4 caracteres
-            return;
-        }
-        if (!PorquinhoUtils.temCaracterEspecial(usuario.getSenha()) ) {
-            //Enviar mensagem de senha sem caractere especial o
-            return;
-        }
-        if (usuario.getSenha().length() <= 4) {
-            //Enviar mensagem de senha tem menos de 5 digitos
-            return;
+        if (temUsuarioComLogin(usuario.getLogin())) {
+            throw new LoginJaExistenteException("Este login já está em uso.");
         }
 
-        //criptografia
         usuario.setSenha(encoder.encode(usuario.getSenha()));
-
         usuarioRepository.salvar(usuario);
     }
 
@@ -62,7 +44,6 @@ public class UsuarioService {
 
     public Usuario encontraPorLoginEHashSenha(String login, String senhaForm) {
         Usuario usuarioNoBanco = usuarioRepository.encontraPorLogin(login);
-
         if (usuarioNoBanco == null) {
             return null;
         }
@@ -76,9 +57,11 @@ public class UsuarioService {
     }
 
     public Usuario encontraPorLogin(String login) {
-        Usuario usuario = usuarioRepository.encontraPorLogin(login);
+        return usuarioRepository.encontraPorLogin(login);
+    }
 
-        return usuario;
+    public Boolean temUsuarioComLogin(String login) {
+        return usuarioRepository.temUsuarioComLogin(login);
     }
 
 }

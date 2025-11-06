@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: headerPorquinho('cadastro')}">
+    <th:block th:fragment="misc">
+        <style>
+            #botaoVoltar {
+                position: absolute;
+                width: 5rem;
+                top: 1rem;
+            }
+
+            li {
+                font-size: 25px;
+                margin-bottom: 40px;;
+            }
+
+            .linhaInvisivel {
+                height: 8.5rem;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<div class="container-fluid">
+    <a th:href="@{/}" id="botaoVoltar" class="btn btn-green form-control">Voltar</a>
+
+    <form th:action="@{/persistir}" th:object="${usuario}" method="post" onsubmit="return validaForm(this)">
+        <div class="row vh-100">
+
+            <div class="col mt-8">
+
+                <div class="row">
+                    <div class="col">
+                        <label class="text-white">Nome</label>
+                        <div class="form-floating mb-5">
+                            <input th:field="*{nome}" type="text" class="form-control" placeholder="" >
+                            <label>Nome</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="text-white">Login</label>
+                        <div class="form-floating mb-5">
+                            <input th:field="*{login}" type="text" class="form-control" placeholder="" >
+                            <label>Insira seu login</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="text-white">Senha</label>
+                        <div class="form-floating mb-5">
+                            <input th:field="*{senha}" type="password" class="form-control" placeholder="" >
+                            <label>Insira sua senha</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col mt-8">
+                <div class="linhaInvisivel row ">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="text-white">Nasc.</label>
+                        <div class="form-floating ">
+                            <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="">
+                            <label>Nasc</label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div id="painelLateral" class="col bg-success flex-column d-flex justify-content-center align-items-center">
+                <ul>
+                    <li>O login deve ter no minimo 4 digitos</li>
+                    <li>A senha deve ter conter caracteres especiais e no minimo 5 digitos</li>
+                    <li>Escolha uma senha que você não irá esquecer facilmente</li>
+                </ul>
+                <br>
+                <button class="btn btn-light btn-lg">Gravar</button>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+
+<script th:inline="javascript">
+    function validaForm(form) {
+        debugger
+        let nome = form["nome"].value
+        let login = form["login"].value
+        let dt_nascimento = form["dt_nascimento"].value
+        let senha = form["senha"].value
+
+        if (estaVazioOuNulo(nome)) {
+            exibirErro("Deve escrever o nome");
+            return false;
+        }
+
+        if (estaVazioOuNulo(login)) {
+            exibirErro("Deve escrever login");
+            return false;
+        }
+
+        if (estaVazioOuNulo(dt_nascimento)) {
+            exibirErro("Deve escrever a data de nascimento");
+            return false;
+        }
+
+        if (estaVazioOuNulo(senha)) {
+            exibirErro("Deve escrever a senha");
+            return false;
+        }
+
+        let hoje = new Date();
+
+        // Input type="date" retorna "YYYY-MM-DD".
+        // Adicionar 'T00:00:00' força o JS a interpretar na timezone local
+        // e evita bugs de "um dia a menos" causados por fuso horário (UTC).
+        let dataNascimento = new Date(dt_nascimento + 'T00:00:00');
+
+        // Zeramos a hora de "hoje" para comparar apenas o dia, mês e ano.
+        hoje.setHours(0, 0, 0, 0);
+
+        if (dataNascimento >= hoje) {
+            exibirErro("A data de nascimento deve ser no passado");
+            return false;
+        }
+
+        if (nome.length < 4) { // @Size(min=4)
+            exibirErro("Nome deve ter pelo menos quatro caracteres");
+            return false;
+        }
+
+        if (login.length < 4) { // @Size(min=4)
+            exibirErro("Login deve ter pelo menos quatro caracteres");
+            return false;
+        }
+
+        if (senha.length < 5) { // @Size(min=4)
+            exibirErro("Senha deve ter pelo menos cinco caracteres");
+            return false;
+        }
+
+        let regexCaracterEspecial = /[^a-zA-Z0-9]/;
+        if (!regexCaracterEspecial.test(senha)) {
+            exibirErro("A senha deve conter pelo menos um caracter especial");
+            return false;
+        }
+
+        return true;
+    }
+
+    function exibirErro(mensagem) {
+        Swal.fire({
+            title: 'Atenção!',
+            text: mensagem,
+            icon: /*[[${iconeAlerta}]]*/ 'warning' ,
+            confirmButtonText: 'Ok'
+        });
+    }
+
+    function estaVazioOuNulo(string) {
+        debugger
+        // String.trim() remove espaços em branco do início e fim
+        return !string || string.trim() === "";
+    }
+
+
+</script>
+</body>
+</html>

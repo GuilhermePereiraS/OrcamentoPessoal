@@ -1,5 +1,11 @@
 package br.com.porquinho.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,10 +16,23 @@ public class Usuario  implements Serializable {
 
     private Integer id_usuario;
 
+    @NotNull(message = "O login é obrigatório")
+    @Size(min = 4, message = "O login deve ter no mínimo 4 caracteres")
     private String login;
+
+    @NotNull(message = "A senha é obrigatória")
+    @Size(min = 5, message = "A senha deve ter no mínimo 5 caracteres")
+//    @Pattern(regexp = ".*[^a-zA-Z0-9].*", message = "A senha deve conter pelo menos um caractere especial")
     private String senha;
+
+    @NotNull(message = "O nome é obrigatório")
+    @Size(min = 4, message = "O nome deve ter no mínimo 4 caracteres")
     private String nome;
+
+    @NotNull(message = "A data de nascimento é obrigatória")
+    @Past(message = "A data de nascimento deve ser no passado")
     private LocalDate dt_nascimento;
+
     private BigDecimal saldo;
 
     public Integer getId_usuario() {

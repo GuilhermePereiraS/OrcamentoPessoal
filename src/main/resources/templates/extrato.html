@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: headerPorquinho('dashboard')}"></head>
+<th:block th:fragment="misc">
+    <style>
+        .orcamentoMensal {
+            border-radius: 5px;
+            max-height: 20rem;
+            font-size: 1.8rem;
+            margin: 0 2rem;
+            transition: 0.15s;
+            min-width: 90rem;
+        }
+
+        .orcamentoMensal:hover {
+            transform: scale(1.009);
+        }
+
+        .orcamentoSecundario {
+            border-radius: 5px;
+            max-width: 30rem;
+            max-height: 20rem;
+            font-size: 1.8rem;
+            margin: 0 2rem;
+            transition: 0.15s;
+        }
+
+        .orcamentoSecundario:hover {
+            transform: scale(1.05);
+        }
+
+
+        .orcamentoSecundario:hover {
+            transform: scale(1.009);
+        }
+
+        .textoMeta {
+            border: solid 1px;
+            border-radius: 3px;
+            padding: 15px 35px;
+            font-size: 1.4rem;
+            margin: 0.5rem;
+        }
+
+        .porcentagemOrcamentoPrincipal {
+            width: 80rem;
+            border: solid 1px;
+            border-radius: 10px;
+        }
+
+        .porcentagemOrcamentoSecundario {
+            width: 15rem;
+            border: solid 1px;
+            border-radius: 10px;
+        }
+
+        .barraOrcamentoPrincipal {
+            box-shadow: 0 0 0 1px #000 inset;
+            border-radius: 10px;
+            font-size: 1.4rem;
+        }
+
+        .barraOrcamentoSecundario {
+            box-shadow: 0 0 0 1px #000 inset;
+            border-radius: 10px;
+            font-size: 1.4rem;
+        }
+
+        .btn-operacao {
+            width: 3rem;
+            height: 3rem;
+            margin: 1rem;
+        }
+
+        .valorOperacao {
+            margin: 1rem;
+            height: 3rem;
+            text-align: center;
+        }
+
+        .nomeMeta {
+            text-align: center;
+        }
+
+        .botaoGordo {
+            height: 7rem;
+            width: 7rem;
+        }
+
+        .botaoGordo:hover {
+            transform: scale(1.05);
+        }
+
+        #board {
+            align-items: center;
+        }
+
+        .d-flex {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+
+    </style>
+
+
+</th:block>
+<body>
+<nav th:replace="~{fragments/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
+
+<div id="board" class="d-flex flex-wrap mt-5 justify-content-center ">
+    <div class="justify-content-center w-100 d-flex ">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+            <div class="d-flex w-100">
+                <h3>Necessário</h3>
+            </div>
+            <div class="d-flex align-items-center w-100 position-relative mb-5">
+                <h1 class="position-absolute start-50 translate-middle-x m-0">Mercado</h1>
+                <h1 class="ms-auto m-0">R$ 5,00</h1>
+            </div>
+        </div>
+    </div>
+    <div class="justify-content-center w-100 d-flex ">
+        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+            <div class="d-flex w-100">
+                <h3>Supérfluo</h3>
+            </div>
+            <div class="d-flex align-items-center w-100 position-relative mb-5">
+                <h1 class="position-absolute start-50 translate-middle-x m-0">Lanchonete</h1>
+                <h1 class="ms-auto m-0">R$ 5,00</h1>
+            </div>
+        </div>
+    </div>
+        <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
+</div>
+
+<script>
+
+    window.onload = function () {
+        let metas = document.querySelectorAll(".meta")
+
+
+        metas.forEach(meta => {
+
+            let porcentagem = meta.querySelector(".porcentagem")
+            let barra = meta.querySelector(".barra")
+
+            let vlNecessario = meta.querySelector(".vl_necessario").textContent
+            let vlAlcancado = meta.querySelector(".vl_alcancado").textContent
+
+            vlNecessario = parseFloat(vlNecessario.replace(/[^\d.,]/g, '').replace(',', '.'));
+            vlAlcancado = parseFloat(vlAlcancado.replace(/[^\d.,]/g, '').replace(',', '.'));
+
+            let porcentagemResultado = vlAlcancado * 100 / vlNecessario;
+
+            if (porcentagemResultado > 100) {
+                porcentagemResultado = 100
+            }
+
+            barra.innerText = porcentagemResultado.toFixed(2) + "%";
+            barra.style.width = porcentagemResultado + '%'
+        })
+    }
+    document.getElementById('modalMetaEditar').addEventListener('show.bs.modal', function (event) {
+
+        const button = event.relatedTarget;
+
+
+        const id = button.getAttribute('data-id');
+        const nome = button.getAttribute('data-nome');
+        const alcancado = button.getAttribute('data-alcancado');
+        const necessario = button.getAttribute('data-necessario');
+        const data = button.getAttribute('data-data');
+
+        const form = this.querySelector('form');
+
+        form.querySelector('[name="id_porquinho"]').value = id;
+        form.querySelector('[name="nome_meta"]').value = nome;
+        form.querySelector('[name="vl_alcancado"]').value = alcancado;
+        form.querySelector('[name="vl_necessario"]').value = necessario;
+        form.querySelector('[name="dt_meta"]').value = data;
+    });
+
+
+</script>
+
+</body>
+</html>
