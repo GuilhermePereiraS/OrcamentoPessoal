@@ -30,13 +30,12 @@ class UsuarioController {
     @PostMapping("/persistir")
     public String persistir(@Valid @ModelAttribute("usuario")  Usuario usuario, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
-        if(bindingResult.hasErrors()) {
+            if(bindingResult.hasErrors()) {
 
             String primeiraMensagem = bindingResult.getAllErrors().getFirst().getDefaultMessage();
 
             redirectAttributes.addFlashAttribute("alerta", true);
             redirectAttributes.addFlashAttribute("mensagemAlerta", primeiraMensagem);
-            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
 
             redirectAttributes.addFlashAttribute("usuario", usuario);
 

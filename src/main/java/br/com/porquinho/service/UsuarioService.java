@@ -17,36 +17,11 @@ public class UsuarioService {
     }
 
     public void salvar(Usuario usuario) {
-/*        if (PorquinhoUtils.estaVazioOuNulo(usuario.getNome())
-                || PorquinhoUtils.estaVazioOuNulo(usuario.getLogin())
-                || PorquinhoUtils.estaVazioOuNulo(usuario.getSenha())
-                || usuario.getDt_nascimento() == null) {
-            //logica pra enviar mensagem que ta faltando coisa
-            return;
-        }
-        if (usuario.getNome().length() <= 3) {
-            //Enviar mensagem que precisa de pelo menos 4 caracteres
-            return;
-        }
-        if (!PorquinhoUtils.temCaracterEspecial(usuario.getSenha()) ) {
-            //Enviar mensagem de senha sem caractere especial o
-            return;
-        }
-        if (usuario.getSenha().length() <= 4) {
-            //Enviar mensagem de senha tem menos de 5 digitos
-            return;
-        }*/
-
-        // 1. Verifica regra de negócio: Login já existe?
-        if (usuarioRepository.encontraPorLogin(usuario.getLogin()) != null) {
-            // Lança uma exceção de negócio. O Controller vai tratar isso.
-            // Isso é desacoplado: o Service não sabe nada sobre RedirectAttributes.
+        if (temUsuarioComLogin(usuario.getLogin())) {
             throw new LoginJaExistenteException("Este login já está em uso.");
         }
 
-        //criptografia
         usuario.setSenha(encoder.encode(usuario.getSenha()));
-
         usuarioRepository.salvar(usuario);
     }
 
@@ -83,6 +58,10 @@ public class UsuarioService {
 
     public Usuario encontraPorLogin(String login) {
         return usuarioRepository.encontraPorLogin(login);
+    }
+
+    public Boolean temUsuarioComLogin(String login) {
+        return usuarioRepository.temUsuarioComLogin(login);
     }
 
 }

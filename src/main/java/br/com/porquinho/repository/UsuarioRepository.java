@@ -52,8 +52,8 @@ public class UsuarioRepository {
         }
     }
 
-    public Usuario encontraUsuarioPorLogin(String login) {
+    public Boolean temUsuarioComLogin(String login) {
         String sql = "SELECT * FROM usuario WHERE login = ? A";
-        return template.queryForObject(sql, new Object[]{login}, new BeanPropertyRowMapper<>(Usuario.class));
+        return !template.queryForList(sql, login).isEmpty();
     }
 }

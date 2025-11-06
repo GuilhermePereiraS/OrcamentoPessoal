@@ -12,23 +12,26 @@
     <link rel="stylesheet" th:href="@{/style.css}">
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        // Pega os valores enviados pelo Controller via RedirectAttributes
-        var exibirAlerta = /*[[${alerta}]]*/ null;
-        var tituloAlerta = /*[[${tituloAlerta}]]*/ 'Atenção!'; // Um título padrão
-        var mensagemAlerta = /*[[${mensagemAlerta}]]*/ null;
-        var iconeAlerta = /*[[${iconeAlerta}]]*/ 'info'; // Um ícone padrão
+        debugger
+        document.addEventListener("DOMContentLoaded", () => {
+            // Pega os valores enviados pelo Controller via RedirectAttributes
+            let exibirAlerta = /*[[${alerta} ?: false]]*/;
+            let tituloAlerta = /*[[${tituloAlerta} ?: 'Atenção!']]*/;
+            let mensagemAlerta = /*[[${mensagemAlerta} ?: 'Tem algo faltando']]*/;
+            let iconeAlerta = /*[[${iconeAlerta} ?: 'warning']]*/;
 
-        // Se a flag 'alerta' for verdadeira, exibe o SweetAlert
-        if (exibirAlerta) {
-            Swal.fire({
-                title: tituloAlerta,
-                text: mensagemAlerta,
-                icon: iconeAlerta,
-                confirmButtonText: 'Ok'
-            });
-        }
-        /*]]>*/
+            // Se a flag 'alerta' for verdadeira, exibe o SweetAlert
+            if (exibirAlerta) {
+                Swal.fire({
+                    title: tituloAlerta,
+                    text: mensagemAlerta,
+                    icon: iconeAlerta,
+                    confirmButtonText: 'Ok'
+                });
+            }
+
+        })
     </script>
+
     <th:block th:insert="~{::misc}"/>
 </head>
