@@ -53,7 +53,7 @@ public class UsuarioRepository {
     }
 
     public Boolean temUsuarioComLogin(String login) {
-        String sql = "SELECT * FROM usuario WHERE login = ? A";
+        String sql = "SELECT * FROM usuario WHERE login = ?";
         return !template.queryForList(sql, login).isEmpty();
     }
 }

@@ -1,8 +1,11 @@
 package br.com.porquinho.controller.auth;
 
+import br.com.porquinho.service.LoginJaExistenteException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,22 +27,37 @@ public class CadastroController {
     }
 
     @PostMapping("/persistir")
-    public String persistir(@ModelAttribute Usuario usuario, Model model, RedirectAttributes redirectAttributes) {
-        usuarioService.salvar(usuario);
+    public String persistir(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
-        if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
+        if (bindingResult.hasErrors()) {
+            String primeiraMensagem = bindingResult.getAllErrors().getFirst().getDefaultMessage();
+
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", primeiraMensagem);
+
+            redirectAttributes.addFlashAttribute("usuario", usuario);
+
+            return "redirect:/cadastro";
+        }
+
+        try {
+            usuarioService.salvar(usuario);
             redirectAttributes.addFlashAttribute("alerta", true);
             redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
             redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-            
+
             return "redirect:/admin/home";
-        } 
+        } catch (LoginJaExistenteException e) {
+            redirectAttributes.addFlashAttribute("alerta", true);
+            redirectAttributes.addFlashAttribute("mensagemAlerta", e.getMessage());
+            redirectAttributes.addFlashAttribute("iconeAlerta", "error");
 
-        redirectAttributes.addFlashAttribute("alerta", true);
-        redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro não efetuado!");
-        redirectAttributes.addFlashAttribute("iconeAlerta", "error");
+            redirectAttributes.addFlashAttribute("usuario", usuario);
 
-        return "redirect:/login";
-    }   
+            return "redirect:/cadastro";
+        }
+    }
 
 }
+
+
