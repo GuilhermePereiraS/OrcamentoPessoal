@@ -7,10 +7,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
+
 public class Porquinho implements Serializable {
 
-    @Id
     private Integer id_porquinho;
 
     private Integer id_usuario;

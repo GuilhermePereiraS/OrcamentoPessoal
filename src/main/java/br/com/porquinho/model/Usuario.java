@@ -1,18 +1,13 @@
 package br.com.porquinho.model;
 
-import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
-@Entity
-@Table(name = "usuario")
+
 public class Usuario  implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_usuario;
 
     private String login;

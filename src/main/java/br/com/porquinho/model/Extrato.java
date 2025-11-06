@@ -6,10 +6,8 @@ import jakarta.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
 public class Extrato {
 
-    @Id
     private Integer id_extrato;
     Integer Id_usuario ;
     Integer id_forma_pgmt;
