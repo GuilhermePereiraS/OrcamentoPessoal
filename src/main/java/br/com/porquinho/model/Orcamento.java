@@ -1,7 +1,6 @@
 package br.com.porquinho.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 

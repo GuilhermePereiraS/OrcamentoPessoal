@@ -1,105 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="~{components/dashboard :: headerPorquinho('dashboard')}"></head>
+<html lang="pt"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/dashboard}">
+
+<head>
+    <title layout:fragment="title">Orçamento</title>
+</head>
+
 <th:block th:fragment="misc">
     <style>
-        .orcamentoMensal {
-            border-radius: 5px;
-            max-height: 20rem;
-            font-size: 1.8rem;
-            margin: 0 2rem;
-            transition: 0.15s;
-            min-width: 90rem;
-        }
-
-        .orcamentoMensal:hover {
-            transform: scale(1.009);
-        }
-
-        .orcamentoSecundario {
-            border-radius: 5px;
-            max-width: 30rem;
-            max-height: 20rem;
-            font-size: 1.8rem;
-            margin: 0 2rem;
-            transition: 0.15s;
-        }
-
-        .orcamentoSecundario:hover {
-            transform: scale(1.05);
-        }
-
-
-        .orcamentoSecundario:hover {
-            transform: scale(1.009);
-        }
-
-        .textoMeta {
-            border: solid 1px;
-            border-radius: 3px;
-            padding: 15px 35px;
-            font-size: 1.4rem;
-            margin: 0.5rem;
-        }
-
-        .porcentagemOrcamentoPrincipal {
-            width: 80rem;
-            border: solid 1px;
-            border-radius: 10px;
-        }
-
-        .porcentagemOrcamentoSecundario {
-            width: 15rem;
-            border: solid 1px;
-            border-radius: 10px;
-        }
-
-        .barraOrcamentoPrincipal {
-            box-shadow: 0 0 0 1px #000 inset;
-            border-radius: 10px;
-            font-size: 1.4rem;
-        }
-
-        .barraOrcamentoSecundario {
-            box-shadow: 0 0 0 1px #000 inset;
-            border-radius: 10px;
-            font-size: 1.4rem;
-        }
-
-        .btn-operacao {
-            width: 3rem;
-            height: 3rem;
-            margin: 1rem;
-        }
-
-        .valorOperacao {
-            margin: 1rem;
-            height: 3rem;
-            text-align: center;
-        }
-
-        .nomeMeta {
-            text-align: center;
-        }
-
-        .botaoGordo {
-            height: 7rem;
-            width: 7rem;
-        }
-
-        .botaoGordo:hover {
-            transform: scale(1.05);
-        }
-
-        #board {
-            align-items: center;
-        }
-
-        .d-flex {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
 
 
     </style>
@@ -107,122 +17,55 @@
 
 </th:block>
 <body>
-<!--<div class="modal fade" id="modalMetaEditar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content modal-dialog-centered p-3">-->
-<!--            <form th:action="@{/acaoPorquinho}" method="post" th:object="${porquinhoModel}">-->
-<!--            <div class="text-center">-->
-<!--                <h1>Editar meta</h1><br>-->
-<!--                <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >-->
-<!--                <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta"/><br>-->
-<!--                <span>Alcançado:</span>-->
-<!--                <div class="d-flex">-->
-<!--                    <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                    <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number">-->
-<!--                    <button type="button" class="btn btn-green btn-operacao">+</button>-->
-<!--                </div>-->
-<!--                <span>Necessário:</span>-->
-<!--                <div class="d-flex">-->
-<!--                    <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                    <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number">-->
-<!--                    <button type="button"  class="btn btn-green btn-operacao">+</button>-->
-<!--                </div>-->
-<!--                <span>Data objetivo:</span>-->
-<!--                <div class="d-flex justify-content-center">-->
-<!--                    <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date">-->
-<!--                </div>-->
-<!--                <div class="d-flex justify-content-center">-->
-<!--                    <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
-<!--<div class="modal fade" id="modalMetaAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content modal-dialog-centered p-3">-->
-<!--            <form th:action="@{/persistirPorquinho}" method="post" th:object="${porquinhoModel}">-->
-<!--                <div class="text-center">-->
-<!--                    <h1>Adicionar meta</h1><br>-->
-<!--                    <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" placeholder="nome meta"/><br>-->
-<!--                    <span>Alcançado:</span>-->
+<div layout:fragment="content">
+    <div id="board" class="d-flex flex-wrap mt-5">
+        <div class="justify-content-center w-100 d-flex">
+            <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+                <h1>Orçamento mensal</h1>
+                <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
 
-<!--                    <div class="d-flex">-->
-<!--                        <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                        <input th:field="*{vl_alcancado}" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">-->
-<!--                        <button class="btn btn-green btn-operacao">+</button>-->
-<!--                    </div>-->
+                    <div class="d-flex flex-row">
+                        <h1>Limite</h1>
+                        <div class="porcentagemOrcamentoPrincipal ">
+                            <div class="barraOrcamentoPrincipal green" style="width: 100%;">100.00%</div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <h1>Gasto</h1>
+                        <div class="porcentagemOrcamentoPrincipal ">
+                            <div class="barraOrcamentoPrincipal yellow" style="width: 100%;">100.00%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!--                    <span>Necessário:</span>-->
-
-<!--                    <div class="d-flex">-->
-<!--                        <button type="button" class="btn btn-danger btn-operacao">-</button>-->
-<!--                        <input th:field="*{vl_necessario}" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number">-->
-<!--                        <button class="btn btn-green btn-operacao">+</button>-->
-<!--                    </div>-->
-
-<!--                    <span>Data objetivo:</span>-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <input th:field="*{dt_meta}" class="valorOperacao"  type="date">-->
-<!--                    </div>-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-    <nav th:replace="~{components/navbar :: nomeUsuario(${session.nomeUsuario})}"></nav>
-
-<div id="board" class="d-flex flex-wrap mt-5">
-    <div class="justify-content-center w-100 d-flex">
-        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
-        <h1>Orçamento mensal</h1>
+    <div id="boardSecundario" class="d-flex flex-wrap mt-5">
+        <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar">
+            <h1>Mercado</h1>
             <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
-
                 <div class="d-flex flex-row">
-                    <h1>Limite</h1>
-                    <div class="porcentagemOrcamentoPrincipal ">
-                        <div class="barraOrcamentoPrincipal green" style="width: 100%;">100.00%</div>
+                    <h3>Limite</h3>
+                    <div class="porcentagemOrcamentoSecundario ">
+                        <div class="barraOrcamentoSecundario green" style="width: 100%;">100.00%</div>
                     </div>
                 </div>
                 <div class="d-flex flex-row">
-                    <h1>Gasto</h1>
-                    <div class="porcentagemOrcamentoPrincipal ">
-                        <div class="barraOrcamentoPrincipal yellow" style="width: 100%;">100.00%</div>
+                    <h3>Gasto</h3>
+                    <div class="porcentagemOrcamentoSecundario ">
+                        <div class="barraOrcamentoSecundario yellow" style="width: 100%;">100.00%</div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
     </div>
 </div>
 
-<div id="boardSecundario" class="d-flex flex-wrap mt-5">
-    <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar">
-    <h1>Mercado</h1>
-    <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
-        <div class="d-flex flex-row">
-            <h3>Limite</h3>
-            <div class="porcentagemOrcamentoSecundario ">
-                <div class="barraOrcamentoSecundario green" style="width: 100%;">100.00%</div>
-            </div>
-        </div>
-        <div class="d-flex flex-row">
-            <h3>Gasto</h3>
-            <div class="porcentagemOrcamentoSecundario ">
-                <div class="barraOrcamentoSecundario yellow" style="width: 100%;">100.00%</div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-
-    <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalMetaAdicionar">+</button>
-</div>
 
 <script>
 

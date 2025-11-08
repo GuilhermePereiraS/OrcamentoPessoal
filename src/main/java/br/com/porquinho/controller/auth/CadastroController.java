@@ -1,6 +1,7 @@
 package br.com.porquinho.controller.auth;
 
 import br.com.porquinho.service.LoginJaExistenteException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class CadastroController {
     }
 
     @PostMapping("/persistir")
-    public String persistir(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String persistir(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             String primeiraMensagem = bindingResult.getAllErrors().getFirst().getDefaultMessage();
@@ -42,11 +43,19 @@ public class CadastroController {
 
         try {
             usuarioService.salvar(usuario);
-            redirectAttributes.addFlashAttribute("alerta", true);
-            redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
-            redirectAttributes.addFlashAttribute("iconeAlerta", "success");
+            if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
+                session.setAttribute("usuarioLogado", usuario);
 
-            return "redirect:/admin/home";
+                redirectAttributes.addFlashAttribute("alerta", true);
+                redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");
+                redirectAttributes.addFlashAttribute("iconeAlerta", "success");
+                return "redirect:/admin/home";
+            } else {
+                redirectAttributes.addFlashAttribute("alerta", true);
+                redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro não efetuado por motivo insesperado!");
+            }
+
+            return "redirect:/cadastro";
         } catch (LoginJaExistenteException e) {
             redirectAttributes.addFlashAttribute("alerta", true);
             redirectAttributes.addFlashAttribute("mensagemAlerta", e.getMessage());
