@@ -10,72 +10,157 @@
 
 <body>
   <div layout:fragment="content">
+      <div class="modal fade" id="modalTransacaoAdicionar" tabindex="-1" aria-labelledby="modalTransacaoAdicionarLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content modal-dialog-centered p-3">
+                  <form th:action="@{/admin/registraTransacao}" method="post">
+                      <div class="text-center">
+                          <h1>Nova Transação</h1>
 
-    <div class="modal fade" id="modalTransacaoAdicionar" tabindex="-1" aria-labelledby="modalMeta" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content modal-dialog-centered p-3">
-          <form th:action="@{/admin/extrato}" method="post">
-            <div class="text-center">
-              <h1>Registrar transação</h1>
+                          <input type="hidden" name="vl_transacao">
 
-              <span>Tipo de transação:</span><br>
-              <select name="tp_transacao" onchange="exibeOpcoesModalExtrato()" required>
-                <option value="">Selecione</option>
-                <option value="entrada">Entrada</option>
-                <option value="saida">Saída</option>
-              </select><br>
+                          <!-- Descrição -->
+                          <span>Descrição:</span><br>
+                          <input type="text" name="descricao" id="descricaoAdicionar" class="form-control mb-3" placeholder="Digite a descrição" required>
 
-              <span>Categoria:</span><br>
-              <select name="id_tipo_gasto" id="categoria">
-                <option value="">Selecione</option>
-              </select><br>
+                          <!-- Tipo de transação -->
+                          <span>Tipo de transação:</span><br>
+                          <select name="tp_transacao" id="tpTransacaoAdicionar" required class="form-select mb-3">
+                              <option value="">Selecione</option>
+                              <option value="entrada">Entrada</option>
+                              <option value="saida">Saída</option>
+                          </select>
 
-              <span>Forma de pagamento:</span><br>
-              <select name="id_forma_pgmt" id="formaPagamento"required>
-                <option value="">Selecione</option>
-              </select><br>
+                          <!-- Categoria -->
+                          <span>Categoria:</span><br>
+                          <select name="id_tipo_gasto" id="categoriaAdicionar" required class="form-select mb-3">
+                              <option value="">Selecione</option>
+                              <option th:each="cat : ${listaTipoGasto}" th:value="${cat.id_tipo_gasto}" th:text="${cat.descricao}"></option>
+                          </select>
 
-              <span>Valor da transação:</span><br>
-              <div class="d-flex justify-content-center gap-2">
-                <input name="descricao" class="mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/>
-                <input name="descricao" class="mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/>
-                <input name="vl_transacao" class="valorOperacao text-center" type="number" step="0.01" min="0" placeholder="0,00">
+                          <!-- Forma de Pagamento -->
+                          <span>Forma de pagamento:</span><br>
+                          <select name="id_forma_pgmt" id="formaPagamentoAdicionar" required class="form-select mb-3">
+                              <option value="">Selecione</option>
+                              <option th:each="fp : ${listaFormaPagamento}" th:value="${fp.id_forma_pgmt}" th:text="${fp.descricao}"></option>
+                          </select>
+
+                          <!-- Data da transação -->
+                          <span>Data da transação:</span><br>
+                          <input type="date" name="dt_transacao" id="dtTransacaoAdicionar" class="form-control mb-3" required>
+
+                          <hr class="my-3">
+
+                          <!-- Itens -->
+                          <h3 class="mt-3">Itens</h3>
+                          <div id="listaItensAdicionar" class="d-flex flex-column gap-2"></div>
+
+                          <hr class="my-3">
+
+                          <button type="button" class="btn btn-green mb-3" id="btnAdicionarItemAdicionar">Adicionar Item</button>
+
+                          <div class="d-flex justify-content-between align-items-center fs-4 mt-3">
+                              <strong>Total:</strong>
+                              <span id="totalTransacaoAdicionar">R$ 0,00</span>
+                          </div>
+
+                          <div class="d-flex justify-content-center mt-3">
+                              <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>
+                              <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
+                          </div>
+                      </div>
+                  </form>
               </div>
-
-              <span>Data da transação:</span>
-              <div class="d-flex justify-content-center">
-                <input name="dt_transacao" class="valorOperacao"  type="date" required>
-              </div>
-
-              <span>Descrição</span><br>
-              <input name="descricao" class="mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/><br>
-
-              <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
-              </div>
-            </div>
-          </form>
-        </div>
+          </div>
       </div>
-    </div>
 
-    <div id="board" class="d-flex flex-wrap mt-5 justify-content-center ">
+
+      <!-- ================== MODAL EDITAR ================== -->
+      <div class="modal fade" id="modalTransacaoEditar" tabindex="-1" aria-labelledby="modalTransacaoEditarLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content modal-dialog-centered p-3">
+                  <form th:action="@{/admin/extrato}" method="post">
+                      <div class="text-center">
+                          <h1>Editar Transação</h1>
+
+                          <input type="hidden" id="extratoId" name="id_extrato">
+                          <input type="hidden" name="vl_transacao">
+
+                          <!-- Descrição -->
+                          <span>Descrição:</span><br>
+                          <input type="text" name="descricao" id="descricaoEditar" class="form-control mb-3" required>
+
+                          <!-- Tipo de transação -->
+                          <span>Tipo de transação:</span><br>
+                          <select name="tp_transacao" id="tpTransacaoEditar" disabled class="form-select mb-3">
+                              <option value="entrada">Entrada</option>
+                              <option value="saida">Saída</option>
+                          </select>
+
+                          <!-- Categoria -->
+                          <span>Categoria:</span><br>
+                          <select name="id_tipo_gasto" id="categoriaEditar" required class="form-select mb-3">
+                              <option th:each="cat : ${listaTipoGasto}" th:value="${cat.id_tipo_gasto}" th:text="${cat.descricao}"></option>
+                          </select>
+
+                          <!-- Forma de Pagamento -->
+                          <span>Forma de pagamento:</span><br>
+                          <select name="id_forma_pgmt" id="formaPagamentoEditar" required class="form-select mb-3">
+                              <option th:each="fp : ${listaFormaPagamento}" th:value="${fp.id_forma_pgmt}" th:text="${fp.descricao}"></option>
+                          </select>
+
+                          <hr class="my-3">
+
+                          <h3 class="mt-3">Itens</h3>
+                          <div id="listaItensEditar" class="d-flex flex-column gap-2"></div>
+
+                          <hr class="my-3">
+
+                          <button type="button" class="btn btn-green mb-3" id="btnAdicionarItemEditar">Adicionar Item</button>
+
+                          <div class="d-flex justify-content-between align-items-center fs-4 mt-3">
+                              <strong>Total:</strong>
+                              <span id="totalTransacaoEditar">R$ 0,00</span>
+                          </div>
+
+                          <div class="d-flex justify-content-center mt-3">
+                              <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>
+                              <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
+                              <button type="button" class="btn btn-danger m-2 ms-3" id="btnExcluirEditar">Excluir</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+
+      <div id="board" class="d-flex flex-wrap mt-5 justify-content-center ">
+        <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalTransacaoAdicionar">+</button>
+
       <div th:each="extrato : ${listaExtrato}" class="justify-content-center w-100 d-flex ">
-        <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+        <div data-bs-target="#modalTransacaoEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center "
+             th:attr="data-id_extrato=${extrato.id_extrato},
+                  data-descricao=${extrato.descricao},
+                  data-tptransacao=${extrato.tp_transacao},
+                  data-idtipogasto=${extrato.id_tipo_gasto},
+                  data-idformapgmt=${extrato.id_forma_pgmt}">
+
           <div class="d-flex w-100">
             <div th:each="categoria : ${listaTipoGasto}" th:if="${categoria.id_tipo_gasto == extrato.id_tipo_gasto}">
               <h3 th:text="${categoria.descricao}">Necessário</h3>
             </div>
           </div>
-          <div class="d-flex align-items-center w-100 position-relative mb-5">
+          <div class="d-flex align-items-center w-100 position-relative">
             <h1 class="position-absolute start-50 translate-middle-x m-0" th:text="${extrato.descricao}">Mercado</h1>
             <h1 class="ms-auto m-0" th:text="(${extrato.tp_transacao} == 'entrada' ? '+ R$: ' : '- R$: ') + ${extrato.vl_transacao}">R$ 5,00</h1>
+          </div>
+          <div class="d-flex w-100 justify-content-start fs-3">
+             <span th:text="${#temporals.format(extrato.dt_transacao, 'dd/MM/yyyy')}"></span>
           </div>
         </div>
       </div>
 
-      <button class="btn btn-green botaoGordo" data-bs-toggle="modal" data-bs-target="#modalTransacaoAdicionar">+</button>
+
     </div>
 
   <script>

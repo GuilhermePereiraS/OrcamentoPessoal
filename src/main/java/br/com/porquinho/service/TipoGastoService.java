@@ -15,11 +15,15 @@ public class TipoGastoService {
         this.tipoGastoRepository = tipoGastoRepository;
     }
 
-    public List<TipoGasto> listarTodos(Integer idUsuario) {
-        return tipoGastoRepository.listarTodos(idUsuario);
+    public List<TipoGasto> listarTodos() {
+        return tipoGastoRepository.listarTodos();
     }
 
     public List<TipoGasto> listarTiposGastoPadrao() {
         return tipoGastoRepository.pegarTiposDeGastoPadrao();
+    }
+
+    public void salvar(String descricao) {
+        tipoGastoRepository.salvar(descricao);
     }
 }

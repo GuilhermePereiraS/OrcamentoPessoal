@@ -23,7 +23,7 @@ public class TipoGastoController {
     @ResponseBody
     public List<TipoGasto> pegaListaTipoGasto(HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        return tipoGastoService.listarTiposGastoPadrao();
+        return tipoGastoService.listarTodos();
     }
 
 

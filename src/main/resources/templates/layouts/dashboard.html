@@ -61,5 +61,19 @@
         </th:block>
     </th:block>
 
+    <script th:inline="javascript">
+        //alterar pra exibir o icone especifico ou o titulo se necessario
+        document.addEventListener("DOMContentLoaded", () => {
+            const exibirAlerta = /*[[${alerta}]]*/ false;
+            const tituloAlerta = /*[[${tituloAlerta}]]*/ 'Atenção!';
+            const mensagemAlerta = /*[[${mensagemAlerta}]]*/ 'Tem algo faltando';
+            const iconeAlerta = /*[[${iconeAlerta}]]*/ 'warning';
+
+            if (exibirAlerta) {
+                window.Dashboard.showMessage(mensagemAlerta, iconeAlerta, tituloAlerta);
+            }
+        });
+    </script>
+
 </body>
 </html>

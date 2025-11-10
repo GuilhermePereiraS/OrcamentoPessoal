@@ -19,22 +19,63 @@
 <body>
 
 <div layout:fragment="content">
+
+    <!-- Modal de Edição do Orçamento -->
+    <div class="modal fade" id="modalOrcamentoEditar" tabindex="-1" aria-labelledby="modalOrcamento" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-dialog-centered p-3">
+                <form th:action="@{/acaoOrcamento}" method="post">
+                    <div class="text-center">
+                        <h1>Editar Orçamento</h1><br>
+
+                        <!-- ID escondido -->
+                        <input type="hidden" id="orcamentoId" name="id_orcamento" />
+
+                        <!-- Limite -->
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <label for="limiteOrcamento" class="me-2">Limite:</label>
+                            <input id="limiteOrcamento" name="limite" type="number" step="0.01" min="0" required />
+                        </div>
+
+                        <!-- Categoria (só para secundário) -->
+                        <div class="justify-content-center align-items-center mb-3" id="categoriaContainer">
+                            <label for="categoriaOrcamento" class="me-2">Categoria:</label>
+                            <select id="categoriaOrcamento" name="categoria" class="form-select" required>
+                                <option value="">Selecione</option>
+                                <option th:each="tipoGasto : ${listaTipoGasto}"
+                                        th:value="${tipoGasto.id_tipo_gasto}"
+                                        th:text="${tipoGasto.descricao}"></option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" name="acao" value="editar" class="btn btn-green m-2">Salvar</button>
+                            <button type="submit" name="acao" value="excluir" class="btn btn-danger m-2" id="btnExcluir">Excluir</button>
+                            <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="board" class="d-flex flex-wrap mt-5">
         <div class="justify-content-center w-100 d-flex">
-            <div data-bs-target="#modalMetaEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center ">
+            <div data-bs-target="#modalOrcamentoEditar" data-bs-toggle="modal" class="orcamentoMensal btn btn-light form-control d-flex flex-column align-items-center justify-content-center "
+                 th:attr="data-id=${orcamentoDoMes.id_orcamento}, data-limite=${orcamentoDoMes.limite_mensal}">
                 <h1>Orçamento mensal</h1>
                 <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
 
                     <div class="d-flex flex-row">
                         <h1>Limite</h1>
                         <div class="porcentagemOrcamentoPrincipal ">
-                            <div class="barraOrcamentoPrincipal green" style="width: 100%;">100.00%</div>
+                            <div class="barraOrcamentoPrincipal green" style="width: 100%;" th:text="'R$: ' + ${orcamentoDoMes.getLimite_mensal()}"></div>
                         </div>
                     </div>
                     <div class="d-flex flex-row">
                         <h1>Gasto</h1>
                         <div class="porcentagemOrcamentoPrincipal ">
-                            <div class="barraOrcamentoPrincipal yellow" style="width: 100%;">100.00%</div>
+                            <div class="barraOrcamentoPrincipal yellow" style="width: 100%;" th:text="'R$: ' + ${gastoDoMes ?: 0.00}"></div>
                         </div>
                     </div>
                 </div>
@@ -43,19 +84,26 @@
     </div>
 
     <div id="boardSecundario" class="d-flex flex-wrap mt-5">
-        <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalMetaEditar">
-            <h1>Mercado</h1>
-            <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
-                <div class="d-flex flex-row">
-                    <h3>Limite</h3>
-                    <div class="porcentagemOrcamentoSecundario ">
-                        <div class="barraOrcamentoSecundario green" style="width: 100%;">100.00%</div>
-                    </div>
+        <div th:each="orcTipoGasto : ${listaOrcamentoTipoGasto}" >
+            <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalOrcamentoEditar"
+                  th:attr="
+        data-id=${orcTipoGasto.id_tipo_gasto},
+        data-limite=${orcTipoGasto.limite}">
+                <div th:each="tipoGasto : ${listaTipoGasto}" th:if="${orcTipoGasto.id_tipo_gasto == tipoGasto.id_tipo_gasto}">
+                    <h1 th:text="${tipoGasto.descricao}"></h1>
                 </div>
-                <div class="d-flex flex-row">
-                    <h3>Gasto</h3>
-                    <div class="porcentagemOrcamentoSecundario ">
-                        <div class="barraOrcamentoSecundario yellow" style="width: 100%;">100.00%</div>
+                <div class="d-flex flex-column mt-2 mb-5 w-75 align-items-end  ">
+                    <div class="d-flex flex-row">
+                        <h3>Limite</h3>
+                        <div class="porcentagemOrcamentoSecundario ">
+                            <div class="barraOrcamentoSecundario green" style="width: 100%;" th:text="'R$: ' + ${orcTipoGasto.limite}"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <h3>Gasto</h3>
+                        <div class="porcentagemOrcamentoSecundario ">
+                            <div class="barraOrcamentoSecundario yellow" style="width: 100%;" th:text="'R$: ' + ${gastoPorTipoGasto[orcTipoGasto.getId_tipo_gasto()] ?: 0.00}"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,55 +115,14 @@
 </div>
 
 
-<script>
-
-    window.onload = function() {
-        let metas = document.querySelectorAll(".meta")
-
-
-        metas.forEach(meta => {
-
-            let porcentagem = meta.querySelector(".porcentagem")
-            let barra = meta.querySelector(".barra")
-
-            let vlNecessario = meta.querySelector(".vl_necessario").textContent
-            let vlAlcancado = meta.querySelector(".vl_alcancado").textContent
-
-            vlNecessario = parseFloat(vlNecessario.replace(/[^\d.,]/g, '').replace(',', '.'));
-            vlAlcancado = parseFloat(vlAlcancado.replace(/[^\d.,]/g, '').replace(',', '.'));
-
-            let porcentagemResultado = vlAlcancado * 100 / vlNecessario;
-
-            if (porcentagemResultado > 100) {
-                porcentagemResultado = 100
-            }
-
-            barra.innerText = porcentagemResultado.toFixed(2) + "%";
-            barra.style.width = porcentagemResultado + '%'
-        })
-    }
-    document.getElementById('modalMetaEditar').addEventListener('show.bs.modal', function (event) {
-
-        const button = event.relatedTarget;
-
-
-        const id = button.getAttribute('data-id');
-        const nome = button.getAttribute('data-nome');
-        const alcancado = button.getAttribute('data-alcancado');
-        const necessario = button.getAttribute('data-necessario');
-        const data = button.getAttribute('data-data');
-
-        const form = this.querySelector('form');
-
-        form.querySelector('[name="id_porquinho"]').value = id;
-        form.querySelector('[name="nome_meta"]').value = nome;
-        form.querySelector('[name="vl_alcancado"]').value = alcancado;
-        form.querySelector('[name="vl_necessario"]').value = necessario;
-        form.querySelector('[name="dt_meta"]').value = data;
-    });
-
-
-</script>
+<th:block layout:fragment="scripts">
+    <th:block th:if="${viteServer != null}">
+        <script type="module" th:src="${viteServer + '/src/ts/pages/admin/orcamento/orcamento.ts'}"></script>
+    </th:block>
+    <th:block th:if="${viteServer == null}">
+        <script type="module" th:src="@{${@vite.asset('src/ts/pages/admin/orcamento/orcamento.ts')}}"></script>
+    </th:block>
+</th:block>
 
 </body>
 </html>

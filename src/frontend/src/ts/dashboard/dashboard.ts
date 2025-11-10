@@ -20,7 +20,17 @@ export const Dashboard = {
             icon: 'error',
             confirmButtonText: 'Ok'
         });
+    },
+
+    showMessage(msg: string, icon: 'warning' | 'error' | 'success' | 'info' | 'question', title: string) {
+        Swal.fire({
+            title,
+            text: msg,
+            icon,
+            confirmButtonText: 'Ok'
+        });
     }
+
 };
 
 // torna global
@@ -88,25 +98,6 @@ function exibeOpcoes(): void {
     selectFormaPagamento.disabled = isEntrada;
 }
 
-
-//antigo heade
-document.addEventListener("DOMContentLoaded", () => {
-    // Valores vindos do Controller via Thymeleaf
-    const exibirAlerta: boolean = /*[[${alerta} ?: false]]*/ false;
-    const tituloAlerta: string = /*[[${tituloAlerta} ?: 'Atenção!']]*/ 'Atenção!';
-    const mensagemAlerta: string = /*[[${mensagemAlerta} ?: 'Tem algo faltando']]*/ 'Tem algo faltando';
-    const iconeAlerta: 'warning' | 'error' | 'success' | 'info' | 'question' =
-        /*[[${iconeAlerta} ?: 'warning']]*/ 'warning';
-
-    if (exibirAlerta) {
-        Swal.fire({
-            title: tituloAlerta,
-            text: mensagemAlerta,
-            icon: iconeAlerta,
-            confirmButtonText: 'Ok'
-        });
-    }
-});
 
 
 

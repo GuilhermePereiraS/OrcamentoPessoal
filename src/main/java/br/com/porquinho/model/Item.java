@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class Item {
     private Integer id_item;
+    private Integer id_extrato;
     private String nome;
     private BigDecimal vl_unitario;
     private BigDecimal vl_total;
@@ -47,5 +48,13 @@ public class Item {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Integer getId_extrato() {
+        return id_extrato;
+    }
+
+    public void setId_extrato(Integer id_extrato) {
+        this.id_extrato = id_extrato;
     }
 }
