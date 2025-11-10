@@ -24,7 +24,7 @@
     <div class="modal fade" id="modalOrcamentoEditar" tabindex="-1" aria-labelledby="modalOrcamento" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content modal-dialog-centered p-3">
-                <form th:action="@{/acaoOrcamento}" method="post">
+                <form th:action="@{/admin/orcamento/atualizar}" method="post">
                     <div class="text-center">
                         <h1>Editar Orçamento</h1><br>
 
@@ -40,7 +40,7 @@
                         <!-- Categoria (só para secundário) -->
                         <div class="justify-content-center align-items-center mb-3" id="categoriaContainer">
                             <label for="categoriaOrcamento" class="me-2">Categoria:</label>
-                            <select id="categoriaOrcamento" name="categoria" class="form-select" required>
+                            <select id="categoriaOrcamento" name="id_tipo_gasto" class="form-select" required>
                                 <option value="">Selecione</option>
                                 <option th:each="tipoGasto : ${listaTipoGasto}"
                                         th:value="${tipoGasto.id_tipo_gasto}"
@@ -49,9 +49,9 @@
                         </div>
 
                         <div class="d-flex justify-content-center">
-                            <button type="submit" name="acao" value="editar" class="btn btn-green m-2">Salvar</button>
-                            <button type="submit" name="acao" value="excluir" class="btn btn-danger m-2" id="btnExcluir">Excluir</button>
                             <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" name="acao" value="excluir" class="btn btn-danger m-2" id="btnExcluir">Excluir</button>
+                            <button type="submit" name="acao" value="editar" class="btn btn-green m-2">Salvar</button>
                         </div>
                     </div>
                 </form>
@@ -87,8 +87,8 @@
         <div th:each="orcTipoGasto : ${listaOrcamentoTipoGasto}" >
             <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalOrcamentoEditar"
                   th:attr="
-        data-id=${orcTipoGasto.id_tipo_gasto},
-        data-limite=${orcTipoGasto.limite}">
+                        data-id=${orcTipoGasto.id_orcamento},
+                        data-limite=${orcTipoGasto.limite}">
                 <div th:each="tipoGasto : ${listaTipoGasto}" th:if="${orcTipoGasto.id_tipo_gasto == tipoGasto.id_tipo_gasto}">
                     <h1 th:text="${tipoGasto.descricao}"></h1>
                 </div>

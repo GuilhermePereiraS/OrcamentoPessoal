@@ -21,6 +21,14 @@ function criarItem(item: Item, container: HTMLDivElement, atualizarTotal: () => 
     const div = document.createElement('div');
     div.classList.add('d-flex', 'gap-2', 'align-items-center', 'mb-2');
 
+    if (item.id_item) {
+        const hiddenId = document.createElement('input');
+        hiddenId.type = 'hidden';
+        hiddenId.name = 'id_item';
+        hiddenId.value = item.id_item.toString();
+        div.appendChild(hiddenId);
+    }
+
     const nomeInput = document.createElement('input');
     nomeInput.type = 'text';
     nomeInput.value = item.nome;
@@ -35,7 +43,7 @@ function criarItem(item: Item, container: HTMLDivElement, atualizarTotal: () => 
 
     const valorUnitarioInput = document.createElement('input');
     valorUnitarioInput.type = 'number';
-    valorUnitarioInput.value = item.vl_unitario.toFixed(2);
+    valorUnitarioInput.value = item.vl_unitario?.toFixed(2) ?? '0.00';
     valorUnitarioInput.min = '0';
     valorUnitarioInput.step = '0.01';
     valorUnitarioInput.classList.add('form-control', 'w-25');
@@ -175,3 +183,43 @@ function atualizarTotalEditar() {
 formEditar.addEventListener('submit', () => {
     atualizarTotalEditar();
 });
+
+document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(div => {
+    div.addEventListener('click', () => {
+        const elemento = div as HTMLElement;
+
+        // pega os atributos do extrato
+        const idExtrato = elemento.dataset.id_extrato!;
+        const descricao = elemento.dataset.descricao!;
+        const tpTransacao = elemento.dataset.tptransacao!;
+        const idTipoGasto = elemento.dataset.idtipogasto!;
+        const idFormaPgmt = elemento.dataset.idformapgmt!;
+        const itensJson = elemento.dataset.items;
+
+        // preenche os campos do modal
+        (document.getElementById('extratoId') as HTMLInputElement).value = idExtrato;
+        (document.getElementById('descricaoEditar') as HTMLInputElement).value = descricao;
+        (document.getElementById('tpTransacaoEditar') as HTMLSelectElement).value = tpTransacao;
+        (document.getElementById('categoriaEditar') as HTMLSelectElement).value = idTipoGasto;
+        (document.getElementById('formaPagamentoEditar') as HTMLSelectElement).value = idFormaPgmt;
+
+        // limpa os itens anteriores do modal
+        listaItensEditar.innerHTML = '';
+
+        // se existir JSON, parseia e cria os itens
+        if (itensJson && itensJson.trim() !== '') {
+            try {
+                const itens: Item[] = JSON.parse(itensJson);
+                itens.forEach(item => {
+                    criarItem(item, listaItensEditar, atualizarTotalEditar);
+                });
+            } catch (e) {
+                console.error('Erro ao parsear JSON de itens:', e, itensJson);
+            }
+        }
+
+        // atualiza o total
+        atualizarTotalEditar();
+    });
+});
+

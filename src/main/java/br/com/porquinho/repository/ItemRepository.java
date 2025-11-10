@@ -1,13 +1,18 @@
 package br.com.porquinho.repository;
 
 import br.com.porquinho.model.Extrato;
+import br.com.porquinho.model.Item;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ItemRepository {
@@ -22,21 +27,26 @@ public class ItemRepository {
         template.update(sql, id_extrato, nome, valorUnitario, valorTotal, quantidade);
     }
 
-    public HashMap<Integer, BigDecimal> pegarGastoPorTipoGasto(Integer idUsuario, int mes, int ano) {
-        String sql = "SELECT id_tipo_gasto, SUM(ext.vl_transacao) as  vl_transacao " +
-                "FROM extrato ext " +
-                "WHERE id_usuario = ? " +
-                "AND ext.tp_transacao = 'saida' " +
-                "AND EXTRACT(MONTH FROM dt_transacao) = ? " +
-                "AND EXTRACT(YEAR FROM dt_transacao) = ? " +
-                "GROUP BY id_tipo_gasto";
-        return template.query(sql,rs -> {
-            HashMap<Integer,BigDecimal> map = new HashMap<>();
-            while (rs.next()) {
-                map.put(rs.getInt("id_tipo_gasto"), rs.getBigDecimal("vl_transacao"));
-            }
-            return map;
-        }, idUsuario, mes, ano);
+
+
+    public HashMap<Integer, String> pegarTodosItensPorExtrato() throws JsonProcessingException {
+        String sql = "SELECT * FROM item";
+        List<Item> itens = template.query(sql, new BeanPropertyRowMapper<>(Item.class));
+        HashMap<Integer, List<Item>> mapItem = new HashMap<>();
+
+        for (Item item : itens) {
+            mapItem.computeIfAbsent(item.getId_extrato(), chave -> new ArrayList<>()).add(item);
+        }
+
+        HashMap<Integer, String> mapaItemJson = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        for (Map.Entry<Integer, List<Item>> entry : mapItem.entrySet()) {
+            String json = mapper.writeValueAsString(entry.getValue());
+            mapaItemJson.put(entry.getKey(), json);
+        }
+
+        return mapaItemJson;
     }
 
 

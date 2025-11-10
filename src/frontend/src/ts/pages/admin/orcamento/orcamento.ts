@@ -32,13 +32,16 @@ if (modalOrcamento) {
         inputLimite.value = parseFloat(card.limite).toFixed(2);
 
         if (card.tipo === 'secundario') {
-            categoriaContainer.style.display = 'flex';       // mostra select
-            inputCategoria.value = card.id;                 // seleciona categoria correta
-            btnExcluir.style.display = 'inline-block';      // mostra botão excluir
+            categoriaContainer.style.display = 'flex';
+            inputCategoria.value = card.id;
+            inputCategoria.required = true;  // obrigatório só para secundário
+            btnExcluir.style.display = 'inline-block';
         } else {
-            categoriaContainer.style.display = 'none';      // oculta select para mensal
-            inputCategoria.value = '';                       // limpa qualquer valor
-            btnExcluir.style.display = 'none';              // oculta botão excluir
+            categoriaContainer.style.display = 'none';
+            inputCategoria.value = '';
+            inputCategoria.required = false; // desativa required
+            btnExcluir.style.display = 'none';
         }
+
     });
 }

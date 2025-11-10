@@ -16,10 +16,6 @@ public class OrcamentoRepository {
         this.template = template;
     }
 
-    public void salvar(Orcamento orcamento) {
-
-    }
-
     public boolean temOrcamentoNoMes(int mes, int idUsuario) {
         String sql = "SELECT COUNT(*) FROM Orcamento orc WHERE orc.mes = ? AND orc.id_usuario = ?";
         Integer quantidade =  template.queryForObject(sql, Integer.class, mes, idUsuario);
@@ -29,6 +25,11 @@ public class OrcamentoRepository {
     public void salvar(int mesAtual, int anoAtual, BigDecimal limiteMensal, int id_usuario) {
         String sql = "INSERT INTO Orcamento (mes, ano, limite_mensal, id_usuario) VALUES (?, ?, ?, ?)";
         template.update(sql, mesAtual, anoAtual, limiteMensal, id_usuario);
+    }
+
+    public void atualizar(int idOrcamento, BigDecimal limiteMensal) {
+        String sql = "UPDATE orcamento SET limite_mensal = ? WHERE id_orcamento = ?";
+        template.update(sql, limiteMensal, idOrcamento);
     }
 
     public Orcamento pegaOrcamentoAtual(int idUsuario, int mesAtual, int anoAtual) {

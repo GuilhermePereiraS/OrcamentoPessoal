@@ -1,6 +1,7 @@
 package br.com.porquinho.repository;
 
 import br.com.porquinho.model.Extrato;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -107,8 +108,5 @@ public class ExtratoRepository {
             return map;
         }, idUsuario, mes, ano);
     }
-
-
-
 
 }

@@ -37,12 +37,13 @@ public class ExtratoController {
     }
 
     @GetMapping("/extrato")
-    public String extrato(Model model, HttpSession session) {
+    public String extrato(Model model, HttpSession session) throws JsonProcessingException {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         model.addAttribute("listaExtrato", extratoService.listarTodos(usuario.getId_usuario()));
         model.addAttribute("listaTipoGasto", tipoGastoService.listarTodos());
         model.addAttribute("listaFormaPagamento" , formaPagamentoService.listarTodos());
+        model.addAttribute("listaItemsPorExtratoJson", itemService.pegarItensPorExtratoJson());
 
         return "pages/admin/extrato/index";
     }
@@ -74,7 +75,7 @@ public class ExtratoController {
             itemService.salvar(item);
         }
 
-        return "redirect:/extrato";
+        return "redirect:/admin/extrato";
     }
 
 }

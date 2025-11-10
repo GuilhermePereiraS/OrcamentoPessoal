@@ -16,10 +16,21 @@ public class OrcamentoTipoGastoRepository {
         this.template = template;
     }
 
-    public void save(int idOrcamento, int idTipoGasto, BigDecimal limite) {
+    public void salvar(int idOrcamento, int idTipoGasto, BigDecimal limite) {
         try {
             String sql = "INSERT INTO orcamento_tipo_gasto (id_orcamento, id_tipo_gasto, limite) VALUES (?, ?, ?)";
             template.update(sql, idOrcamento, idTipoGasto, limite);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void atualizar(int idOrcamento, int idTipoGasto, BigDecimal limite) {
+        try {
+            String sql = "UPDATE orcamento_tipo_gasto SET limite = ? WHERE  id_tipo_gasto = ? AND  id_orcamento = ?";
+            System.out.println("id tipo ORC" + idOrcamento);
+            template.update(sql,limite, idTipoGasto, idOrcamento);
         } catch (Exception e) {
             e.printStackTrace();
         }
