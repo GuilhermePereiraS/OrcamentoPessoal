@@ -38,7 +38,7 @@ public class OrcamentoTipoGastoRepository {
     }
 
     public List<OrcamentoTipoGasto> listarTodos(int idOrcamento) {
-        String sql = "SELECT * FROM orcamento_tipo_gasto WHERE id_orcamento = ? ";
+        String sql = "SELECT * FROM orcamento_tipo_gasto WHERE id_orcamento = ? ORDER BY id_tipo_gasto";
         return template.query(sql, new BeanPropertyRowMapper<>(OrcamentoTipoGasto.class), idOrcamento);
     }
 

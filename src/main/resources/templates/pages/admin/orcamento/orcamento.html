@@ -88,6 +88,7 @@
             <div  class="orcamentoSecundario btn btn-light form-control d-flex flex-column align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target="#modalOrcamentoEditar"
                   th:attr="
                         data-id=${orcTipoGasto.id_orcamento},
+                        data-idTipoGasto=${orcTipoGasto.id_tipo_gasto},
                         data-limite=${orcTipoGasto.limite}">
                 <div th:each="tipoGasto : ${listaTipoGasto}" th:if="${orcTipoGasto.id_tipo_gasto == tipoGasto.id_tipo_gasto}">
                     <h1 th:text="${tipoGasto.descricao}"></h1>

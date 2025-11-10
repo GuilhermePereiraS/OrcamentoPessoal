@@ -1,5 +1,6 @@
 interface OrcamentoCard {
     id: string;
+    idTipoGasto: string;
     limite: string;
     tipo: 'mensal' | 'secundario';
 }
@@ -12,10 +13,12 @@ if (modalOrcamento) {
         if (!button) return;
 
         const id = button.getAttribute('data-id') ?? '';
+        const idTipoGasto = button.getAttribute('data-idTipoGasto') ?? '';
         const limiteAttr = button.getAttribute('data-limite') ?? '0';
 
         const card: OrcamentoCard = {
             id,
+            idTipoGasto,
             limite: limiteAttr,
             tipo: button.classList.contains('orcamentoMensal') ? 'mensal' : 'secundario'
         };
@@ -33,7 +36,7 @@ if (modalOrcamento) {
 
         if (card.tipo === 'secundario') {
             categoriaContainer.style.display = 'flex';
-            inputCategoria.value = card.id;
+            inputCategoria.value = card.idTipoGasto;
             inputCategoria.required = true;  // obrigatório só para secundário
             btnExcluir.style.display = 'inline-block';
         } else {
