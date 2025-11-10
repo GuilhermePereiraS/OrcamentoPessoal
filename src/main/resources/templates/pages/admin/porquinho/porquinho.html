@@ -18,22 +18,22 @@
                     <div class="text-center">
                         <h1>Editar meta</h1><br>
                         <input th:field="*{id_porquinho}" type="hidden" name="id_porquinho" >
-                        <input th:field="*{nome_meta}" class="mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta" required/><br>
+                        <input th:field="*{nome_meta}" class="form-control mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta" required/><br>
                         <span>Alcançado:</span>
                         <div class="d-flex">
                             <button type="button" class="btn btn-danger btn-operacao">-</button>
-                            <input th:field="*{vl_alcancado}" class="valorOperacao" name="vl_alcancado" type="number" >
+                            <input th:field="*{vl_alcancado}" class="form-control valorOperacao" name="vl_alcancado" type="number" >
                             <button type="button" class="btn btn-green btn-operacao">+</button>
                         </div>
                         <span>Necessário:</span>
                         <div class="d-flex">
                             <button type="button" class="btn btn-danger btn-operacao">-</button>
-                            <input th:field="*{vl_necessario}" class="valorOperacao" name="vl_necessario" type="number" required>
+                            <input th:field="*{vl_necessario}" class="form-control form-control valorOperacao" name="vl_necessario" type="number" required>
                             <button type="button"  class="btn btn-green btn-operacao">+</button>
                         </div>
                         <span>Data objetivo:</span>
                         <div class="d-flex justify-content-center">
-                            <input th:field="*{dt_meta}"  class="valorOperacao" name="dt_meta" type="date" required>
+                            <input th:field="*{dt_meta}"  class="form-control valorOperacao" name="dt_meta" type="date" required>
                         </div>
                         <div class="d-flex justify-content-center">
                             <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>
@@ -50,12 +50,12 @@
                 <form th:action="@{/persistirPorquinho}" method="post">
                     <div class="text-center">
                         <h1>Adicionar meta</h1><br>
-                        <input name="nome_meta" class="mb-3 nomeMeta" type="text" placeholder="nome meta" required/><br>
+                        <input name="nome_meta" class="form-control mb-3 nomeMeta" type="text" placeholder="nome meta" required/><br>
                         <span>Alcançado:</span>
 
                         <div class="d-flex">
                             <button type="button" class="btn btn-danger btn-operacao">-</button>
-                            <input name="vl_alcancado" class="valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
+                            <input name="vl_alcancado" class="form-control valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
                             <button class="btn btn-green btn-operacao">+</button>
                         </div>
 
@@ -63,13 +63,13 @@
 
                         <div class="d-flex">
                             <button type="button" class="btn btn-danger btn-operacao">-</button>
-                            <input name="vl_necessario" class="valorOperacao" step="0.01" min="0" placeholder="0,00" type="number" required>
+                            <input name="vl_necessario" class="form-control valorOperacao" step="0.01" min="0" placeholder="0,00" type="number" required>
                             <button class="btn btn-green btn-operacao">+</button>
                         </div>
 
                         <span>Data objetivo:</span>
                         <div class="d-flex justify-content-center">
-                            <input name="dt_meta" class="valorOperacao"  type="date" required>
+                            <input name="dt_meta" class="form-control valorOperacao"  type="date" required>
                         </div>
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>

@@ -43,8 +43,9 @@ public class CadastroController {
 
         try {
             usuarioService.salvar(usuario);
-            if (usuarioService.encontraPorLogin(usuario.getLogin()) != null) {
-                session.setAttribute("usuarioLogado", usuario);
+            Usuario usuarioDoCadastro = usuarioService.encontraPorLogin(usuario.getLogin());
+            if (usuarioDoCadastro != null) {
+                session.setAttribute("usuarioLogado", usuarioDoCadastro);
 
                 redirectAttributes.addFlashAttribute("alerta", true);
                 redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");

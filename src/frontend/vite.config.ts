@@ -17,7 +17,9 @@ export default defineConfig({
                 'ts/pages/auth/cadastro/cadastro': path.resolve(__dirname, 'src/ts/pages/auth/cadastro/cadastro.ts'),
                 'ts/pages/auth/login/login': path.resolve(__dirname, 'src/ts/pages/auth/login/login.ts'),
                 'ts/pages/admin/extrato/extrato': path.resolve(__dirname, 'src/ts/pages/admin/extrato/extrato.ts'),
+                'ts/pages/admin/orcamento/orcamento': path.resolve(__dirname, 'src/ts/pages/admin/orcamento/orcamento.ts'),
                 'scss/dashboard/dashboard': path.resolve(__dirname, 'src/scss/dashboard/dashboard.scss'),
+
             },
 
             // Isto remove os hashes dos nomes dos ficheiros.

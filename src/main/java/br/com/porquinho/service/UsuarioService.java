@@ -11,9 +11,13 @@ public class UsuarioService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final UsuarioRepository usuarioRepository;
+    private final OrcamentoService orcamentoService;
+    private final OrcamentoTipoGastoService orcamentoTipoGastoService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, OrcamentoService orcamentoService, OrcamentoTipoGastoService orcamentoTipoGastoService) {
         this.usuarioRepository = usuarioRepository;
+        this.orcamentoService = orcamentoService;
+        this.orcamentoTipoGastoService = orcamentoTipoGastoService;
     }
 
     public void salvar(Usuario usuario) {
@@ -22,7 +26,17 @@ public class UsuarioService {
         }
 
         usuario.setSenha(encoder.encode(usuario.getSenha()));
+
         usuarioRepository.salvar(usuario);
+        Usuario usuarioNoBanco = encontraPorLogin(usuario.getLogin());
+
+        if (usuarioNoBanco != null) {
+            var idUsuario = usuarioNoBanco.getId_usuario();
+            orcamentoService.criaOrcamentoDoMesPadrao(idUsuario);
+
+            var idOrcamentoAtual = orcamentoService.pegaOrcamentoAtual(idUsuario).getId_orcamento();
+            orcamentoTipoGastoService.criaOrcamentoTipoGastoPadrao(idOrcamentoAtual);
+        }
     }
 
     public void excluir(Usuario usuario) {

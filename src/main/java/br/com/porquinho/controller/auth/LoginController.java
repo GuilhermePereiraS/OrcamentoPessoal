@@ -33,7 +33,6 @@ public class LoginController {
             redirectAttributes.addFlashAttribute("tituloAlerta", "Deu ruim!");
             redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuario ou senha incorretos!");
             redirectAttributes.addFlashAttribute("iconeAlerta", "warning");
-
             return "redirect:/login";
         } else {
             redirectAttributes.addFlashAttribute("tituloAlerta", "Sucesso!");
