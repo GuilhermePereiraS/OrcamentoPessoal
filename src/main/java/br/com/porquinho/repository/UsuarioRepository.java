@@ -56,4 +56,9 @@ public class UsuarioRepository {
         String sql = "SELECT * FROM usuario WHERE login = ?";
         return !template.queryForList(sql, login).isEmpty();
     }
+
+    public Usuario encontraPorId(int id) {
+        String sql = "SELECT * FROM usuario WHERE id_usuario = ?";
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(Usuario.class), id);
+    }
 }

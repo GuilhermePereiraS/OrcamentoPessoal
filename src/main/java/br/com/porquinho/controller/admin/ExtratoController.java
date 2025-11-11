@@ -52,7 +52,8 @@ public class ExtratoController {
     public String registraTransacao(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
-        extratoService.registraTransacao(extratoForm, usuario);
+        extratoForm.setId_usuario(usuario.getId_usuario());
+        extratoService.registraTransacao(extratoForm);
 
         session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
@@ -67,7 +68,9 @@ public class ExtratoController {
         ObjectMapper mapper = new ObjectMapper();
         Item[] itens = mapper.readValue(listaItensJson, Item[].class);
 
-        extratoService.registraTransacao(extratoForm, usuario);
+
+        extratoForm.setId_usuario(usuario.getId_usuario());
+        extratoService.registraTransacao(extratoForm);
         session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
         for (Item item : itens) {

@@ -46,4 +46,9 @@ public class OrcamentoTipoGastoRepository {
         String sql = "SELECT COUNT(*) FROM orcamento_tipo_gasto WHERE id_orcamento = ? ";
         return template.queryForObject(sql, Integer.class, idOrcamento);
     }
+
+    public void excluir(int idOrcamento, int idTipoGasto) {
+        String sql = "DELETE FROM orcamento_tipo_gasto WHERE id_orcamento = ? AND id_tipo_gasto = ?";
+        template.update(sql, idOrcamento, idTipoGasto);
+    }
 }

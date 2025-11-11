@@ -78,4 +78,8 @@ public class UsuarioService {
         return usuarioRepository.temUsuarioComLogin(login);
     }
 
+    public Usuario encontraPorId(Integer id) {
+        return usuarioRepository.encontraPorId(id);
+    }
+
 }

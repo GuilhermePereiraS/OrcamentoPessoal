@@ -29,4 +29,15 @@ public class SiteController {
         }
     }
 
+//    @GetMapping("/error")
+//    public String erro(HttpSession session, E) {
+//        S
+//        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+//        if (usuarioLogado != null) {
+//            return "redirect:/admin/home";
+//        } else {
+//            return "redirect:/login";
+//        }
+//    }
+
 }

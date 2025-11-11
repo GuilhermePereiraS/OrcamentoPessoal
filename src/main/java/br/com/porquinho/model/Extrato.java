@@ -1,15 +1,12 @@
 package br.com.porquinho.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Extrato {
 
     private Integer id_extrato;
-    Integer Id_usuario ;
+    Integer id_usuario;
     Integer id_forma_pgmt;
     Integer id_tipo_gasto ;
     String  descricao ;
@@ -42,11 +39,11 @@ public class Extrato {
     }
 
     public Integer getId_usuario() {
-        return Id_usuario;
+        return id_usuario;
     }
 
     public void setId_usuario(Integer id_usuario) {
-        Id_usuario = id_usuario;
+        this.id_usuario = id_usuario;
     }
 
     public Integer getId_forma_pgmt() {

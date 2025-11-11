@@ -1,17 +1,13 @@
 package br.com.porquinho.service;
 
-import br.com.porquinho.dto.GastoPorTipoGasto;
 import br.com.porquinho.model.Extrato;
-import br.com.porquinho.model.OrcamentoTipoGasto;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.repository.ExtratoRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import br.com.porquinho.model.Extrato.tipoTransacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,22 +15,25 @@ import java.util.List;
 public class ExtratoService {
 
     private final ExtratoRepository extratoRepository;
-    private final OrcamentoTipoGastoService orcamentoTipoGastoService;
+    private final UsuarioService usuarioService;
 
-    ExtratoService(ExtratoRepository extratoRepository, OrcamentoTipoGastoService orcamentoTipoGastoService) {
+    ExtratoService(ExtratoRepository extratoRepository, UsuarioService usuarioService) {
         this.extratoRepository = extratoRepository;
-        this.orcamentoTipoGastoService = orcamentoTipoGastoService;
+        this.usuarioService = usuarioService;
     }
 
 
-    public void registraTransacao(Extrato extratoForm, Usuario usuario) {
+    public void registraTransacao(Extrato extratoForm) {
+        Usuario usuario = usuarioService.encontraPorId(extratoForm.getId_usuario());
+
         Extrato extrato = new Extrato();
-        Integer idExtrato = null;
+
+        extrato.setId_usuario(extratoForm.getId_usuario());
+        Integer idExtrato;
 
         extrato.setDescricao(extratoForm.getDescricao());
         extrato.setVl_transacao(extratoForm.getVl_transacao());
         extrato.setDt_transacao(extratoForm.getDt_transacao());
-        extrato.setId_usuario(usuario.getId_usuario());
 
         if (extratoForm.getTp_transacao().equals(tipoTransacao.ENTRADA.getOperacao())) {
             System.out.println("ENTRADA");
@@ -68,5 +67,6 @@ public class ExtratoService {
     public BigDecimal pegarGastoDoMes(Integer idUsuario) {
         return extratoRepository.pegarGastoDoMes(idUsuario, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
     }
+
 
 }

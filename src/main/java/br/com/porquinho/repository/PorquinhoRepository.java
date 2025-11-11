@@ -53,4 +53,9 @@ public class PorquinhoRepository {
             e.printStackTrace();
         }
     }
+
+    public Porquinho encontraPorId(Integer id) {
+        String sql = "SELECT * FROM porquinho WHERE id_porquinho = ?";
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(Porquinho.class), id);
+    }
 }

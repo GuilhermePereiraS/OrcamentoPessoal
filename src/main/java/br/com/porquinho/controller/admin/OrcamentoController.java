@@ -1,5 +1,6 @@
 package br.com.porquinho.controller.admin;
 
+import br.com.porquinho.dto.OrcamentoDTO;
 import br.com.porquinho.model.Orcamento;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.repository.OrcamentoRepository;
@@ -53,31 +54,47 @@ public class OrcamentoController {
         return "pages/admin/orcamento/orcamento";
     }
 
-    @PostMapping("/orcamento/atualizar")
-    public String atualizarOrcamento(@RequestParam Integer id_orcamento, @RequestParam(required = false) Integer id_tipo_gasto, @RequestParam BigDecimal limite, HttpSession session) {
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-
-        if (id_tipo_gasto != null) {
-            orcamentoTipoGastoRepository.atualizar(id_orcamento, id_tipo_gasto, limite);
-        } else {
-            orcamentoRepository.atualizar(id_orcamento, limite);
+    @PostMapping("/orcamento/acao")
+    public String acaoOrcamento(@RequestParam String acao, OrcamentoDTO orcamentoDTO) {
+        if (acao.equals("excluir")) {
+            return "forward:/admin/orcamento/excluir";
+        }
+        if (acao.equals("editar")) {
+            return "forward:/admin/orcamento/atualizar";
+        }
+        if (acao.equals("gravar")) {
+            return "forward:/admin/orcamento/salvar";
         }
         return "redirect:/admin/orcamento";
     }
 
-    @PostMapping("/orcamento")
-    public String salvarOrcamento(Model model, HttpSession session) {
+    @PostMapping("/orcamento/atualizar")
+    public String atualizarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
+        if (orcamentoDTO.getId_tipo_gasto() != null) {
+            orcamentoTipoGastoRepository.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+        } else {
+            orcamentoRepository.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getLimite());
+        }
+        return "redirect:/admin/orcamento";
+    }
+
+    @PostMapping("/orcamento/excluir")
+    public String excluirOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
+        if (orcamentoDTO.getId_tipo_gasto() != null) {
+            orcamentoTipoGastoRepository.excluir(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto());
+        }
+        return "redirect:/admin/orcamento";
+    }
+
+
+    @PostMapping("/orcamento/salvar")
+    public String salvarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         Orcamento orcamentoAtual = orcamentoService.pegaOrcamentoAtual(usuarioLogado.getId_usuario());
 
-        model.addAttribute("orcamentoDoMes", orcamentoAtual);
-        model.addAttribute("listaOrcamentoTipoGasto", orcamentoTipoGastoService.listarTodos(orcamentoAtual.getId_orcamento()));
-        model.addAttribute("listaTipoGasto", tipoGastoService.listarTodos());
-        model.addAttribute("gastoDoMes", extratoService.pegarGastoDoMes(usuarioLogado.getId_usuario()));
-        System.out.println(extratoService.pegarGastoDoMes(usuarioLogado.getId_usuario()));
-        model.addAttribute("gastoPorTipoGasto", extratoService.pegarGastosPorTipoGasto(usuarioLogado.getId_usuario()));
+        orcamentoTipoGastoService.salvar(orcamentoAtual.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
 
-        return "pages/admin/orcamento/orcamento";
+        return "redirect:/admin/orcamento";
     }
 
 }

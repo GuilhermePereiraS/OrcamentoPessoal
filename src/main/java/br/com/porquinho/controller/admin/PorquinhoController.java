@@ -3,6 +3,7 @@ package br.com.porquinho.controller.admin;
 import br.com.porquinho.model.Porquinho;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.PorquinhoService;
+import br.com.porquinho.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +17,11 @@ import java.util.List;
 public class PorquinhoController {
 
     private final PorquinhoService porquinhoService;
+    private final UsuarioService usuarioService;
 
-    public PorquinhoController(PorquinhoService porquinhoService) {
+    public PorquinhoController(PorquinhoService porquinhoService, UsuarioService usuarioService) {
         this.porquinhoService = porquinhoService;
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping("/persistirPorquinho")
@@ -38,8 +41,11 @@ public class PorquinhoController {
 
     @PostMapping("/excluirPorquinho")
     public String excluirPorquinho(Porquinho porquinho, HttpSession session) {
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        porquinho.setId_usuario(usuarioLogado.getId_usuario());
+
         porquinhoService.excluir(porquinho);
-        return "redirect:/porquinho";
+        return "redirect:/admin/porquinho";
     }
 
     @PostMapping("/acaoPorquinho")
@@ -49,12 +55,15 @@ public class PorquinhoController {
         } else if (acao.equals("editar")) {
             return "forward:/editarPorquinho";
         }
-        return "redirect:/porquinho";
+        return "redirect:admin/porquinho";
     }
 
     @GetMapping("/admin/porquinho")
     public String porquinho(HttpSession session, Model model) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        Usuario usuarioNoBanco = usuarioService.encontraPorLogin(usuarioLogado.getLogin());
+        session.setAttribute("usuarioLogado", usuarioNoBanco);
+
         model.addAttribute("porquinhoModel", new Porquinho());
 
         List<Porquinho> listaPorquinhos = porquinhoService.listarTodos(usuarioLogado.getId_usuario());

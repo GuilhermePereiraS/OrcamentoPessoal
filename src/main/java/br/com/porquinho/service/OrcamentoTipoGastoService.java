@@ -35,4 +35,7 @@ public class OrcamentoTipoGastoService {
     }
 
 
+    public void salvar(Integer idOrcamento, Integer idTipoGasto, BigDecimal limite) {
+        orcamentoTipoGastoRepository.salvar(idOrcamento, idTipoGasto, limite);
+    }
 }
