@@ -75,4 +75,8 @@ public class ExtratoService {
             extratoRepository.atualizaSaida(extrato);
         }
     }
+
+    public void excluir(Extrato extratoForm) {
+        extratoRepository.excluir(extratoForm.getId_extrato());
+    }
 }

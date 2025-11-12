@@ -53,7 +53,7 @@ public class ItemRepository {
     }
 
     public List<Item> pegaItemsPorExtrato(int idExtrato) {
-        String sql = "SELECT * FROM item WHERE id_item = ?";
+        String sql = "SELECT * FROM item WHERE id_extrato = ?";
         return template.query(sql, new BeanPropertyRowMapper<>(Item.class), idExtrato);
     }
 

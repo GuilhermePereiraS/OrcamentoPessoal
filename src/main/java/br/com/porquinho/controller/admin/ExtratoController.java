@@ -71,6 +71,12 @@ public class ExtratoController {
         };
     }
 
+        @PostMapping("/excluir")
+        public String excluir(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
+            extratoService.excluir(extratoForm);
+            return "redirect:/admin/extrato";
+        }
+
     @PostMapping("/registraTransacao")
     public String registraTransacaoDetalhada(Extrato extratoForm, @RequestParam String listaItensJson, HttpSession session) throws JsonProcessingException {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");

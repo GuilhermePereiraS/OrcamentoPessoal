@@ -53,36 +53,36 @@
                         <h1>Registrar transação</h1>
 
                         <span>Tipo de transação:</span><br>
-                        <select name="tp_transacao" onchange="exibeOpcoes()" required>
+                        <select class="form-select" name="tp_transacao" onchange="exibeOpcoes()" required>
                             <option value="">Selecione</option>
                             <option value="entrada">Entrada</option>
                             <option value="saida">Saída</option>
                         </select><br>
 
                         <span>Categoria:</span><br>
-                        <select name="id_tipo_gasto" id="categoria">
+                        <select class="form-select" name="id_tipo_gasto" id="categoria">
                             <option value="">Selecione</option>
                         </select><br>
 
                         <span>Forma de pagamento:</span><br>
-                        <select name="id_forma_pgmt" id="formaPagamento"required>
+                        <select class="form-select" name="id_forma_pgmt" id="formaPagamento"required>
                             <option value="">Selecione</option>
                         </select><br>
 
                         <span>Valor da transação:</span><br>
-                        <div class="d-flex justify-content-center gap-2">
+                        <div class=" d-flex justify-content-center gap-2">
                             <button type="button" class="btn btn-danger btn-operacao">-</button>
-                            <input name="vl_transacao" class="valorOperacao text-center" type="number" step="0.01" min="0" placeholder="0,00">
+                            <input name="vl_transacao" class="form-control valorOperacao text-center" type="number" step="0.01" min="0" placeholder="0,00">
                             <button class="btn btn-green btn-operacao">+</button>
                         </div>
 
                         <span>Data da transação:</span>
-                        <div class="d-flex justify-content-center">
-                            <input name="dt_transacao" class="valorOperacao"  type="date" required>
+                        <div class=" d-flex justify-content-center">
+                            <input name="dt_transacao" class="form-control valorOperacao"  type="date" required>
                         </div>
 
                         <span>Descrição</span><br>
-                        <input name="descricao" class="mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/><br>
+                        <input name="descricao" class=" form-control mb-3 descricaoTransacao text-center" type="text" placeholder="Ex: Mercado"/><br>
 
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button>
