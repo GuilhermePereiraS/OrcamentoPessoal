@@ -14,6 +14,20 @@ public class Extrato {
     LocalDate dt_transacao;
     String tp_transacao;
 
+    @Override
+    public String toString() {
+        return "Extrato{" +
+                "id_extrato=" + id_extrato +
+                ", id_usuario=" + id_usuario +
+                ", id_forma_pgmt=" + id_forma_pgmt +
+                ", id_tipo_gasto=" + id_tipo_gasto +
+                ", descricao='" + descricao + '\'' +
+                ", vl_transacao=" + vl_transacao +
+                ", dt_transacao=" + dt_transacao +
+                ", tp_transacao='" + tp_transacao + '\'' +
+                '}';
+    }
+
     public enum tipoTransacao {
         ENTRADA("entrada"),
         SAIDA("saida");

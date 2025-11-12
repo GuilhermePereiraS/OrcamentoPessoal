@@ -3,10 +3,8 @@ package br.com.porquinho.service;
 import br.com.porquinho.model.Item;
 import br.com.porquinho.repository.ItemRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +20,19 @@ public class ItemService {
         itemRepository.salvar(item.getId_extrato(), item.getNome(), item.getVl_unitario(), item.getVl_total(), item.getQuantidade());
     }
 
-    public Map<Integer, String> pegarItensPorExtratoJson() throws JsonProcessingException {
+    public Map<Integer, String> pegarTodosItensPorExtratoJson() throws JsonProcessingException {
         return itemRepository.pegarTodosItensPorExtrato();
+    }
+
+    public void atualizar(Item item) {
+        itemRepository.atualizar(item);
+    }
+
+    public List<Item> pegaItensPorExtrato(int idExtrato){
+        return itemRepository.pegaItemsPorExtrato(idExtrato);
+    }
+
+    public void excluir(Integer idItem) {
+        itemRepository.excluir(idItem);
     }
 }

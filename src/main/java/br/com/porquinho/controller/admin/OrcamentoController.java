@@ -56,16 +56,12 @@ public class OrcamentoController {
 
     @PostMapping("/orcamento/acao")
     public String acaoOrcamento(@RequestParam String acao, OrcamentoDTO orcamentoDTO) {
-        if (acao.equals("excluir")) {
-            return "forward:/admin/orcamento/excluir";
-        }
-        if (acao.equals("editar")) {
-            return "forward:/admin/orcamento/atualizar";
-        }
-        if (acao.equals("gravar")) {
-            return "forward:/admin/orcamento/salvar";
-        }
-        return "redirect:/admin/orcamento";
+        return switch (acao) {
+            case "excluir" -> "forward:/admin/orcamento/excluir";
+            case "editar" -> "forward:/admin/orcamento/atualizar";
+            case "gravar" -> "forward:/admin/orcamento/salvar";
+            default -> "redirect:/admin/orcamento";
+        };
     }
 
     @PostMapping("/orcamento/atualizar")

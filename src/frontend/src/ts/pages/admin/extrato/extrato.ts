@@ -1,6 +1,7 @@
 // ================== INTERFACES ==================
 interface Item {
     id_item?: number;
+    id_extrato?: number;
     nome: string;
     quantidade: number;
     vl_unitario: number;
@@ -17,11 +18,12 @@ interface Extrato {
 }
 
 // ================== FUNÇÃO COMUM PARA CRIAR ITEM ==================
-function criarItem(item: Item, container: HTMLDivElement, atualizarTotal: () => void) {
+function criarItem(item: Item, container: HTMLDivElement, atualizarTotalFn: () => void) {
     const div = document.createElement('div');
     div.classList.add('d-flex', 'gap-2', 'align-items-center', 'mb-2');
 
-    if (item.id_item) {
+    // hidden id_item
+    if (item.id_item !== undefined) {
         const hiddenId = document.createElement('input');
         hiddenId.type = 'hidden';
         hiddenId.name = 'id_item';
@@ -31,26 +33,26 @@ function criarItem(item: Item, container: HTMLDivElement, atualizarTotal: () => 
 
     const nomeInput = document.createElement('input');
     nomeInput.type = 'text';
-    nomeInput.value = item.nome;
+    nomeInput.value = item.nome ?? '';
     nomeInput.placeholder = 'Nome do item';
     nomeInput.classList.add('form-control');
 
     const quantidadeInput = document.createElement('input');
     quantidadeInput.type = 'number';
-    quantidadeInput.value = item.quantidade.toString();
+    quantidadeInput.value = (item.quantidade ?? 1).toString();
     quantidadeInput.min = '1';
     quantidadeInput.classList.add('form-control', 'w-25');
 
     const valorUnitarioInput = document.createElement('input');
     valorUnitarioInput.type = 'number';
-    valorUnitarioInput.value = item.vl_unitario?.toFixed(2) ?? '0.00';
+    valorUnitarioInput.value = (item.vl_unitario ?? 0).toFixed(2);
     valorUnitarioInput.min = '0';
     valorUnitarioInput.step = '0.01';
     valorUnitarioInput.classList.add('form-control', 'w-25');
 
     const vlTotalSpan = document.createElement('span');
     vlTotalSpan.classList.add('vlTotalItem');
-    vlTotalSpan.textContent = (item.vl_unitario * item.quantidade).toFixed(2);
+    vlTotalSpan.textContent = ((item.vl_unitario ?? 0) * (item.quantidade ?? 1)).toFixed(2);
 
     const btnRemover = document.createElement('button');
     btnRemover.type = 'button';
@@ -61,7 +63,7 @@ function criarItem(item: Item, container: HTMLDivElement, atualizarTotal: () => 
         const quantidade = parseInt(quantidadeInput.value) || 0;
         const valor = parseFloat(valorUnitarioInput.value) || 0;
         vlTotalSpan.textContent = (quantidade * valor).toFixed(2);
-        atualizarTotal();
+        atualizarTotalFn();
     };
 
     quantidadeInput.addEventListener('input', atualizar);
@@ -69,12 +71,36 @@ function criarItem(item: Item, container: HTMLDivElement, atualizarTotal: () => 
 
     btnRemover.addEventListener('click', () => {
         div.remove();
-        atualizarTotal();
+        atualizarTotalFn();
     });
 
     div.append(nomeInput, quantidadeInput, valorUnitarioInput, vlTotalSpan, btnRemover);
     container.appendChild(div);
-    atualizarTotal();
+}
+
+// ================== FUNÇÃO COMUM PARA ATUALIZAR TOTAL ==================
+function atualizarTotal(container: HTMLDivElement, totalEl: HTMLElement, inputItens: HTMLInputElement, inputVlTransacao: HTMLInputElement) {
+    let total = 0;
+    const itens: Item[] = [];
+
+    container.querySelectorAll('div').forEach(div => {
+        const inputs = Array.from(div.querySelectorAll('input')).filter(i => (i as HTMLInputElement).type !== 'hidden');
+        if (inputs.length < 2) return; // evita erros
+        const nome = (inputs[0] as HTMLInputElement).value;
+        const quantidade = parseInt((inputs[1] as HTMLInputElement).value) || 0;
+        const vl_unitario = parseFloat((inputs[2] as HTMLInputElement).value) || 0;
+        const vl_total = quantidade * vl_unitario;
+        total += vl_total;
+
+        const id_itemInput = div.querySelector<HTMLInputElement>('input[name="id_item"]');
+        const id_item = id_itemInput ? parseInt(id_itemInput.value) : undefined;
+
+        itens.push({ id_item, nome, quantidade, vl_unitario, vl_total });
+    });
+
+    totalEl.textContent = `R$ ${total.toFixed(2)}`;
+    inputVlTransacao.value = total.toFixed(2);
+    inputItens.value = JSON.stringify(itens);
 }
 
 // ================== MODAL ADICIONAR ==================
@@ -101,34 +127,16 @@ if (!inputVlTransacaoAdicionar) {
     formAdicionar.appendChild(inputVlTransacaoAdicionar);
 }
 
-// Botão de adicionar item
+// Adicionar item
 btnAdicionarItemAdicionar.addEventListener('click', () => {
-    criarItem({ nome: '', quantidade: 1, vl_unitario: 0, vl_total: 0 }, listaItensAdicionar, atualizarTotalAdicionar);
+    criarItem({ nome: '', quantidade: 1, vl_unitario: 0, vl_total: 0 }, listaItensAdicionar, () =>
+        atualizarTotal(listaItensAdicionar, totalAdicionar, inputItensAdicionar!, inputVlTransacaoAdicionar!)
+    );
 });
 
-// Atualiza total e hidden
-function atualizarTotalAdicionar() {
-    let total = 0;
-    const itens: Item[] = [];
-
-    listaItensAdicionar.querySelectorAll('div').forEach(div => {
-        const inputs = div.querySelectorAll('input');
-        const nome = (inputs[0] as HTMLInputElement).value;
-        const quantidade = parseInt((inputs[1] as HTMLInputElement).value) || 0;
-        const vl_unitario = parseFloat((inputs[2] as HTMLInputElement).value) || 0;
-        const vl_total = quantidade * vl_unitario;
-        total += vl_total;
-        itens.push({ nome, quantidade, vl_unitario, vl_total });
-    });
-
-    totalAdicionar.textContent = `R$ ${total.toFixed(2)}`;
-    inputVlTransacaoAdicionar!.value = total.toFixed(2);
-    inputItensAdicionar!.value = JSON.stringify(itens);
-}
-
-// Atualiza hidden antes de enviar
+// Atualiza total antes de enviar
 formAdicionar.addEventListener('submit', () => {
-    atualizarTotalAdicionar();
+    atualizarTotal(listaItensAdicionar, totalAdicionar, inputItensAdicionar!, inputVlTransacaoAdicionar!);
 });
 
 // ================== MODAL EDITAR ==================
@@ -157,69 +165,55 @@ if (!inputVlTransacaoEditar) {
 // Botão de adicionar item
 const btnAdicionarItemEditar = modalEditar.querySelector('#btnAdicionarItemEditar') as HTMLButtonElement;
 btnAdicionarItemEditar.addEventListener('click', () => {
-    criarItem({ nome: '', quantidade: 1, vl_unitario: 0, vl_total: 0 }, listaItensEditar, atualizarTotalEditar);
+    criarItem({ nome: '', quantidade: 1, vl_unitario: 0, vl_total: 0 }, listaItensEditar, () =>
+        atualizarTotal(listaItensEditar, totalEditar, inputItensEditar!, inputVlTransacaoEditar!)
+    );
 });
 
-// Atualiza total e hidden
-function atualizarTotalEditar() {
-    let total = 0;
-    const itens: Item[] = [];
-    listaItensEditar.querySelectorAll('div').forEach(div => {
-        const inputs = div.querySelectorAll('input');
-        const nome = (inputs[0] as HTMLInputElement).value;
-        const quantidade = parseInt((inputs[1] as HTMLInputElement).value) || 0;
-        const vl_unitario = parseFloat((inputs[2] as HTMLInputElement).value) || 0;
-        const vl_total = quantidade * vl_unitario;
-        total += vl_total;
-        itens.push({ nome, quantidade, vl_unitario, vl_total });
-    });
-
-    totalEditar.textContent = `R$ ${total.toFixed(2)}`;
-    inputVlTransacaoEditar!.value = total.toFixed(2);
-    inputItensEditar!.value = JSON.stringify(itens);
-}
-
-// Atualiza hidden antes de enviar
+// Atualiza total antes de enviar
 formEditar.addEventListener('submit', () => {
-    atualizarTotalEditar();
+    atualizarTotal(listaItensEditar, totalEditar, inputItensEditar!, inputVlTransacaoEditar!);
 });
 
+// Abrir modal editar
 document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(div => {
     div.addEventListener('click', () => {
         const elemento = div as HTMLElement;
 
-        // pega os atributos do extrato
-        const idExtrato = elemento.dataset.id_extrato!;
-        const descricao = elemento.dataset.descricao!;
-        const tpTransacao = elemento.dataset.tptransacao!;
-        const idTipoGasto = elemento.dataset.idtipogasto!;
-        const idFormaPgmt = elemento.dataset.idformapgmt!;
-        const itensJson = elemento.dataset.items;
+        const idExtrato = elemento.dataset.id_extrato ?? '';
+        const descricao = elemento.dataset.descricao ?? '';
+        const tpTransacao = elemento.dataset.tptransacao ?? 'saida';
+        const idTipoGasto = elemento.dataset.idtipogasto ?? '';
+        const idFormaPgmt = elemento.dataset.idformapgmt ?? '';
+        const itensJson = elemento.dataset.items ?? '[]';
 
-        // preenche os campos do modal
+        // Preenche campos do modal
         (document.getElementById('extratoId') as HTMLInputElement).value = idExtrato;
         (document.getElementById('descricaoEditar') as HTMLInputElement).value = descricao;
         (document.getElementById('tpTransacaoEditar') as HTMLSelectElement).value = tpTransacao;
+        (document.getElementById('tp_transacao_hidden') as HTMLSelectElement).value = tpTransacao;
         (document.getElementById('categoriaEditar') as HTMLSelectElement).value = idTipoGasto;
         (document.getElementById('formaPagamentoEditar') as HTMLSelectElement).value = idFormaPgmt;
 
-        // limpa os itens anteriores do modal
+        const campoItemsEditar = document.getElementById("campoItemsEditar") as HTMLDivElement;
+        campoItemsEditar.style.display = tpTransacao === "entrada" ? "none" : "block";
+
+        // Limpa itens anteriores
         listaItensEditar.innerHTML = '';
 
-        // se existir JSON, parseia e cria os itens
-        if (itensJson && itensJson.trim() !== '') {
-            try {
-                const itens: Item[] = JSON.parse(itensJson);
-                itens.forEach(item => {
-                    criarItem(item, listaItensEditar, atualizarTotalEditar);
-                });
-            } catch (e) {
-                console.error('Erro ao parsear JSON de itens:', e, itensJson);
-            }
+        // Cria itens do JSON com atualização de total
+        try {
+            const itens: Item[] = JSON.parse(itensJson);
+            itens.forEach(item => {
+                criarItem(item, listaItensEditar, () =>
+                    atualizarTotal(listaItensEditar, totalEditar, inputItensEditar!, inputVlTransacaoEditar!)
+                );
+            });
+        } catch (e) {
+            console.error('Erro ao parsear JSON de itens:', e, itensJson);
         }
 
-        // atualiza o total
-        atualizarTotalEditar();
+        // Atualiza total depois de criar todos os itens
+        atualizarTotal(listaItensEditar, totalEditar, inputItensEditar!, inputVlTransacaoEditar!);
     });
 });
-

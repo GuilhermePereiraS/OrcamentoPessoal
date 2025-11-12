@@ -109,4 +109,13 @@ public class ExtratoRepository {
         }, idUsuario, mes, ano);
     }
 
+    public void atualizaEntrada(Extrato extrato) {
+        String sql = "UPDATE extrato SET descricao = ?, vl_transacao = ? WHERE id_extrato = ?";
+        template.update(sql, extrato.getDescricao(), extrato.getVl_transacao(),extrato.getId_extrato());
+    }
+
+    public void atualizaSaida(Extrato extrato) {
+        String sql = "UPDATE extrato SET id_forma_pgmt = ?, id_tipo_gasto = ?, descricao = ?, vl_transacao = ? WHERE id_extrato = ?";
+        template.update(sql, extrato.getId_forma_pgmt(), extrato.getId_tipo_gasto(), extrato.getDescricao(), extrato.getVl_transacao(), extrato.getId_extrato());
+    }
 }

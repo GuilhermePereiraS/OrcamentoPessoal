@@ -52,7 +52,6 @@ public class ExtratoService {
             idExtrato = extratoRepository.salvarSaida(extrato);
         }
 
-        System.out.println("idExtrato: " + idExtrato);
         extratoForm.setId_extrato(idExtrato);
     }
 
@@ -69,4 +68,11 @@ public class ExtratoService {
     }
 
 
+    public void atualiza(Extrato extrato) {
+        if (extrato.getTp_transacao().equals(tipoTransacao.ENTRADA.getOperacao())) {
+            extratoRepository.atualizaEntrada(extrato);
+        } else {
+            extratoRepository.atualizaSaida(extrato);
+        }
+    }
 }

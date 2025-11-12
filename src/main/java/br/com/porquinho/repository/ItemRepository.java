@@ -27,7 +27,10 @@ public class ItemRepository {
         template.update(sql, id_extrato, nome, valorUnitario, valorTotal, quantidade);
     }
 
-
+    public void atualizar(Item item) {
+        String sql = "UPDATE item SET nome = ?, vl_unitario = ?, vl_total = ?, quantidade = ? WHERE id_item = ?";
+        template.update(sql, item.getNome(), item.getVl_unitario(), item.getVl_total(), item.getQuantidade(), item.getId_item());
+    }
 
     public HashMap<Integer, String> pegarTodosItensPorExtrato() throws JsonProcessingException {
         String sql = "SELECT * FROM item";
@@ -49,7 +52,13 @@ public class ItemRepository {
         return mapaItemJson;
     }
 
+    public List<Item> pegaItemsPorExtrato(int idExtrato) {
+        String sql = "SELECT * FROM item WHERE id_item = ?";
+        return template.query(sql, new BeanPropertyRowMapper<>(Item.class), idExtrato);
+    }
 
-
-
+    public void excluir(Integer idItem) {
+        String sql = "DELETE FROM item WHERE id_item = ?";
+        template.update(sql, idItem);
+    }
 }
