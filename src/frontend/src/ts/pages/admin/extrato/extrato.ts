@@ -109,6 +109,9 @@ const listaItensAdicionar = modalAdicionar.querySelector('#listaItensAdicionar')
 const totalAdicionar = modalAdicionar.querySelector('#totalTransacaoAdicionar') as HTMLElement;
 const btnAdicionarItemAdicionar = modalAdicionar.querySelector('#btnAdicionarItemAdicionar') as HTMLButtonElement;
 const formAdicionar = modalAdicionar.querySelector('form') as HTMLFormElement;
+const selectTpTransacao = document.getElementById('tpTransacaoAdicionar') as HTMLSelectElement;
+const camposRelativos = document.getElementById('camposRelativos') as HTMLDivElement;
+const campoItens = document.getElementById('campoItemsAdicionar') as HTMLDivElement;
 
 // Hidden inputs
 let inputItensAdicionar = modalAdicionar.querySelector<HTMLInputElement>('input[name="listaItensJson"]');
@@ -138,6 +141,12 @@ btnAdicionarItemAdicionar.addEventListener('click', () => {
 formAdicionar.addEventListener('submit', () => {
     atualizarTotal(listaItensAdicionar, totalAdicionar, inputItensAdicionar!, inputVlTransacaoAdicionar!);
 });
+
+selectTpTransacao.addEventListener('change', () => {
+    const tpTransacao = selectTpTransacao.value;
+    camposRelativos.style.display = tpTransacao === "entrada" ? "none" : "block";
+    campoItens.style.display = tpTransacao === "entrada" ? "none" : "block";
+})
 
 // ================== MODAL EDITAR ==================
 const modalEditar = document.getElementById('modalTransacaoEditar') as HTMLElement;
