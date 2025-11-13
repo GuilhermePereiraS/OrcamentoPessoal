@@ -29,23 +29,30 @@ public class PorquinhoService {
         this.usuarioService = usuarioService;
     }
 
-    public void salvar(Porquinho porquinho) {
+    public void salvar(Porquinho porquinho) throws Exception {
         Usuario usuario = usuarioService.encontraPorId(porquinho.getId_usuario());
 
         if (usuario.getSaldo() == null || porquinho.getVl_alcancado().compareTo(usuario.getSaldo()) > 0) {
-            System.out.println("saldo insuficiente");
-            return;
+            throw new Exception("Saldo insuficiente");
+        }
+
+        if (porquinho.getVl_alcancado().compareTo(porquinho.getVl_necessario()) > 0) {
+            throw new Exception("Valor alcançado não pode ser maior que o necessário");
         }
 
         porquinhoRepository.salvar(porquinho);
         extratoService.registraTransacao(criaExtratoPorquinho(porquinho));
     }
 
-    public void atualizar(Porquinho porquinho) {
+    public void atualizar(Porquinho porquinho) throws Exception {
         Usuario usuario = usuarioService.encontraPorId(porquinho.getId_usuario());
         Porquinho porquinhoNoBanco = encontraPorId(porquinho.getId_porquinho());
         BigDecimal valorTransacao;
         Extrato.tipoTransacao tipoTransacao;
+
+        if (porquinho.getVl_alcancado().compareTo(porquinho.getVl_necessario()) > 0) {
+            throw new Exception("Valor alcançado não pode ser maior que o necessário");
+        }
 
         if (porquinho.getVl_alcancado().compareTo(porquinhoNoBanco.getVl_alcancado()) > 0) {
             tipoTransacao = SAIDA;
@@ -54,19 +61,18 @@ public class PorquinhoService {
             tipoTransacao = ENTRADA;
             valorTransacao = porquinhoNoBanco.getVl_alcancado().subtract(porquinho.getVl_alcancado());
         } else {
-            return;
+            throw new Exception("Valor é o mesmo, não houve alteração");
         }
 
         if (usuario.getSaldo() == null || valorTransacao.compareTo(usuario.getSaldo()) > 0) {
-            System.out.println("saldo insuficiente");
-            return;
+            throw new Exception("Saldo insuficiente");
         }
 
         criaExtratoPorquinho(porquinho, valorTransacao, tipoTransacao);
         porquinhoRepository.atualizar(porquinho);
     }
 
-    public void excluir(Porquinho porquinho) {
+    public void excluir(Porquinho porquinho) throws Exception {
         porquinhoRepository.excluir(porquinho);
         Extrato extrato = criaExtratoPorquinho(porquinho, porquinho.getVl_alcancado(), ENTRADA);
         extratoService.registraTransacao(extrato);

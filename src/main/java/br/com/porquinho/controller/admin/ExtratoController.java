@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemDeErro;
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemSucesso;
 
 @Controller
 @RequestMapping("/admin/extrato")
@@ -48,17 +52,22 @@ public class ExtratoController {
     }
 
     @PostMapping
-    public String registraTransacao(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
+    public String registraTransacao(Extrato extratoForm, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
-        extratoForm.setId_usuario(usuario.getId_usuario());
-        extratoService.registraTransacao(extratoForm);
-
+        try {
+            extratoForm.setId_usuario(usuario.getId_usuario());
+            extratoService.registraTransacao(extratoForm);
+            criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
+        } catch (Exception e) {
+            criaMensagemDeErro(redirectAttributes, e.getMessage());
+        }
         session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
         // retorna a pagina de onde foi enviado o formulario
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
+
     }
 
     @PostMapping("/acaoExtrato")
@@ -72,34 +81,41 @@ public class ExtratoController {
     }
 
         @PostMapping("/excluir")
-        public String excluir(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
+        public String excluir(Extrato extratoForm, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) {
             Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+
             extratoService.excluir(extratoForm);
+            criaMensagemSucesso(redirectAttributes, "Extrato excluido com sucesso!");
+
             session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
             return "redirect:/admin/extrato";
         }
 
     @PostMapping("/registraTransacao")
-    public String registraTransacaoDetalhada(Extrato extratoForm, @RequestParam String listaItensJson, HttpSession session) throws JsonProcessingException {
+    public String registraTransacaoDetalhada(Extrato extratoForm, @RequestParam String listaItensJson, HttpSession session, RedirectAttributes redirectAttributes) throws JsonProcessingException {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
         ObjectMapper mapper = new ObjectMapper();
         Item[] itens = mapper.readValue(listaItensJson, Item[].class);
 
+        try {
+            extratoForm.setId_usuario(usuario.getId_usuario());
+            extratoService.registraTransacao(extratoForm);
 
-        extratoForm.setId_usuario(usuario.getId_usuario());
-        extratoService.registraTransacao(extratoForm);
-        session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
-
-        for (Item item : itens) {
-            item.setId_extrato(extratoForm.getId_extrato());
-            itemService.salvar(item);
+            for (Item item : itens) {
+                item.setId_extrato(extratoForm.getId_extrato());
+                itemService.salvar(item);
+            }
+            criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
+        } catch (Exception e) {
+            criaMensagemDeErro(redirectAttributes,e.getMessage());
         }
+        session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
         return "redirect:/admin/extrato";
     }
 
     @PostMapping("/atualizar")
-    public String atualizarExtrato(Extrato extratoForm, String listaItensJson, HttpSession session, HttpServletRequest request) throws JsonProcessingException {
+    public String atualizarExtrato(Extrato extratoForm, String listaItensJson, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JsonProcessingException {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -135,6 +151,7 @@ public class ExtratoController {
             itemService.atualizar(item);
         }
 
+        criaMensagemSucesso(redirectAttributes, "Extrato atualizado com sucesso!");
         return "redirect:/admin/extrato";
     }
 

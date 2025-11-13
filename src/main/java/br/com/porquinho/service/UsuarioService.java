@@ -56,17 +56,16 @@ public class UsuarioService {
         return encoder.matches(senhaInserida, hash);
     }
 
-    public Usuario encontraPorLoginEHashSenha(String login, String senhaForm) {
+    public Usuario encontraPorLoginEHashSenha(String login, String senhaForm) throws Exception {
         Usuario usuarioNoBanco = usuarioRepository.encontraPorLogin(login);
         if (usuarioNoBanco == null) {
-            return null;
+            throw new Exception("Usuario não encontrado.");
         }
         if (validaSenhaUsuarioUsuario(senhaForm, usuarioNoBanco.getSenha())) {
             return usuarioNoBanco;
         }
         else {
-            //msg
-            return null;
+            throw new Exception("Usuario ou senha incorretos");
         }
     }
 

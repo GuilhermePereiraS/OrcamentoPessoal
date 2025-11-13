@@ -10,8 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemDeAlerta;
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemSucesso;
 
 @Controller
 public class PorquinhoController {
@@ -25,26 +29,41 @@ public class PorquinhoController {
     }
 
     @PostMapping("/persistirPorquinho")
-    public String persistirPorquinho(Porquinho porquinho, HttpSession session) {
+    public String persistirPorquinho(Porquinho porquinho, HttpSession session, RedirectAttributes redirectAttributes) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
-        porquinhoService.salvar(porquinho);
+        try {
+            porquinhoService.salvar(porquinho);
+            criaMensagemSucesso(redirectAttributes, "Porquinho salvo com sucesso!");
+        } catch (Exception e) {
+            criaMensagemDeAlerta(redirectAttributes, e.getMessage());
+        }
         return "redirect:/admin/porquinho";
     }
 
     @PostMapping("/editarPorquinho")
-    public String editarPorquinho(Porquinho porquinho, HttpSession session) {
-        porquinhoService.atualizar(porquinho);
+    public String editarPorquinho(Porquinho porquinho, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
+            porquinhoService.atualizar(porquinho);
+            criaMensagemSucesso(redirectAttributes, "Porquinho editado com sucesso!");
+        } catch (Exception e) {
+            criaMensagemDeAlerta(redirectAttributes, e.getMessage());
+        }
         return "redirect:/admin/porquinho";
     }
 
     @PostMapping("/excluirPorquinho")
-    public String excluirPorquinho(Porquinho porquinho, HttpSession session) {
+    public String excluirPorquinho(Porquinho porquinho, HttpSession session, RedirectAttributes redirectAttributes) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
-        porquinhoService.excluir(porquinho);
+        try {
+            porquinhoService.excluir(porquinho);
+        } catch (Exception e) {
+            criaMensagemDeAlerta(redirectAttributes, e.getMessage());
+        }
+        criaMensagemSucesso(redirectAttributes, "Porquinho excluido com sucesso!");
         return "redirect:/admin/porquinho";
     }
 

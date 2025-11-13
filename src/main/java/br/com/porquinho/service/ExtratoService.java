@@ -25,7 +25,7 @@ public class ExtratoService {
     }
 
 
-    public void registraTransacao(Extrato extratoForm) {
+    public void registraTransacao(Extrato extratoForm) throws Exception {
         Usuario usuario = usuarioService.encontraPorId(extratoForm.getId_usuario());
 
         Extrato extrato = new Extrato();
@@ -48,8 +48,7 @@ public class ExtratoService {
             extrato.setId_forma_pgmt(extratoForm.getId_forma_pgmt());
             System.out.println("saida");
             if (usuario.getSaldo() == null || extratoForm.getVl_transacao().compareTo(usuario.getSaldo()) > 0) {
-                // alguma mensagem de erro
-                return;
+                throw new Exception("Saldo insuficiente");
             }
             idExtrato = extratoRepository.salvarSaida(extrato);
         }
