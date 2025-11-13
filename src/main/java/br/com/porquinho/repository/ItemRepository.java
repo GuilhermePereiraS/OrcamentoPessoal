@@ -61,4 +61,9 @@ public class ItemRepository {
         String sql = "DELETE FROM item WHERE id_item = ?";
         template.update(sql, idItem);
     }
+
+    public void excluirTodosVinculados(Integer idExtrato) {
+        String sql = "DELETE FROM item WHERE id_extrato = ?";
+        template.update(sql, idExtrato);
+    }
 }

@@ -110,7 +110,7 @@ const totalAdicionar = modalAdicionar.querySelector('#totalTransacaoAdicionar') 
 const btnAdicionarItemAdicionar = modalAdicionar.querySelector('#btnAdicionarItemAdicionar') as HTMLButtonElement;
 const formAdicionar = modalAdicionar.querySelector('form') as HTMLFormElement;
 const selectTpTransacao = document.getElementById('tpTransacaoAdicionar') as HTMLSelectElement;
-const camposRelativos = document.getElementById('camposRelativos') as HTMLDivElement;
+const camposRelativos = document.getElementById('camposRelativosAdicionar') as HTMLDivElement;
 const campoItens = document.getElementById('campoItemsAdicionar') as HTMLDivElement;
 
 // Hidden inputs
@@ -204,8 +204,8 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         (document.getElementById('categoriaEditar') as HTMLSelectElement).value = idTipoGasto;
         (document.getElementById('formaPagamentoEditar') as HTMLSelectElement).value = idFormaPgmt;
 
-        const campoItemsEditar = document.getElementById("campoItemsEditar") as HTMLDivElement;
-        campoItemsEditar.style.display = tpTransacao === "entrada" ? "none" : "block";
+        const camposRelativos = document.getElementById("camposRelativosEditar") as HTMLDivElement;
+        camposRelativos.style.display = tpTransacao === "entrada" ? "none" : "block";
 
         // Limpa itens anteriores
         listaItensEditar.innerHTML = '';

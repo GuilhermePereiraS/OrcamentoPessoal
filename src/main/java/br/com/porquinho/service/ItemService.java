@@ -35,4 +35,8 @@ public class ItemService {
     public void excluir(Integer idItem) {
         itemRepository.excluir(idItem);
     }
+
+    public void excluirTodosVinculados(Integer idExtrato) {
+        itemRepository.excluirTodosVinculados(idExtrato);
+    }
 }

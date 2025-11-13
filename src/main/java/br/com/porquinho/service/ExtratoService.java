@@ -16,10 +16,12 @@ public class ExtratoService {
 
     private final ExtratoRepository extratoRepository;
     private final UsuarioService usuarioService;
+    private final ItemService itemService;
 
-    ExtratoService(ExtratoRepository extratoRepository, UsuarioService usuarioService) {
+    ExtratoService(ExtratoRepository extratoRepository, UsuarioService usuarioService, ItemService itemService) {
         this.extratoRepository = extratoRepository;
         this.usuarioService = usuarioService;
+        this.itemService = itemService;
     }
 
 
@@ -77,6 +79,7 @@ public class ExtratoService {
     }
 
     public void excluir(Extrato extratoForm) {
+        itemService.excluirTodosVinculados(extratoForm.getId_extrato());
         extratoRepository.excluir(extratoForm.getId_extrato());
     }
 }

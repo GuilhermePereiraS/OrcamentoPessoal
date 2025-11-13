@@ -73,7 +73,9 @@ public class ExtratoController {
 
         @PostMapping("/excluir")
         public String excluir(Extrato extratoForm, HttpSession session, HttpServletRequest request) {
+            Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
             extratoService.excluir(extratoForm);
+            session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
             return "redirect:/admin/extrato";
         }
 
