@@ -19,13 +19,11 @@
                       <div class="text-center">
                           <h1>Nova Transação</h1>
 
-                          <input type="hidden" name="vl_transacao">
+                          <input type="hidden" name="vl_transacao" id="inputVlTransacaoHidden">
 
-                          <!-- Descrição -->
                           <span>Descrição:</span><br>
                           <input type="text" name="descricao" id="descricaoAdicionar" class="form-control mb-3" placeholder="Digite a descrição" required>
 
-                          <!-- Tipo de transação -->
                           <span>Tipo de transação:</span><br>
                           <select name="tp_transacao" id="tpTransacaoAdicionar" required class="form-select mb-3">
                               <option value="">Selecione</option>
@@ -34,14 +32,12 @@
                           </select>
 
                           <div id="camposRelativosAdicionar">
-                              <!-- Categoria -->
                               <span>Categoria:</span><br>
                               <select name="id_tipo_gasto" id="categoriaAdicionar" required class="form-select mb-3">
                                   <option value="">Selecione</option>
-                                  <option th:each="cat : ${listaTipoGasto}" th:value="${cat.id_tipo_gasto}" th:text="${cat.descricao}"></option>
+                                  <option th:each="tipoGasto : ${listaTipoGasto}" th:value="${tipoGasto.id_tipo_gasto}" th:text="${tipoGasto.descricao}"></option>
                               </select>
 
-                              <!-- Forma de Pagamento -->
                               <span>Forma de pagamento:</span><br>
                               <select name="id_forma_pgmt" id="formaPagamentoAdicionar" required class="form-select mb-3">
                                   <option value="">Selecione</option>
@@ -49,15 +45,12 @@
                               </select>
                           </div>
 
-
-                          <!-- Data da transação -->
                           <span>Data da transação:</span><br>
                           <input type="date" name="dt_transacao" id="dtTransacaoAdicionar" class="form-control mb-3" required>
 
                           <hr class="my-3">
 
                           <div id="campoItemsAdicionar">
-                              <!-- Itens -->
                               <h3 class="mt-3">Itens</h3>
                               <div id="listaItensAdicionar" class="d-flex flex-column gap-2"></div>
                               <button type="button" class="btn btn-green mb-3" id="btnAdicionarItemAdicionar">Adicionar Item</button>
@@ -65,9 +58,14 @@
                               <hr class="my-3">
                           </div>
 
-                          <div class="d-flex justify-content-between align-items-center fs-4 mt-3">
+                          <div id="campoTextoTotalTransacao" class="justify-content-between align-items-center fs-4 mt-3">
                               <strong>Total:</strong>
                               <span id="totalTransacaoAdicionar">R$ 0,00</span>
+                          </div>
+
+                          <div id="campoValorTotalTransacao" style="display: none">
+                              <span class="fs-4">Valor da transação:</span>
+                              <input name="vl_transacao" step="0.01" min="0" placeholder="0,00" type="number" required class="form-control text-center">
                           </div>
 
                           <div class="d-flex justify-content-center mt-3">
@@ -108,7 +106,7 @@
                               <!-- Categoria -->
                               <span>Categoria:</span><br>
                               <select name="id_tipo_gasto" id="categoriaEditar" required class="form-select mb-3">
-                                  <option th:each="cat : ${listaTipoGasto}" th:value="${cat.id_tipo_gasto}" th:text="${cat.descricao}"></option>
+                                  <option th:each="tipoGasto : ${listaTipoGasto}" th:value="${tipoGasto.id_tipo_gasto}" th:text="${tipoGasto.descricao}"></option>
                               </select>
 
                               <!-- Forma de Pagamento -->
@@ -130,7 +128,7 @@
                               </div>
                           </div>
 
-                          <div class="d-flex justify-content-between align-items-center fs-4 mt-3">
+                          <div class="justify-content-between align-items-center fs-4 mt-3">
                               <strong>Total:</strong>
                               <span id="totalTransacaoEditar">R$ 0,00</span>
                           </div>

@@ -112,6 +112,11 @@ const formAdicionar = modalAdicionar.querySelector('form') as HTMLFormElement;
 const selectTpTransacao = document.getElementById('tpTransacaoAdicionar') as HTMLSelectElement;
 const camposRelativos = document.getElementById('camposRelativosAdicionar') as HTMLDivElement;
 const campoItens = document.getElementById('campoItemsAdicionar') as HTMLDivElement;
+const campoTextoTotalTransacao = document.getElementById('campoTextoTotalTransacao') as HTMLDivElement
+const campoInputTotalTransacao = document.getElementById('campoValorTotalTransacao') as HTMLDivElement
+const campoInputCategoria = document.getElementById('categoriaAdicionar') as HTMLInputElement
+const campoInputFormaPagamento = document.getElementById('formaPagamentoAdicionar') as HTMLInputElement
+const campoInputVlTransacaoHidden = document.getElementById('inputVlTransacaoHidden') as HTMLInputElement
 
 // Hidden inputs
 let inputItensAdicionar = modalAdicionar.querySelector<HTMLInputElement>('input[name="listaItensJson"]');
@@ -144,8 +149,18 @@ formAdicionar.addEventListener('submit', () => {
 
 selectTpTransacao.addEventListener('change', () => {
     const tpTransacao = selectTpTransacao.value;
+    const inputVlTotalTransacao = campoInputTotalTransacao.querySelector("input") as HTMLInputElement;
+
     camposRelativos.style.display = tpTransacao === "entrada" ? "none" : "block";
     campoItens.style.display = tpTransacao === "entrada" ? "none" : "block";
+    campoTextoTotalTransacao.classList.add( tpTransacao === "entrada" ? "d-none" : "")
+    campoInputTotalTransacao.style.display = tpTransacao === "saida" ? "none" : "block";
+
+    campoInputCategoria.disabled = tpTransacao === "entrada";
+    campoInputFormaPagamento.disabled = tpTransacao === "entrada";
+    campoInputVlTransacaoHidden.disabled = tpTransacao === "entrada";
+    inputVlTotalTransacao.disabled = tpTransacao === "saida";
+
 })
 
 // ================== MODAL EDITAR ==================
