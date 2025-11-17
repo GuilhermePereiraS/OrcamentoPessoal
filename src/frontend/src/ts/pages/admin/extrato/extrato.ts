@@ -153,13 +153,18 @@ selectTpTransacao.addEventListener('change', () => {
 
     camposRelativos.style.display = tpTransacao === "entrada" ? "none" : "block";
     campoItens.style.display = tpTransacao === "entrada" ? "none" : "block";
-    campoTextoTotalTransacao.classList.add( tpTransacao === "entrada" ? "d-none" : "")
     campoInputTotalTransacao.style.display = tpTransacao === "saida" ? "none" : "block";
 
     campoInputCategoria.disabled = tpTransacao === "entrada";
     campoInputFormaPagamento.disabled = tpTransacao === "entrada";
     campoInputVlTransacaoHidden.disabled = tpTransacao === "entrada";
     inputVlTotalTransacao.disabled = tpTransacao === "saida";
+
+    if (tpTransacao === "entrada") {
+        campoTextoTotalTransacao.classList.add("d-none")
+    } else if (tpTransacao === "saida") {
+        campoTextoTotalTransacao.classList.add("d-block")
+    }
 
 })
 
