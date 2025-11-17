@@ -36,4 +36,9 @@ public class OrcamentoRepository {
         String sql = "SELECT * FROM Orcamento orc WHERE id_usuario = ? AND orc.mes = ? AND orc.ano = ?";
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Orcamento.class), idUsuario, mesAtual, anoAtual);
     }
+
+    public Orcamento pegaOrcamentoPorId(int idOrcamento) {
+        String sql =  "SELECT * FROM Orcamento orc WHERE id_orcamento = ?";
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(Orcamento.class), idOrcamento);
+    }
 }

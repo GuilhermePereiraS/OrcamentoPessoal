@@ -1,5 +1,6 @@
 package br.com.porquinho.service;
 
+import br.com.porquinho.model.Orcamento;
 import br.com.porquinho.model.OrcamentoTipoGasto;
 import br.com.porquinho.repository.OrcamentoTipoGastoRepository;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import java.util.List;
 public class OrcamentoTipoGastoService {
 
     private final OrcamentoTipoGastoRepository orcamentoTipoGastoRepository;
+    private final OrcamentoService orcamentoService;
 
-    public OrcamentoTipoGastoService(OrcamentoTipoGastoRepository orcamentoTipoGastoRepository) {
+    public OrcamentoTipoGastoService(OrcamentoTipoGastoRepository orcamentoTipoGastoRepository, OrcamentoService orcamentoService) {
         this.orcamentoTipoGastoRepository = orcamentoTipoGastoRepository;
+        this.orcamentoService = orcamentoService;
     }
 
     public void criaOrcamentoTipoGastoPadrao(int idOrcamento) {
@@ -32,10 +35,33 @@ public class OrcamentoTipoGastoService {
 
     public void atualizar(Integer idOrcamento, Integer idTipoGasto, BigDecimal limite) {
         orcamentoTipoGastoRepository.atualizar(idOrcamento, idTipoGasto, limite);
+
+        ajustarLimiteMensalSeNecessario(idOrcamento, limite);
     }
 
+    public BigDecimal pegaSomaDosLimites(Integer idOrcamento) {
+        return orcamentoTipoGastoRepository.pegaSomaDosLimites(idOrcamento);
+    }
 
-    public void salvar(Integer idOrcamento, Integer idTipoGasto, BigDecimal limite) {
+    public void salvar(int idOrcamento, Integer idTipoGasto, BigDecimal limite) {
         orcamentoTipoGastoRepository.salvar(idOrcamento, idTipoGasto, limite);
+
+        ajustarLimiteMensalSeNecessario(idOrcamento, limite);
+    }
+
+    public void excluir(Integer idOrcamento, Integer idTipoGasto) {
+        orcamentoTipoGastoRepository.excluir(idOrcamento, idTipoGasto);
+    }
+
+    private void ajustarLimiteMensalSeNecessario(int idOrcamento, BigDecimal limite) {
+        Orcamento orcamentoDoMes = orcamentoService.pegaOrcamentoPorId(idOrcamento);
+
+        BigDecimal valorSomaDosLimitesTipoGasto = pegaSomaDosLimites(orcamentoDoMes.getId_orcamento());
+        BigDecimal limiteOrcamentoDoMes = orcamentoDoMes.getLimite_mensal();
+
+        if (valorSomaDosLimitesTipoGasto.compareTo(limiteOrcamentoDoMes) > 0) {
+            BigDecimal limiteOrcamentoMensalNovo = limiteOrcamentoDoMes.add(limite);
+            orcamentoService.atualizar(orcamentoDoMes.getId_orcamento(), limiteOrcamentoMensalNovo);
+        }
     }
 }

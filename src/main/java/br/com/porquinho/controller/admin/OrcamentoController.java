@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
-
 @Controller
 @RequestMapping("/admin")
 public class OrcamentoController {
@@ -27,16 +25,12 @@ public class OrcamentoController {
     private final OrcamentoTipoGastoService orcamentoTipoGastoService;
     private final TipoGastoService tipoGastoService;
     private final ExtratoService extratoService;
-    private final OrcamentoTipoGastoRepository orcamentoTipoGastoRepository;
-    private final OrcamentoRepository orcamentoRepository;
 
-    public OrcamentoController(OrcamentoService orcamentoService, OrcamentoTipoGastoService orcamentoTipoGastoService, TipoGastoService tipoGastoService, ExtratoService extratoService, OrcamentoTipoGastoRepository orcamentoTipoGastoRepository, OrcamentoRepository orcamentoRepository) {
+    public OrcamentoController(OrcamentoService orcamentoService, OrcamentoTipoGastoService orcamentoTipoGastoService, TipoGastoService tipoGastoService, ExtratoService extratoService) {
         this.orcamentoService = orcamentoService;
         this.orcamentoTipoGastoService = orcamentoTipoGastoService;
         this.tipoGastoService = tipoGastoService;
         this.extratoService = extratoService;
-        this.orcamentoTipoGastoRepository = orcamentoTipoGastoRepository;
-        this.orcamentoRepository = orcamentoRepository;
     }
 
     @GetMapping("/orcamento")
@@ -67,9 +61,9 @@ public class OrcamentoController {
     @PostMapping("/orcamento/atualizar")
     public String atualizarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
         if (orcamentoDTO.getId_tipo_gasto() != null) {
-            orcamentoTipoGastoRepository.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+            orcamentoTipoGastoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
         } else {
-            orcamentoRepository.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getLimite());
+            orcamentoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getLimite());
         }
         return "redirect:/admin/orcamento";
     }
@@ -77,7 +71,7 @@ public class OrcamentoController {
     @PostMapping("/orcamento/excluir")
     public String excluirOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
         if (orcamentoDTO.getId_tipo_gasto() != null) {
-            orcamentoTipoGastoRepository.excluir(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto());
+            orcamentoTipoGastoService.excluir(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto());
         }
         return "redirect:/admin/orcamento";
     }
@@ -86,9 +80,9 @@ public class OrcamentoController {
     @PostMapping("/orcamento/salvar")
     public String salvarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        Orcamento orcamentoAtual = orcamentoService.pegaOrcamentoAtual(usuarioLogado.getId_usuario());
+        Orcamento orcamentoDoMes = orcamentoService.pegaOrcamentoAtual(usuarioLogado.getId_usuario());
 
-        orcamentoTipoGastoService.salvar(orcamentoAtual.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+        orcamentoTipoGastoService.salvar(orcamentoDoMes.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
 
         return "redirect:/admin/orcamento";
     }

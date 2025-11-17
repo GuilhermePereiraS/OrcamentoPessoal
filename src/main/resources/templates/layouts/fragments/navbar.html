@@ -16,7 +16,7 @@
 
             <ul class="navbar-nav ml-auto align-items-center">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Usuário: <span th:text="${session.usuarioLogado.getNome()}"/>
                     </a>
 
@@ -25,14 +25,16 @@
                     </ul>
                 </li>
 
+
+
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Saldo: R$
                         <span th:if="${session.usuarioLogado.getSaldo() != null}">
-                        <span th:text="${session.usuarioLogado.getSaldo()}"></span>
-
+                            <span th:text="${session.usuarioLogado.getSaldo()}"></span>
                         </span>
-                            <span th:unless="${session.usuarioLogado.getSaldo() != null}">
+
+                        <span th:unless="${session.usuarioLogado.getSaldo() != null}">
                             <span>0,00</span>
                         </span>
                     </a>
@@ -40,6 +42,12 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalTransacao">Registrar transação</a></li>
                     </ul>
+                </li>
+
+                <li>
+                    <span th:if="${session.mesAtual != null && session.anoAtual != null}">
+                        <span th:text="'[  ' + ${session.mesAtual} + '/' + ${session.anoAtual} + '  ]'"></span>
+                    </span>
                 </li>
             </ul>
         </div>

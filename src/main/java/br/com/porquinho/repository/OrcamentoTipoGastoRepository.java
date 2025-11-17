@@ -51,4 +51,9 @@ public class OrcamentoTipoGastoRepository {
         String sql = "DELETE FROM orcamento_tipo_gasto WHERE id_orcamento = ? AND id_tipo_gasto = ?";
         template.update(sql, idOrcamento, idTipoGasto);
     }
+
+    public BigDecimal pegaSomaDosLimites(Integer idOrcamento) {
+        String sql = "SELECT SUM(limite) FROM orcamento_tipo_gasto orcTpGasto WHERE id_orcamento = ?";
+        return template.queryForObject(sql, BigDecimal.class, idOrcamento);
+    }
 }

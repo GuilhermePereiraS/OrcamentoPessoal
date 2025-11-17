@@ -19,7 +19,7 @@ public class TipoGastoRepository {
     public List<TipoGasto> listarTodos() {
         try {
             String sql =
-                    "SELECT * FROM tipo_gasto";
+                    "SELECT * FROM tipo_gasto ORDER BY descricao";
             return template.query(sql, new BeanPropertyRowMapper<>(TipoGasto.class));
         } catch(Exception e) {
             e.printStackTrace();

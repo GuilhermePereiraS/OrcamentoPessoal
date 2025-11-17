@@ -29,4 +29,13 @@ public class OrcamentoService {
         int anoAtual = LocalDate.now().getYear();
         return orcamentoRepository.pegaOrcamentoAtual(idUsuario, mesAtual, anoAtual);
     }
+
+    public void atualizar(int idOrcamento, BigDecimal limiteMensal) {
+        orcamentoRepository.atualizar(idOrcamento, limiteMensal);
+    }
+
+    public Orcamento pegaOrcamentoPorId(int idOrcamento) {
+        return orcamentoRepository.pegaOrcamentoPorId(idOrcamento);
+    }
+
 }

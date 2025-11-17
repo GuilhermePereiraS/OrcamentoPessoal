@@ -12,6 +12,8 @@ import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
+import java.time.LocalDate;
+
 import static br.com.porquinho.util.PorquinhoUtils.criaMensagemDeErro;
 import static br.com.porquinho.util.PorquinhoUtils.criaMensagemSucesso;
 
@@ -33,6 +35,8 @@ public class LoginController {
         try {
             Usuario usuarioEncotrado = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
             session.setAttribute("usuarioLogado", usuarioEncotrado);
+            session.setAttribute("mesAtual", LocalDate.now().getMonthValue());
+            session.setAttribute("anoAtual", LocalDate.now().getYear());
             criaMensagemSucesso(redirectAttributes, "Usuário logado com sucesso!");
             return "redirect:/admin/home";
         } catch (Exception e) {
