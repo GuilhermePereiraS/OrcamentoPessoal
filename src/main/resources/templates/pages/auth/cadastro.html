@@ -20,7 +20,7 @@
                 <form th:action="@{/persistir}" th:object="${usuario}" method="post" id="cadastro-form">            
                     
                     <div class="mb-3">
-                        <label class="text-white">Nome</label>
+                        <label class="text-black">Nome</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{nome}" type="text" class="form-control" placeholder="" >
                             <label>Nome</label>
@@ -28,8 +28,7 @@
                     </div>
                 
                     <div class="mb-3">
-                        <label class="form-label"><small>O login deve ter no minimo 4 digitos</small></label> <br>
-                        <label class="text-white">Login</label>
+                        <label class="text-black">Login</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{login}" type="text" class="form-control" placeholder="" >
                             <label>Insira seu login</label>
@@ -37,8 +36,7 @@
                     </div>
         
                     <div class="mb-3">
-                        <label class="form-label"><small>A senha deve ter conter caracteres especiais e no minimo 5 digitos</small></label>
-                        <label class="text-white">Senha</label>
+                        <label class="text-black">Senha</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{senha}" type="password" class="form-control" placeholder="" >
                             <label>Insira sua senha</label>
@@ -46,7 +44,7 @@
                     </div>
         
                     <div class="mb-3">
-                        <label class="text-white">Nasc.</label>
+                        <label class="text-black">Nasc.</label>
                         <div class="form-floating mb-5">
                             <input th:field="*{dt_nascimento}" type="date" class="form-control" placeholder="" >
                             <label>Nasc</label>

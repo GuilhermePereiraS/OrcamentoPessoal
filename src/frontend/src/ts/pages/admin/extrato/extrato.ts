@@ -163,7 +163,7 @@ selectTpTransacao.addEventListener('change', () => {
     if (tpTransacao === "entrada") {
         campoTextoTotalTransacao.classList.add("d-none")
     } else if (tpTransacao === "saida") {
-        campoTextoTotalTransacao.classList.add("d-block")
+        campoTextoTotalTransacao.classList.remove("d-none")
     }
 
 })
@@ -210,6 +210,7 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         const elemento = div as HTMLElement;
 
         const idExtrato = elemento.dataset.id_extrato ?? '';
+        let vlTotalTransacao = elemento.dataset.vltransacao ?? '';
         const descricao = elemento.dataset.descricao ?? '';
         const tpTransacao = elemento.dataset.tptransacao ?? 'saida';
         const idTipoGasto = elemento.dataset.idtipogasto ?? '';
@@ -223,9 +224,16 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         (document.getElementById('tp_transacao_hidden') as HTMLSelectElement).value = tpTransacao;
         (document.getElementById('categoriaEditar') as HTMLSelectElement).value = idTipoGasto;
         (document.getElementById('formaPagamentoEditar') as HTMLSelectElement).value = idFormaPgmt;
-
         const camposRelativos = document.getElementById("camposRelativosEditar") as HTMLDivElement;
+        const selectCategoria = document.getElementById("categoriaEditar") as HTMLSelectElement;
+        const selectFormaPgmt = document.getElementById("formaPagamentoEditar") as HTMLSelectElement;
+        const spantotalTransacaoEditar = document.getElementById('totalTransacaoEditar') as HTMLInputElement;
+
+        selectCategoria.disabled = tpTransacao === "entrada";
+        selectFormaPgmt.disabled = tpTransacao === "entrada";
+
         camposRelativos.style.display = tpTransacao === "entrada" ? "none" : "block";
+
 
         // Limpa itens anteriores
         listaItensEditar.innerHTML = '';
@@ -233,11 +241,16 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         // Cria itens do JSON com atualização de total
         try {
             const itens: Item[] = JSON.parse(itensJson);
+            if (itens.length == 0) {
+                spantotalTransacaoEditar.innerText = "R$ " + vlTotalTransacao
+                return;
+            }
             itens.forEach(item => {
                 criarItem(item, listaItensEditar, () =>
                     atualizarTotal(listaItensEditar, totalEditar, inputItensEditar!, inputVlTransacaoEditar!)
                 );
             });
+
         } catch (e) {
             console.error('Erro ao parsear JSON de itens:', e, itensJson);
         }

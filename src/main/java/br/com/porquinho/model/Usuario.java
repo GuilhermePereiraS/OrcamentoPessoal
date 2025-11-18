@@ -22,7 +22,6 @@ public class Usuario  implements Serializable {
 
     @NotNull(message = "A senha é obrigatória")
     @Size(min = 5, message = "A senha deve ter no mínimo 5 caracteres")
-//    @Pattern(regexp = ".*[^a-zA-Z0-9].*", message = "A senha deve conter pelo menos um caractere especial")
     private String senha;
 
     @NotNull(message = "O nome é obrigatório")

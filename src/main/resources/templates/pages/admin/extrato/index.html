@@ -88,7 +88,7 @@
                           <h1>Editar Transação</h1>
 
                           <input type="hidden" id="extratoId" name="id_extrato">
-                          <input type="hidden" name="vl_transacao">
+                          <input type="hidden" id="vl_transacao_hidden" name="vl_transacao">
                           <input type="hidden" id ="tp_transacao_hidden" name="tp_transacao">
 
                           <!-- Descrição -->
@@ -155,7 +155,7 @@
                   data-idtipogasto=${extrato.id_tipo_gasto},
                   data-idformapgmt=${extrato.id_forma_pgmt},
                   data-items=${listaItemsPorExtratoJson[extrato.id_extrato]},
-                  data-vlTransacao=${extrato.getVl_transacao()}",>
+                  data-vlTransacao=${extrato.vl_transacao}",>
 
           <div class="d-flex w-100">
             <div th:each="categoria : ${listaTipoGasto}" th:if="${categoria.id_tipo_gasto == extrato.id_tipo_gasto}">
