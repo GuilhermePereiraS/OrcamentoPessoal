@@ -227,8 +227,17 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         const camposRelativos = document.getElementById("camposRelativosEditar") as HTMLDivElement;
         const selectCategoria = document.getElementById("categoriaEditar") as HTMLSelectElement;
         const selectFormaPgmt = document.getElementById("formaPagamentoEditar") as HTMLSelectElement;
-        const spantotalTransacaoEditar = document.getElementById('totalTransacaoEditar') as HTMLInputElement;
+        const spanTotalTransacaoEditar = document.getElementById('totalTransacaoEditar') as HTMLInputElement;
+        const divInputValorTotalTransacaoEditar = document.getElementById("divInputValorTotalTransacaoEditar") as HTMLDivElement;
+        const inputValorTotalTransacaoEditar = divInputValorTotalTransacaoEditar.querySelector("input") as HTMLInputElement;
+        const divTextoTotalTransacaoEditar = document.getElementById("divTextoTotalTransacaoEditar") as HTMLDivElement;
+        const inputVl_transacao_hidden = document.getElementById("vl_transacao_hidden") as HTMLInputElement;
 
+        inputValorTotalTransacaoEditar.value = vlTotalTransacao;
+        divTextoTotalTransacaoEditar.style.display = tpTransacao === "entrada" ? "none" : "block";
+        divInputValorTotalTransacaoEditar.style.display = tpTransacao === "saida" ? "none" : "block";
+        inputValorTotalTransacaoEditar.disabled = tpTransacao === "saida";
+        inputVl_transacao_hidden.disabled = tpTransacao === "entrada";
         selectCategoria.disabled = tpTransacao === "entrada";
         selectFormaPgmt.disabled = tpTransacao === "entrada";
 
@@ -242,7 +251,7 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         try {
             const itens: Item[] = JSON.parse(itensJson);
             if (itens.length == 0) {
-                spantotalTransacaoEditar.innerText = "R$ " + vlTotalTransacao
+                spanTotalTransacaoEditar.innerText = "R$ " + vlTotalTransacao
                 return;
             }
             itens.forEach(item => {
