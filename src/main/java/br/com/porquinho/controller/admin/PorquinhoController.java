@@ -44,6 +44,8 @@ public class PorquinhoController {
 
     @PostMapping("/editarPorquinho")
     public String editarPorquinho(Porquinho porquinho, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
+        porquinho.setId_usuario(usuarioLogado.getId_usuario());
         try {
             porquinhoService.atualizar(porquinho);
             criaMensagemSucesso(redirectAttributes, "Porquinho editado com sucesso!");
