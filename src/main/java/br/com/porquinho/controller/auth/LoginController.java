@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 
-import static br.com.porquinho.util.PorquinhoUtils.criaMensagemDeErro;
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemErro;
 import static br.com.porquinho.util.PorquinhoUtils.criaMensagemSucesso;
 
 @Controller
@@ -40,7 +40,7 @@ public class LoginController {
             criaMensagemSucesso(redirectAttributes, "Usuário logado com sucesso!");
             return "redirect:/admin/home";
         } catch (Exception e) {
-            criaMensagemDeErro(redirectAttributes, e.getMessage());
+            criaMensagemErro(redirectAttributes, e.getMessage());
             return "redirect:/login";
         }
 

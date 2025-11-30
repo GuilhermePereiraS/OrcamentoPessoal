@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-import static br.com.porquinho.util.PorquinhoUtils.criaMensagemDeAlerta;
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemAlerta;
 import static br.com.porquinho.util.PorquinhoUtils.criaMensagemSucesso;
 
 @Controller
@@ -37,7 +37,7 @@ public class PorquinhoController {
             porquinhoService.salvar(porquinho);
             criaMensagemSucesso(redirectAttributes, "Porquinho salvo com sucesso!");
         } catch (Exception e) {
-            criaMensagemDeAlerta(redirectAttributes, e.getMessage());
+            criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
         return "redirect:/admin/porquinho";
     }
@@ -50,7 +50,7 @@ public class PorquinhoController {
             porquinhoService.atualizar(porquinho);
             criaMensagemSucesso(redirectAttributes, "Porquinho editado com sucesso!");
         } catch (Exception e) {
-            criaMensagemDeAlerta(redirectAttributes, e.getMessage());
+            criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
         return "redirect:/admin/porquinho";
     }
@@ -63,7 +63,7 @@ public class PorquinhoController {
         try {
             porquinhoService.excluir(porquinho);
         } catch (Exception e) {
-            criaMensagemDeAlerta(redirectAttributes, e.getMessage());
+            criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
         criaMensagemSucesso(redirectAttributes, "Porquinho excluido com sucesso!");
         return "redirect:/admin/porquinho";

@@ -80,6 +80,11 @@ function criarItem(item: Item, container: HTMLDivElement, atualizarTotalFn: () =
 
 // ================== FUNÇÃO COMUM PARA ATUALIZAR TOTAL ==================
 function atualizarTotal(container: HTMLDivElement, totalEl: HTMLElement, inputItens: HTMLInputElement, inputVlTransacao: HTMLInputElement) {
+    const tpTransacaoHidden = document.getElementById("tp_transacao_hidden") as HTMLInputElement
+    if (tpTransacaoHidden.value === "entrada") {
+        return;
+    }
+
     let total = 0;
     const itens: Item[] = [];
 
@@ -215,7 +220,7 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
         const tpTransacao = elemento.dataset.tptransacao ?? 'saida';
         const idTipoGasto = elemento.dataset.idtipogasto ?? '';
         const idFormaPgmt = elemento.dataset.idformapgmt ?? '';
-        const itensJson = elemento.dataset.items ?? '[]';
+        const itensJson = elemento.dataset.items ?? null;
 
         // Preenche campos do modal
         (document.getElementById('extratoId') as HTMLInputElement).value = idExtrato;
@@ -249,9 +254,13 @@ document.querySelectorAll('[data-bs-target="#modalTransacaoEditar"]').forEach(di
 
         // Cria itens do JSON com atualização de total
         try {
-            const itens: Item[] = JSON.parse(itensJson);
-            if (itens.length == 0) {
-                spanTotalTransacaoEditar.innerText = "R$ " + vlTotalTransacao
+            const itens: Item[] = itensJson == null ? null : JSON.parse(itensJson);
+            if (itensJson == null) {
+                divTextoTotalTransacaoEditar.style.display = "none";
+                divInputValorTotalTransacaoEditar.style.display = "block";
+                inputValorTotalTransacaoEditar.disabled = false;
+                inputVl_transacao_hidden.disabled = true;
+                camposRelativos.style.display =  "none";
                 return;
             }
             itens.forEach(item => {

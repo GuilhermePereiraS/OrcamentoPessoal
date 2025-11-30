@@ -15,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.UsuarioService;
 
+import java.time.LocalDate;
+
 @Controller
 public class CadastroController {
 
@@ -46,6 +48,8 @@ public class CadastroController {
             Usuario usuarioDoCadastro = usuarioService.encontraPorLogin(usuario.getLogin());
             if (usuarioDoCadastro != null) {
                 session.setAttribute("usuarioLogado", usuarioDoCadastro);
+                session.setAttribute("mesAtual", LocalDate.now().getMonthValue());
+                session.setAttribute("anoAtual", LocalDate.now().getYear());
 
                 redirectAttributes.addFlashAttribute("alerta", true);
                 redirectAttributes.addFlashAttribute("mensagemAlerta", "Cadastro efetuado com sucesso!");

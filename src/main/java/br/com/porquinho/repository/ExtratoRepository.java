@@ -123,4 +123,9 @@ public class ExtratoRepository {
         String sql = "DELETE FROM extrato WHERE id_extrato = ?";
         template.update(sql, idExtrato);
     }
+
+    public boolean existeExtratoNoBanco(int idExtrato) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM extrato WHERE id_extrato = ?)";
+        return Boolean.TRUE.equals(template.queryForObject(sql, Boolean.class, idExtrato));
+    }
 }

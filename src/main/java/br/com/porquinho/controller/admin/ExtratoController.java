@@ -18,8 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-import static br.com.porquinho.util.PorquinhoUtils.criaMensagemDeErro;
-import static br.com.porquinho.util.PorquinhoUtils.criaMensagemSucesso;
+import static br.com.porquinho.model.Extrato.tipoTransacao.ENTRADA;
+import static br.com.porquinho.util.PorquinhoUtils.*;
 
 @Controller
 @RequestMapping("/admin/extrato")
@@ -60,7 +60,7 @@ public class ExtratoController {
             extratoService.registraTransacao(extratoForm);
             criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
         } catch (Exception e) {
-            criaMensagemDeErro(redirectAttributes, e.getMessage());
+            criaMensagemErro(redirectAttributes, e.getMessage());
         }
         session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
@@ -107,7 +107,7 @@ public class ExtratoController {
             }
             criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
         } catch (Exception e) {
-            criaMensagemDeErro(redirectAttributes,e.getMessage());
+            criaMensagemErro(redirectAttributes,e.getMessage());
         }
         session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
@@ -117,41 +117,21 @@ public class ExtratoController {
     @PostMapping("/atualizar")
     public String atualizarExtrato(Extrato extratoForm, String listaItensJson, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) throws JsonProcessingException {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        List<Item> listaItensNoBanco = itemService.pegaItensPorExtrato(extratoForm.getId_extrato());
 
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(listaItensJson);
-        Item[] itens = mapper.readValue(listaItensJson, Item[].class);
-        List<Item> itemsNoBanco = itemService.pegaItensPorExtrato(extratoForm.getId_extrato());
-
-        for (Item itemBanco : itemsNoBanco) {
-            boolean existeNoFront = false;
-            for (Item itemFront : itens) {
-                if (itemFront.getId_item() != null && itemFront.getId_item().equals(itemBanco.getId_item())) {
-                    existeNoFront = true;
-                    break;
-                }
-            }
-            if (!existeNoFront) {
-                itemService.excluir(itemBanco.getId_item());
-            }
+        if (extratoForm.getTp_transacao().equals(ENTRADA.getOperacao()) || listaItensNoBanco.isEmpty() ) {
+            extratoService.atualiza(extratoForm);
+        } else {
+            extratoService.atualizaExtratoDetalhado(extratoForm, listaItensJson);
         }
 
-        System.out.println("listaItensJson: " + extratoForm.toString());
-
-        extratoService.atualiza(extratoForm);
         session.setAttribute("usuarioLogado", usuarioService.encontraPorLogin(usuario.getLogin()));
 
-        for (Item item : itens) {
-            if (item.getId_item() == null) {
-                item.setId_extrato(extratoForm.getId_extrato());
-                itemService.salvar(item);
-                continue;
-            }
-
-            itemService.atualizar(item);
+        if (!extratoService.existeNoBanco(extratoForm)) {
+            criaMensagemAlerta(redirectAttributes, "Extrato excluido pois não há itens!");
+        } else {
+            criaMensagemSucesso(redirectAttributes, "Extrato atualizado com sucesso!");
         }
-
-        criaMensagemSucesso(redirectAttributes, "Extrato atualizado com sucesso!");
         return "redirect:/admin/extrato";
     }
 

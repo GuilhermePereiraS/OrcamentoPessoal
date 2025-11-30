@@ -12,14 +12,14 @@ public class PorquinhoUtils {
         return texto.matches(".*[^a-zA-Z0-9].*");
     }
 
-    public static void criaMensagemDeErro(RedirectAttributes redirectAttributes, String mensagem) {
+    public static void criaMensagemErro(RedirectAttributes redirectAttributes, String mensagem) {
         redirectAttributes.addFlashAttribute("tituloAlerta", "Erro!");
         redirectAttributes.addFlashAttribute("alerta", true);
         redirectAttributes.addFlashAttribute("mensagemAlerta", mensagem);
         redirectAttributes.addFlashAttribute("iconeAlerta", "error");
     }
 
-    public static void criaMensagemDeAlerta(RedirectAttributes redirectAttributes, String mensagem) {
+    public static void criaMensagemAlerta(RedirectAttributes redirectAttributes, String mensagem) {
         redirectAttributes.addFlashAttribute("tituloAlerta", "Alerta!");
         redirectAttributes.addFlashAttribute("alerta", true);
         redirectAttributes.addFlashAttribute("mensagemAlerta", mensagem);

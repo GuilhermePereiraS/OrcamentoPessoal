@@ -2,6 +2,7 @@ package br.com.porquinho.service;
 
 import br.com.porquinho.model.Orcamento;
 import br.com.porquinho.repository.OrcamentoRepository;
+import br.com.porquinho.repository.OrcamentoTipoGastoRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,13 +12,15 @@ import java.time.LocalDate;
 public class OrcamentoService {
 
     private final OrcamentoRepository orcamentoRepository;
+    private final OrcamentoTipoGastoRepository orcamentoTipoGastoRepository;
 
-    OrcamentoService(OrcamentoRepository orcamentoRepository) {
+    public OrcamentoService(OrcamentoRepository orcamentoRepository, OrcamentoTipoGastoRepository orcamentoTipoGastoRepository) {
         this.orcamentoRepository = orcamentoRepository;
+        this.orcamentoTipoGastoRepository = orcamentoTipoGastoRepository;
     }
 
-    public boolean temOrcamentoNoMesAtual(int idUsuario) {
-        return orcamentoRepository.temOrcamentoNoMes(LocalDate.now().getMonth().getValue(), idUsuario);
+    public BigDecimal pegaSomaDosLimitesTipoGasto(Integer idOrcamento) {
+        return orcamentoTipoGastoRepository.pegaSomaDosLimites(idOrcamento);
     }
 
     public void criaOrcamentoDoMesPadrao(int idUsuario) {
@@ -30,7 +33,12 @@ public class OrcamentoService {
         return orcamentoRepository.pegaOrcamentoAtual(idUsuario, mesAtual, anoAtual);
     }
 
-    public void atualizar(int idOrcamento, BigDecimal limiteMensal) {
+    public void atualizar(int idOrcamento, BigDecimal limiteMensal) throws Exception {
+        BigDecimal somaDosLimitesTipoGasto = pegaSomaDosLimitesTipoGasto(idOrcamento);
+
+        if (somaDosLimitesTipoGasto.compareTo(limiteMensal) > 0) {
+            throw new Exception("Valor do orçamento mensal é menor que a soma dos sub-orçamentos");
+        }
         orcamentoRepository.atualizar(idOrcamento, limiteMensal);
     }
 

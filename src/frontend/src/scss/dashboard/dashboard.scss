@@ -104,8 +104,8 @@ body {
   background-color: #b4f166;
 }
 
-.btn-green:hover, .swal2-confirm:hover {
-  background-color: #a2d166;
+.btn-green:hover, .btn:active, .btn:first-child:active, .swal2-confirm:hover {
+  background-color: #a2d166 !important;
 }
 
 .btn, .btn:hover {

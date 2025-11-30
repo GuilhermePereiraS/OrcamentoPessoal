@@ -5,9 +5,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "jquery": "^3.7.1",
+    "select2": "^4.1.0-rc.0"
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.33",
     "@types/node": "^24.9.1",
     "sass": "^1.93.2",
     "sweetalert2": "^11.26.3",

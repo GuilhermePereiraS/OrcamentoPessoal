@@ -3,8 +3,6 @@ package br.com.porquinho.controller.admin;
 import br.com.porquinho.dto.OrcamentoDTO;
 import br.com.porquinho.model.Orcamento;
 import br.com.porquinho.model.Usuario;
-import br.com.porquinho.repository.OrcamentoRepository;
-import br.com.porquinho.repository.OrcamentoTipoGastoRepository;
 import br.com.porquinho.service.ExtratoService;
 import br.com.porquinho.service.OrcamentoService;
 import br.com.porquinho.service.OrcamentoTipoGastoService;
@@ -16,6 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemAlerta;
+import static br.com.porquinho.util.PorquinhoUtils.criaMensagemErro;
 
 @Controller
 @RequestMapping("/admin")
@@ -59,12 +61,17 @@ public class OrcamentoController {
     }
 
     @PostMapping("/orcamento/atualizar")
-    public String atualizarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
-        if (orcamentoDTO.getId_tipo_gasto() != null) {
-            orcamentoTipoGastoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
-        } else {
-            orcamentoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getLimite());
+    public String atualizarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
+            if (orcamentoDTO.getId_tipo_gasto() != null) {
+                orcamentoTipoGastoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+            } else {
+                orcamentoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getLimite());
+            }
+        } catch (Exception e) {
+            criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
+
         return "redirect:/admin/orcamento";
     }
 
@@ -78,11 +85,15 @@ public class OrcamentoController {
 
 
     @PostMapping("/orcamento/salvar")
-    public String salvarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
+    public String salvarOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session, RedirectAttributes redirectAttributes) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         Orcamento orcamentoDoMes = orcamentoService.pegaOrcamentoAtual(usuarioLogado.getId_usuario());
 
-        orcamentoTipoGastoService.salvar(orcamentoDoMes.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+        try {
+            orcamentoTipoGastoService.salvar(orcamentoDoMes.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+        } catch (Exception e) {
+            criaMensagemErro(redirectAttributes, e.getMessage());
+        }
 
         return "redirect:/admin/orcamento";
     }

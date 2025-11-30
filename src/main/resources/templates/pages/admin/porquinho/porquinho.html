@@ -21,22 +21,18 @@
                         <input th:field="*{nome_meta}" class="form-control mb-3 nomeMeta" type="text" name="nome_meta" placeholder="nome meta" required/><br>
                         <span>Alcançado:</span>
                         <div class="d-flex">
-                            <button type="button" class="btn btn-danger btn-operacao">-</button>
                             <input th:field="*{vl_alcancado}" class="form-control valorOperacao" name="vl_alcancado" type="number" >
-                            <button type="button" class="btn btn-green btn-operacao">+</button>
                         </div>
                         <span>Necessário:</span>
                         <div class="d-flex">
-                            <button type="button" class="btn btn-danger btn-operacao">-</button>
                             <input th:field="*{vl_necessario}" class="form-control form-control valorOperacao" name="vl_necessario" type="number" required>
-                            <button type="button"  class="btn btn-green btn-operacao">+</button>
                         </div>
                         <span>Data objetivo:</span>
                         <div class="d-flex justify-content-center">
                             <input th:field="*{dt_meta}"  class="form-control valorOperacao" name="dt_meta" type="date" required>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>
+                            <button type="button" class="btn btn-secondary m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button name="acao" value="excluir" class="btn btn-danger m-2 me-5" >Excluir</button> <button name="acao" value="editar" class="btn btn-green m-2 ms-5">Gravar</button>
                         </div>
                     </div>
                 </form>
@@ -54,17 +50,13 @@
                         <span>Alcançado:</span>
 
                         <div class="d-flex">
-                            <button type="button" class="btn btn-danger btn-operacao">-</button>
                             <input name="vl_alcancado" class="form-control valorOperacao" type="number" step="0.01" min="0" placeholder="0,00">
-                            <button class="btn btn-green btn-operacao">+</button>
                         </div>
 
                         <span>Necessário:</span>
 
                         <div class="d-flex">
-                            <button type="button" class="btn btn-danger btn-operacao">-</button>
                             <input name="vl_necessario" class="form-control valorOperacao" step="0.01" min="0" placeholder="0,00" type="number" required>
-                            <button class="btn btn-green btn-operacao">+</button>
                         </div>
 
                         <span>Data objetivo:</span>
@@ -72,7 +64,7 @@
                             <input name="dt_meta" class="form-control valorOperacao"  type="date" required>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-danger m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
+                            <button type="button" class="btn btn-secondary m-2 me-5" data-bs-dismiss="modal">Cancelar</button> <button type="submit" class="btn btn-green m-2 ms-5">Gravar</button>
                         </div>
                     </div>
                 </form>
