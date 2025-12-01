@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.porquinho.util.Aviso;
+
 import java.util.List;
 
 import static br.com.porquinho.model.Extrato.tipoTransacao.ENTRADA;
@@ -57,8 +59,13 @@ public class ExtratoController {
 
         try {
             extratoForm.setId_usuario(usuario.getId_usuario());
-            extratoService.registraTransacao(extratoForm);
-            criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
+            try {
+                extratoService.registraTransacao(extratoForm);
+                criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
+            } catch (Aviso aviso) {
+                criaMensagemAlerta(redirectAttributes, aviso.getMessage());
+            }
+
         } catch (Exception e) {
             criaMensagemErro(redirectAttributes, e.getMessage());
         }
@@ -99,13 +106,18 @@ public class ExtratoController {
 
         try {
             extratoForm.setId_usuario(usuario.getId_usuario());
-            extratoService.registraTransacao(extratoForm);
+
+            try {
+                extratoService.registraTransacao(extratoForm);
+                criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
+            } catch (Aviso aviso) {
+                criaMensagemAlerta(redirectAttributes, aviso.getMessage());
+            }
 
             for (Item item : itens) {
                 item.setId_extrato(extratoForm.getId_extrato());
                 itemService.salvar(item);
             }
-            criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
         } catch (Exception e) {
             criaMensagemErro(redirectAttributes,e.getMessage());
         }

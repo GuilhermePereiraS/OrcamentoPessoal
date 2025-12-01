@@ -4,6 +4,7 @@ import br.com.porquinho.model.Porquinho;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.service.PorquinhoService;
 import br.com.porquinho.service.UsuarioService;
+import br.com.porquinho.util.Aviso;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +35,13 @@ public class PorquinhoController {
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
         try {
-            porquinhoService.salvar(porquinho);
-            criaMensagemSucesso(redirectAttributes, "Porquinho salvo com sucesso!");
+            try {
+                porquinhoService.salvar(porquinho);
+                criaMensagemSucesso(redirectAttributes, "Porquinho salvo com sucesso!");
+            } catch (Aviso e) {
+                criaMensagemAlerta(redirectAttributes, e.getMessage());
+            }
+
         } catch (Exception e) {
             criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
@@ -47,8 +53,13 @@ public class PorquinhoController {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
         try {
-            porquinhoService.atualizar(porquinho);
-            criaMensagemSucesso(redirectAttributes, "Porquinho editado com sucesso!");
+            try {
+                porquinhoService.atualizar(porquinho);
+                criaMensagemSucesso(redirectAttributes, "Porquinho editado com sucesso!");
+            } catch (Aviso e) {
+                criaMensagemAlerta(redirectAttributes, e.getMessage());
+            }
+
         } catch (Exception e) {
             criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
@@ -61,11 +72,16 @@ public class PorquinhoController {
         porquinho.setId_usuario(usuarioLogado.getId_usuario());
 
         try {
-            porquinhoService.excluir(porquinho);
+            try {
+                porquinhoService.excluir(porquinho);
+                criaMensagemSucesso(redirectAttributes, "Porquinho excluido com sucesso!");
+            } catch (Aviso e) {
+                criaMensagemAlerta(redirectAttributes, e.getMessage());
+            }
+
         } catch (Exception e) {
             criaMensagemAlerta(redirectAttributes, e.getMessage());
         }
-        criaMensagemSucesso(redirectAttributes, "Porquinho excluido com sucesso!");
         return "redirect:/admin/porquinho";
     }
 

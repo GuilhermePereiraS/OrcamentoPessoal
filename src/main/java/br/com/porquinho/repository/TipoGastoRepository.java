@@ -46,4 +46,15 @@ public class TipoGastoRepository {
             e.printStackTrace();
         }
     }
+
+    public TipoGasto pegarPorId(Integer idTipoGasto) {
+        try {
+            String sql =
+                    "SELECT * FROM tipo_gasto WHERE tipo_gasto.id_tipo_gasto = ?";
+            return template.queryForObject(sql, new BeanPropertyRowMapper<>(TipoGasto.class), idTipoGasto);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

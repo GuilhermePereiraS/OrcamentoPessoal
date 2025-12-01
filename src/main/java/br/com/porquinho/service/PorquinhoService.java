@@ -4,6 +4,7 @@ import br.com.porquinho.model.Extrato;
 import br.com.porquinho.model.Porquinho;
 import br.com.porquinho.model.Usuario;
 import br.com.porquinho.repository.PorquinhoRepository;
+import br.com.porquinho.util.Aviso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class PorquinhoService {
         this.usuarioService = usuarioService;
     }
 
-    public void salvar(Porquinho porquinho) throws Exception {
+    public void salvar(Porquinho porquinho) throws Exception, Aviso {
         Usuario usuario = usuarioService.encontraPorId(porquinho.getId_usuario());
 
         if (porquinho.getVl_alcancado() == null) {
@@ -49,11 +50,11 @@ public class PorquinhoService {
         }
     }
 
-    public void atualizar(Porquinho porquinho) throws Exception {
+    public void atualizar(Porquinho porquinho) throws Exception, Aviso {
         Usuario usuario = usuarioService.encontraPorId(porquinho.getId_usuario());
         Porquinho porquinhoNoBanco = encontraPorId(porquinho.getId_porquinho());
-        BigDecimal valorTransacao;
-        Extrato.tipoTransacao tipoTransacao;
+        BigDecimal valorTransacao = null;
+        Extrato.tipoTransacao tipoTransacao = null;
 
         if (porquinho.getVl_alcancado().compareTo(porquinho.getVl_necessario()) > 0) {
             throw new Exception("Valor alcançado não pode ser maior que o necessário");
@@ -63,23 +64,24 @@ public class PorquinhoService {
         if (porquinho.getVl_alcancado().compareTo(porquinhoNoBanco.getVl_alcancado()) > 0) {
             tipoTransacao = SAIDA;
             valorTransacao = porquinho.getVl_alcancado().subtract(porquinhoNoBanco.getVl_alcancado());
+
+            if (usuario.getSaldo() == null || valorTransacao.compareTo(usuario.getSaldo()) > 0) {
+                throw new Exception("Saldo insuficiente");
+            }
         } else if (porquinhoNoBanco.getVl_alcancado().compareTo(porquinho.getVl_alcancado()) > 0) {
             tipoTransacao = ENTRADA;
             valorTransacao = porquinhoNoBanco.getVl_alcancado().subtract(porquinho.getVl_alcancado());
-        } else {
-            throw new Exception("Valor é o mesmo, não houve alteração");
         }
 
-        if (tipoTransacao == SAIDA && usuario.getSaldo() == null || valorTransacao.compareTo(usuario.getSaldo()) > 0) {
-            throw new Exception("Saldo insuficiente");
-        }
-
-        Extrato extrato = criaExtratoPorquinho(porquinho, valorTransacao, tipoTransacao);
         porquinhoRepository.atualizar(porquinho);
-        extratoService.registraTransacao(extrato);
+
+        if (valorTransacao != null) {
+            Extrato extrato = criaExtratoPorquinho(porquinho, valorTransacao, tipoTransacao);
+            extratoService.registraTransacao(extrato);
+        }
     }
 
-    public void excluir(Porquinho porquinho) throws Exception {
+    public void excluir(Porquinho porquinho) throws Exception, Aviso {
         Porquinho porquinhoNoBanco = encontraPorId(porquinho.getId_porquinho());
         porquinhoRepository.excluir(porquinho);
 

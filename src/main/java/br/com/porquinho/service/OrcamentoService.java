@@ -30,7 +30,13 @@ public class OrcamentoService {
     public Orcamento pegaOrcamentoAtual(int idUsuario) {
         int mesAtual = LocalDate.now().getMonth().getValue();
         int anoAtual = LocalDate.now().getYear();
-        return orcamentoRepository.pegaOrcamentoAtual(idUsuario, mesAtual, anoAtual);
+
+        Orcamento orcamentoAtual = orcamentoRepository.pegaOrcamentoAtual(idUsuario, mesAtual, anoAtual);
+        if (orcamentoAtual == null) {
+            criaOrcamentoDoMesPadrao(idUsuario);
+            orcamentoAtual = pegaOrcamentoAtual(idUsuario);
+        }
+        return orcamentoAtual;
     }
 
     public void atualizar(int idOrcamento, BigDecimal limiteMensal) throws Exception {

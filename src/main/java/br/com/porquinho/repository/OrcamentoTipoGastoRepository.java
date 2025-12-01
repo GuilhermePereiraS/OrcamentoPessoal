@@ -56,4 +56,15 @@ public class OrcamentoTipoGastoRepository {
         String sql = "SELECT SUM(limite) FROM orcamento_tipo_gasto orcTpGasto WHERE id_orcamento = ?";
         return template.queryForObject(sql, BigDecimal.class, idOrcamento);
     }
+
+    public OrcamentoTipoGasto encontraPorId(Integer idOrcamentoTipoGasto, Integer idOrcamento) {
+        try {
+            String sql = "SELECT * FROM orcamento_tipo_gasto WHERE id_tipo_gasto = ? AND id_orcamento = ?";
+            return template.queryForObject(sql, new BeanPropertyRowMapper<>(OrcamentoTipoGasto.class), idOrcamentoTipoGasto, idOrcamento);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

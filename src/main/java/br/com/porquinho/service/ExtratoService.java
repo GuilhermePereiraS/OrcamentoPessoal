@@ -1,9 +1,8 @@
 package br.com.porquinho.service;
 
-import br.com.porquinho.model.Extrato;
-import br.com.porquinho.model.Item;
-import br.com.porquinho.model.Usuario;
+import br.com.porquinho.model.*;
 import br.com.porquinho.repository.ExtratoRepository;
+import br.com.porquinho.util.Aviso;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-import static java.math.BigDecimal.ZERO;
+
 
 @Service
 public class ExtratoService {
@@ -22,15 +21,21 @@ public class ExtratoService {
     private final ExtratoRepository extratoRepository;
     private final UsuarioService usuarioService;
     private final ItemService itemService;
+    private final OrcamentoTipoGastoService orcamentoTipoGastoService;
+    private final OrcamentoService orcamentoService;
+    private final TipoGastoService tipoGastoService;
 
-    ExtratoService(ExtratoRepository extratoRepository, UsuarioService usuarioService, ItemService itemService) {
+    ExtratoService(ExtratoRepository extratoRepository, UsuarioService usuarioService, ItemService itemService, OrcamentoTipoGastoService orcamentoTipoGastoService, OrcamentoService orcamentoService, TipoGastoService tipoGastoService) {
         this.extratoRepository = extratoRepository;
         this.usuarioService = usuarioService;
         this.itemService = itemService;
+        this.orcamentoTipoGastoService = orcamentoTipoGastoService;
+        this.orcamentoService = orcamentoService;
+        this.tipoGastoService = tipoGastoService;
     }
 
 
-    public void registraTransacao(Extrato extratoForm) throws Exception {
+    public void registraTransacao(Extrato extratoForm) throws Exception, Aviso {
         if (extratoForm.getVl_transacao() == null || extratoForm.getVl_transacao().compareTo(BigDecimal.ZERO) == 0) {
             throw new Exception("Transação não registrada, valor da transação é zero!");
         }
@@ -61,6 +66,26 @@ public class ExtratoService {
         }
 
         extratoForm.setId_extrato(idExtrato);
+
+        if (extratoForm.getId_tipo_gasto() != null) {
+            verificaEstouroNoOrcamento(usuario.getId_usuario(), extratoForm.getId_tipo_gasto());
+        }
+    }
+
+    private void verificaEstouroNoOrcamento(Integer idUsuario, Integer idTipoGasto) throws Exception, Aviso {
+        Orcamento orcamento = orcamentoService.pegaOrcamentoAtual(idUsuario);
+        OrcamentoTipoGasto orcamentoTipoGasto = orcamentoTipoGastoService.encontraPorId(idTipoGasto, orcamento.getId_orcamento());
+        if (orcamentoTipoGasto == null) {
+            return;
+        }
+        HashMap<Integer, BigDecimal> gastosPorTipoGasto = pegarGastosPorTipoGasto(idUsuario);
+
+        BigDecimal valorGasto = gastosPorTipoGasto.get(idTipoGasto);
+        if (valorGasto.compareTo(orcamentoTipoGasto.getLimite()) > 0) {
+            TipoGasto tipoGasto = tipoGastoService.pegarTipoGastoPorId(idTipoGasto);
+            throw new Aviso("Gasto salvo, mas ultrapassou o orçamento da categoria: " + tipoGasto.getDescricao());
+        }
+
     }
 
     public List<Extrato> listarTodos(Integer idUsuario) {

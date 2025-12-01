@@ -19,6 +19,10 @@ public class OrcamentoTipoGastoService {
         this.orcamentoService = orcamentoService;
     }
 
+    public OrcamentoTipoGasto encontraPorId(Integer idTipoGasto, Integer idOrcamento){
+        return orcamentoTipoGastoRepository.encontraPorId(idTipoGasto, idOrcamento);
+    }
+
     public void criaOrcamentoTipoGastoPadrao(int idOrcamento) {
         orcamentoTipoGastoRepository.salvar(idOrcamento, 1, new BigDecimal("100.00"));
         orcamentoTipoGastoRepository.salvar(idOrcamento, 2, new BigDecimal("100.00"));
@@ -27,10 +31,6 @@ public class OrcamentoTipoGastoService {
 
     public List<OrcamentoTipoGasto> listarTodos(int idOrcamento) {
        return orcamentoTipoGastoRepository.listarTodos(idOrcamento);
-    }
-
-    public Integer quantidadeOrcamentosTipoGasto(int idOrcamento) {
-        return orcamentoTipoGastoRepository.quantidadeOrcamentosTipoGasto(idOrcamento);
     }
 
     public void atualizar(Integer idOrcamento, Integer idTipoGasto, BigDecimal limite) throws Exception {

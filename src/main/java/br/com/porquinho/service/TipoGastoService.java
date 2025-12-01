@@ -26,4 +26,8 @@ public class TipoGastoService {
     public void salvar(String descricao) {
         tipoGastoRepository.salvar(descricao);
     }
+
+    public TipoGasto pegarTipoGastoPorId(Integer idTipoGasto) {
+        return tipoGastoRepository.pegarPorId(idTipoGasto);
+    }
 }
