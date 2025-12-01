@@ -5,7 +5,7 @@ CREATE TABLE Usuario (
     login varchar(21),
     senha varchar(60),
     dt_nascimento date,
-    nome varchar(200),
+    nome varchar(100),
     saldo numeric(7,2)
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE Forma_pgmt (
 
 CREATE TABLE Tipo_gasto (
     id_tipo_gasto serial PRIMARY KEY,
-    descricao varchar(200)
+    descricao varchar(50)
 );
 
 CREATE TABLE Extrato (
@@ -24,7 +24,7 @@ CREATE TABLE Extrato (
     Id_usuario integer,
     id_forma_pgmt integer,
     id_tipo_gasto integer,
-    descricao varchar(100),
+    descricao varchar(50),
     tp_transacao varchar(8),
     vl_transacao numeric(7,2),
     dt_transacao date,
