@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static br.com.porquinho.util.PorquinhoUtils.criaMensagemAlerta;
-import static br.com.porquinho.util.PorquinhoUtils.criaMensagemErro;
+import static br.com.porquinho.util.PorquinhoUtils.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -65,8 +64,10 @@ public class OrcamentoController {
         try {
             if (orcamentoDTO.getId_tipo_gasto() != null) {
                 orcamentoTipoGastoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+                criaMensagemSucesso(redirectAttributes, "Sub-orçamento atualizado com sucesso!");
             } else {
                 orcamentoService.atualizar(orcamentoDTO.getId_orcamento(), orcamentoDTO.getLimite());
+                criaMensagemSucesso(redirectAttributes, "Orçamento atualizado com sucesso!");
             }
         } catch (Exception e) {
             criaMensagemAlerta(redirectAttributes, e.getMessage());
@@ -76,9 +77,10 @@ public class OrcamentoController {
     }
 
     @PostMapping("/orcamento/excluir")
-    public String excluirOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session) {
+    public String excluirOrcamento(OrcamentoDTO orcamentoDTO, HttpSession session, RedirectAttributes redirectAttributes) {
         if (orcamentoDTO.getId_tipo_gasto() != null) {
             orcamentoTipoGastoService.excluir(orcamentoDTO.getId_orcamento(), orcamentoDTO.getId_tipo_gasto());
+            criaMensagemSucesso(redirectAttributes, "Sub-orçamento excluido com sucesso!");
         }
         return "redirect:/admin/orcamento";
     }
@@ -91,6 +93,7 @@ public class OrcamentoController {
 
         try {
             orcamentoTipoGastoService.salvar(orcamentoDoMes.getId_orcamento(), orcamentoDTO.getId_tipo_gasto(), orcamentoDTO.getLimite());
+            criaMensagemSucesso(redirectAttributes, "Sub-orçamento criado com sucesso!");
         } catch (Exception e) {
             criaMensagemErro(redirectAttributes, e.getMessage());
         }

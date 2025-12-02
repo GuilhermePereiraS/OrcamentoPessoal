@@ -44,17 +44,6 @@ public class LoginController {
             return "redirect:/login";
         }
 
-//        redirectAttributes.addFlashAttribute("alerta", true);
-//        if (usuarioEncotrado == null) {
-//            redirectAttributes.addFlashAttribute("tituloAlerta", "Deu ruim!");
-//            redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuario ou senha incorretos!");
-//            redirectAttributes.addFlashAttribute("iconeAlerta", "warning");
-//        } else {
-//            redirectAttributes.addFlashAttribute("tituloAlerta", "Sucesso!");
-//            redirectAttributes.addFlashAttribute("mensagemAlerta", "Usuário logado com sucesso!");
-//            redirectAttributes.addFlashAttribute("iconeAlerta", "success");
-//        }
-
     }
 
     @PostMapping("/logout")
