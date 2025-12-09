@@ -21,6 +21,7 @@ import br.com.porquinho.util.Aviso;
 import java.util.List;
 
 import static br.com.porquinho.model.Extrato.tipoTransacao.ENTRADA;
+import static br.com.porquinho.model.Extrato.tipoTransacao.SAIDA;
 import static br.com.porquinho.util.PorquinhoUtils.*;
 
 @Controller
@@ -101,12 +102,10 @@ public class ExtratoController {
     @PostMapping("/registraTransacao")
     public String registraTransacaoDetalhada(Extrato extratoForm, @RequestParam String listaItensJson, HttpSession session, RedirectAttributes redirectAttributes) throws JsonProcessingException {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        ObjectMapper mapper = new ObjectMapper();
-        Item[] itens = mapper.readValue(listaItensJson, Item[].class);
+
 
         try {
             extratoForm.setId_usuario(usuario.getId_usuario());
-
             try {
                 extratoService.registraTransacao(extratoForm);
                 criaMensagemSucesso(redirectAttributes, "Extrato salvo com sucesso!");
@@ -114,9 +113,14 @@ public class ExtratoController {
                 criaMensagemAlerta(redirectAttributes, aviso.getMessage());
             }
 
-            for (Item item : itens) {
-                item.setId_extrato(extratoForm.getId_extrato());
-                itemService.salvar(item);
+            // se for entrada não vincula a itens, como é uma saída vincula os items ao extrato
+            if (extratoForm.getTp_transacao().equals(SAIDA.getOperacao())) {
+                ObjectMapper mapper = new ObjectMapper();
+                Item[] itens = mapper.readValue(listaItensJson, Item[].class);
+                for (Item item : itens) {
+                    item.setId_extrato(extratoForm.getId_extrato());
+                    itemService.salvar(item);
+                }
             }
         } catch (Exception e) {
             criaMensagemErro(redirectAttributes,e.getMessage());

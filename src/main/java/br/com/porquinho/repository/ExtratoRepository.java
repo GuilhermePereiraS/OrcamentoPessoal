@@ -1,7 +1,6 @@
 package br.com.porquinho.repository;
 
 import br.com.porquinho.model.Extrato;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -9,7 +8,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -26,7 +24,15 @@ public class ExtratoRepository {
 
     public Integer salvarEntrada(Extrato extrato) {
         try {
-            String sql = "INSERT INTO extrato (descricao, tp_transacao, vl_transacao, dt_transacao, id_usuario) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO extrato (" +
+                             "descricao, " +
+                             "tp_transacao, " +
+                             "vl_transacao, " +
+                             "dt_transacao, " +
+                             "id_usuario" +
+                         ") VALUES (" +
+                             "?, ?, ?, ?, ?" +
+                         ")";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             template.update(con -> {
@@ -49,7 +55,18 @@ public class ExtratoRepository {
 
     public Integer salvarSaida(Extrato extrato) {
         try {
-            String sql = "INSERT INTO extrato (descricao, tp_transacao, vl_transacao, dt_transacao, id_usuario, id_forma_pgmt, id_tipo_gasto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql =
+                    "INSERT INTO extrato (" +
+                        "descricao, " +
+                        "tp_transacao, " +
+                        "vl_transacao, " +
+                        "dt_transacao, " +
+                        "id_usuario, " +
+                        "id_forma_pgmt, " +
+                        "id_tipo_gasto" +
+                    ") VALUES (" +
+                        "?, ?, ?, ?, ?, ?, ?" +
+                    ")";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             template.update(connection -> {
@@ -73,7 +90,14 @@ public class ExtratoRepository {
 
     public List<Extrato> listarTodos(Integer idUsuario) {
         try {
-            String sql = "SELECT * FROM extrato WHERE id_usuario = ? ORDER BY extrato.dt_transacao DESC, extrato.id_extrato DESC";
+            String sql =
+                    "SELECT * " +
+                    "FROM extrato " +
+                    "WHERE " +
+                        "id_usuario = ? " +
+                    "ORDER BY " +
+                        "extrato.dt_transacao DESC, " +
+                        "extrato.id_extrato DESC";
             return template.query(sql, new BeanPropertyRowMapper<>(Extrato.class), idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,24 +106,36 @@ public class ExtratoRepository {
     }
 
     public BigDecimal pegarGastoDoMes(Integer idUsuario, int mes, int ano) {
-        String sql = "SELECT SUM(ext.vl_transacao) FROM extrato ext " +
-                "WHERE id_usuario = ? " +
-                "AND ext.tp_transacao = 'saida' " +
-                "AND EXTRACT(MONTH FROM dt_transacao) = ? " +
-                "AND EXTRACT(YEAR FROM dt_transacao) = ?";
-                ;
-        return template.queryForObject(sql, BigDecimal.class, idUsuario, mes, ano);
+        try {
+            String sql =
+                    "SELECT SUM(ext.vl_transacao) " +
+                    "FROM extrato ext " +
+                    "WHERE " +
+                        "id_usuario = ? " +
+                        "AND ext.tp_transacao = 'saida' " +
+                        "AND EXTRACT(MONTH FROM dt_transacao) = ? " +
+                        "AND EXTRACT(YEAR FROM dt_transacao) = ?";
+            return template.queryForObject(sql, BigDecimal.class, idUsuario, mes, ano);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
     public HashMap<Integer, BigDecimal> pegarGastoPorTipoGasto(Integer idUsuario, int mes, int ano) {
-        String sql = "SELECT id_tipo_gasto, SUM(ext.vl_transacao) as  vl_transacao " +
+        String sql =
+                "SELECT " +
+                    "id_tipo_gasto, " +
+                    "SUM(ext.vl_transacao) as  vl_transacao " +
                 "FROM extrato ext " +
-                "WHERE id_usuario = ? " +
-                "AND ext.tp_transacao = 'saida' " +
-                "AND EXTRACT(MONTH FROM dt_transacao) = ? " +
-                "AND EXTRACT(YEAR FROM dt_transacao) = ? " +
-                "GROUP BY id_tipo_gasto";
+                "WHERE " +
+                    "id_usuario = ? " +
+                    "AND EXTRACT(MONTH FROM dt_transacao) = ? " +
+                    "AND EXTRACT(YEAR FROM dt_transacao) = ? " +
+                    "AND ext.tp_transacao = 'saida' " +
+                "GROUP BY " +
+                    "id_tipo_gasto";
         return template.query(sql,rs -> {
             HashMap<Integer,BigDecimal> map = new HashMap<>();
             while (rs.next()) {
@@ -110,22 +146,45 @@ public class ExtratoRepository {
     }
 
     public void atualizaEntrada(Extrato extrato) {
-        String sql = "UPDATE extrato SET descricao = ?, vl_transacao = ? WHERE id_extrato = ?";
+        String sql =
+                "UPDATE extrato " +
+                "SET " +
+                   "descricao = ?, " +
+                   "vl_transacao = ? " +
+                "WHERE " +
+                   "id_extrato = ?";
         template.update(sql, extrato.getDescricao(), extrato.getVl_transacao(),extrato.getId_extrato());
     }
 
     public void atualizaSaida(Extrato extrato) {
-        String sql = "UPDATE extrato SET id_forma_pgmt = ?, id_tipo_gasto = ?, descricao = ?, vl_transacao = ? WHERE id_extrato = ?";
+        String sql =
+                "UPDATE extrato " +
+                "SET " +
+                    "id_forma_pgmt = ?, " +
+                    "id_tipo_gasto = ?, " +
+                    "descricao = ?, " +
+                    "vl_transacao = ? " +
+                "WHERE " +
+                    "id_extrato = ?";
         template.update(sql, extrato.getId_forma_pgmt(), extrato.getId_tipo_gasto(), extrato.getDescricao(), extrato.getVl_transacao(), extrato.getId_extrato());
     }
 
     public void excluir(Integer idExtrato) {
-        String sql = "DELETE FROM extrato WHERE id_extrato = ?";
+        String sql =
+                "DELETE FROM extrato " +
+                "WHERE " +
+                    "id_extrato = ?";
         template.update(sql, idExtrato);
     }
 
     public boolean existeExtratoNoBanco(int idExtrato) {
-        String sql = "SELECT EXISTS(SELECT 1 FROM extrato WHERE id_extrato = ?)";
+        String sql =
+                "SELECT EXISTS(" +
+                        "SELECT 1 " +
+                        "FROM extrato " +
+                        "WHERE " +
+                            "id_extrato = ?" +
+                        ")";
         return Boolean.TRUE.equals(template.queryForObject(sql, Boolean.class, idExtrato));
     }
 }

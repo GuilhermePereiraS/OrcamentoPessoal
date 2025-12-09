@@ -23,19 +23,39 @@ public class ItemRepository {
     }
 
     public void salvar(int id_extrato, String nome, BigDecimal valorUnitario, BigDecimal valorTotal, int quantidade) {
-        String sql = "INSERT INTO item (id_extrato, nome, vl_unitario, vl_total, quantidade) VALUES (?, ?, ?, ?, ?)";
+        String sql =
+                "INSERT INTO item (" +
+                    "id_extrato, " +
+                    "nome, " +
+                    "vl_unitario, " +
+                    "vl_total, " +
+                    "quantidade" +
+                ") VALUES (" +
+                    "?, ?, ?, ?, ?" +
+                ")";
         template.update(sql, id_extrato, nome, valorUnitario, valorTotal, quantidade);
     }
 
     public void atualizar(Item item) {
-        String sql = "UPDATE item SET nome = ?, vl_unitario = ?, vl_total = ?, quantidade = ? WHERE id_item = ?";
+        String sql =
+                "UPDATE item " +
+                "SET " +
+                    "nome = ?, " +
+                    "vl_unitario = ?, " +
+                    "vl_total = ?, " +
+                    "quantidade = ? " +
+                "WHERE " +
+                    "id_item = ?";
         template.update(sql, item.getNome(), item.getVl_unitario(), item.getVl_total(), item.getQuantidade(), item.getId_item());
     }
 
     public HashMap<Integer, String> pegarTodosItensPorExtrato() throws JsonProcessingException {
-        String sql = "SELECT * FROM item";
-        List<Item> itens = template.query(sql, new BeanPropertyRowMapper<>(Item.class));
         HashMap<Integer, List<Item>> mapItem = new HashMap<>();
+
+        String sql =
+                "SELECT * " +
+                "FROM item";
+        List<Item> itens = template.query(sql, new BeanPropertyRowMapper<>(Item.class));
 
         for (Item item : itens) {
             mapItem.computeIfAbsent(item.getId_extrato(), chave -> new ArrayList<>()).add(item);
@@ -53,17 +73,27 @@ public class ItemRepository {
     }
 
     public List<Item> pegaItemsPorExtrato(int idExtrato) {
-        String sql = "SELECT * FROM item WHERE id_extrato = ?";
+        String sql =
+                "SELECT * " +
+                "FROM item " +
+                "WHERE " +
+                    "id_extrato = ?";
         return template.query(sql, new BeanPropertyRowMapper<>(Item.class), idExtrato);
     }
 
     public void excluir(Integer idItem) {
-        String sql = "DELETE FROM item WHERE id_item = ?";
+        String sql =
+                "DELETE FROM item " +
+                "WHERE " +
+                    "id_item = ?";
         template.update(sql, idItem);
     }
 
     public void excluirTodosVinculados(Integer idExtrato) {
-        String sql = "DELETE FROM item WHERE id_extrato = ?";
+        String sql =
+                "DELETE FROM item " +
+                "WHERE " +
+                    "id_extrato = ?";
         template.update(sql, idExtrato);
     }
 }

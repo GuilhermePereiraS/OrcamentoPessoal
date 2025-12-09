@@ -19,7 +19,10 @@ public class TipoGastoRepository {
     public List<TipoGasto> listarTodos() {
         try {
             String sql =
-                    "SELECT * FROM tipo_gasto ORDER BY descricao";
+                    "SELECT * " +
+                    "FROM tipo_gasto " +
+                    "ORDER BY " +
+                        "descricao";
             return template.query(sql, new BeanPropertyRowMapper<>(TipoGasto.class));
         } catch(Exception e) {
             e.printStackTrace();
@@ -30,7 +33,10 @@ public class TipoGastoRepository {
     public List<TipoGasto> pegarTiposDeGastoPadrao() {
         try {
             String sql =
-                    "SELECT * FROM tipo_gasto WHERE tipo_gasto.id_tipo_gasto IN (1,2,3)";
+                    "SELECT * " +
+                    "FROM tipo_gasto " +
+                    "WHERE " +
+                        "id_tipo_gasto IN (1,2,3)";
             return template.query(sql, new BeanPropertyRowMapper<>(TipoGasto.class));
         } catch(Exception e) {
             e.printStackTrace();
@@ -40,7 +46,10 @@ public class TipoGastoRepository {
 
     public void salvar(String descricao) {
         try {
-            String sql = "INSERT INTO tipo_gasto (descricao) VALUES (?)";
+            String sql =
+            "INSERT INTO tipo_gasto (" +
+                "descricao" +
+            ") VALUES (?)";
             template.update(sql, descricao);
         } catch(Exception e) {
             e.printStackTrace();
@@ -50,7 +59,10 @@ public class TipoGastoRepository {
     public TipoGasto pegarPorId(Integer idTipoGasto) {
         try {
             String sql =
-                    "SELECT * FROM tipo_gasto WHERE tipo_gasto.id_tipo_gasto = ?";
+                    "SELECT * " +
+                    "FROM tipo_gasto " +
+                    "WHERE " +
+                        "id_tipo_gasto = ?";
             return template.queryForObject(sql, new BeanPropertyRowMapper<>(TipoGasto.class), idTipoGasto);
         } catch(Exception e) {
             e.printStackTrace();

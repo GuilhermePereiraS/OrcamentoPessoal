@@ -18,7 +18,13 @@ public class FormaPagamentoRepository {
 
     public List<FormaPagamento> listarTodos() {
         try {
-            String sql = "SELECT id_forma_pgmt, descricao FROM forma_pgmt ORDER BY forma_pgmt.descricao";
+            String sql =
+                    "SELECT " +
+                        "id_forma_pgmt, " +
+                        "descricao " +
+                    "FROM forma_pgmt " +
+                    "ORDER BY " +
+                        "forma_pgmt.descricao";
             return template.query(sql, new BeanPropertyRowMapper<>(FormaPagamento.class));
         } catch(Exception e) {
             e.printStackTrace();

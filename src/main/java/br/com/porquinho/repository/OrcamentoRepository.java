@@ -17,18 +17,38 @@ public class OrcamentoRepository {
     }
 
     public void salvar(int mesAtual, int anoAtual, BigDecimal limiteMensal, int id_usuario) {
-        String sql = "INSERT INTO Orcamento (mes, ano, limite_mensal, id_usuario) VALUES (?, ?, ?, ?)";
+        String sql =
+                "INSERT INTO orcamento (" +
+                    "mes, " +
+                    "ano, " +
+                    "limite_mensal, " +
+                    "id_usuario" +
+                ") VALUES (" +
+                    "?, ?, ?, ?" +
+                ")";
         template.update(sql, mesAtual, anoAtual, limiteMensal, id_usuario);
     }
 
     public void atualizar(int idOrcamento, BigDecimal limiteMensal) {
-        String sql = "UPDATE orcamento SET limite_mensal = ? WHERE id_orcamento = ?";
+        String sql =
+                "UPDATE orcamento " +
+                "SET " +
+                    "limite_mensal = ? " +
+                "WHERE " +
+                    "id_orcamento = ?";
         template.update(sql, limiteMensal, idOrcamento);
     }
 
     public Orcamento pegaOrcamentoAtual(int idUsuario, int mesAtual, int anoAtual) {
         try {
-            String sql = "SELECT * FROM Orcamento orc WHERE id_usuario = ? AND orc.mes = ? AND orc.ano = ? LIMIT 1";
+            String sql =
+                    "SELECT * " +
+                    "FROM orcamento " +
+                    "WHERE " +
+                        "id_usuario = ? " +
+                        "AND mes = ? " +
+                        "AND ano = ? " +
+                    "LIMIT 1";
             return template.queryForObject(sql,  new BeanPropertyRowMapper<>(Orcamento.class), idUsuario, mesAtual, anoAtual);
         } catch (Exception e) {
             return null;
@@ -36,7 +56,11 @@ public class OrcamentoRepository {
     }
 
     public Orcamento pegaOrcamentoPorId(int idOrcamento) {
-        String sql =  "SELECT * FROM Orcamento orc WHERE id_orcamento = ?";
+        String sql =
+                "SELECT * " +
+                "FROM orcamento " +
+                "WHERE " +
+                    "id_orcamento = ?";
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Orcamento.class), idOrcamento);
     }
 }

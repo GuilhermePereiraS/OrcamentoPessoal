@@ -33,7 +33,7 @@ public class LoginController {
     public String logar(@ModelAttribute  Usuario usuarioForm, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 
         try {
-            Usuario usuarioEncotrado = usuarioService.encontraPorLoginEHashSenha(usuarioForm.getLogin(), usuarioForm.getSenha());
+            Usuario usuarioEncotrado = usuarioService.encontraPorLoginESenhaHash(usuarioForm.getLogin(), usuarioForm.getSenha());
             session.setAttribute("usuarioLogado", usuarioEncotrado);
             session.setAttribute("mesAtual", LocalDate.now().getMonthValue());
             session.setAttribute("anoAtual", LocalDate.now().getYear());

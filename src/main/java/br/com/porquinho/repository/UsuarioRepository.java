@@ -16,7 +16,12 @@ public class UsuarioRepository {
 
     public Usuario encontraPorLoginESenha(String login, String senha) {
         try {
-            String sql = "SELECT * FROM usuario WHERE login = ? AND senha = ?";
+            String sql =
+                    "SELECT * " +
+                    "FROM usuario " +
+                    "WHERE " +
+                        "login = ? " +
+                        "AND senha = ?";
             return template.queryForObject(sql, new Object[]{login,senha}, new BeanPropertyRowMapper<>(Usuario.class));
         } catch (Exception e) {
             e.printStackTrace();
@@ -26,7 +31,11 @@ public class UsuarioRepository {
 
     public Usuario encontraPorLogin(String login) {
         try {
-            String sql = "SELECT * FROM usuario WHERE login = ?";
+            String sql =
+                    "SELECT * " +
+                    "FROM usuario " +
+                    "WHERE " +
+                        "login = ?";
             return template.queryForObject(sql, new Object[]{login}, new BeanPropertyRowMapper<>(Usuario.class));
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,29 +45,36 @@ public class UsuarioRepository {
 
     public void salvar(Usuario usuario) {
         try {
-            String sql = "INSERT INTO usuario (login, senha, nome, dt_nascimento) VALUES (?,?,?,?)";
+            String sql =
+                    "INSERT INTO usuario (" +
+                        "login, " +
+                        "senha, " +
+                        "nome, " +
+                        "dt_nascimento" +
+                    ") VALUES (" +
+                        "?,?,?,?" +
+                    ")";
             template.update(sql, usuario.getLogin(), usuario.getSenha(), usuario.getNome(), usuario.getDt_nascimento());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void excluir(Usuario usuario) {
-        try {
-            String sql = "DELETE FROM porquinho WHERE id_usuario = ?";
-            template.update(sql, usuario.getId_usuario());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public Boolean temUsuarioComLogin(String login) {
-        String sql = "SELECT * FROM usuario WHERE login = ?";
+        String sql =
+                "SELECT * " +
+                "FROM usuario " +
+                "WHERE " +
+                    "login = ?";
         return !template.queryForList(sql, login).isEmpty();
     }
 
     public Usuario encontraPorId(int id) {
-        String sql = "SELECT * FROM usuario WHERE id_usuario = ?";
+        String sql =
+                "SELECT * " +
+                "FROM usuario " +
+                "WHERE " +
+                    "id_usuario = ?";
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Usuario.class), id);
     }
 }

@@ -19,7 +19,16 @@ public class PorquinhoRepository {
 
     public void salvar(Porquinho porquinho) {
         try {
-            String sql = "INSERT INTO porquinho (id_usuario, nome_meta, vl_alcancado, vl_necessario, dt_meta) VALUES (?,?,?,?,?)";
+            String sql =
+                    "INSERT INTO porquinho (" +
+                        "id_usuario, " +
+                        "nome_meta, " +
+                        "vl_alcancado, " +
+                        "vl_necessario, " +
+                        "dt_meta" +
+                    ") VALUES (" +
+                        "?,?,?,?,?" +
+                    ")";
             template.update(sql, porquinho.getId_usuario(), porquinho.getNome_meta(), porquinho.getVl_alcancado(), porquinho.getVl_necessario(), porquinho.getDt_meta());
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,7 +37,13 @@ public class PorquinhoRepository {
 
     public List<Porquinho> listarTodos(Integer idUsuario) {
         try {
-            String sql = "SELECT id_porquinho, nome_meta, vl_alcancado, vl_necessario, dt_meta FROM porquinho pq WHERE id_usuario = ? ORDER BY pq.dt_meta ASC";
+            String sql =
+                    "SELECT * " +
+                    "FROM porquinho " +
+                    "WHERE " +
+                        "id_usuario = ? " +
+                    "ORDER BY " +
+                        "dt_meta ASC";
             return (List<Porquinho>) template.query(sql, new BeanPropertyRowMapper<>(Porquinho.class), idUsuario);
         } catch(Exception e) {
             e.printStackTrace();
@@ -38,7 +53,15 @@ public class PorquinhoRepository {
 
     public void atualizar(Porquinho porquinho) {
         try {
-            String sql = "UPDATE porquinho SET nome_meta = ?, vl_alcancado = ?, vl_necessario = ?, dt_meta = ? WHERE id_porquinho = ?";
+            String sql =
+                    "UPDATE porquinho " +
+                    "SET " +
+                        "nome_meta = ?, " +
+                        "vl_alcancado = ?, " +
+                        "vl_necessario = ?, " +
+                        "dt_meta = ? " +
+                    "WHERE " +
+                        "id_porquinho = ?";
             template.update(sql, porquinho.getNome_meta(), porquinho.getVl_alcancado(), porquinho.getVl_necessario(), porquinho.getDt_meta(), porquinho.getId_porquinho());
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +70,10 @@ public class PorquinhoRepository {
 
     public void excluir(Porquinho porquinho) {
         try {
-            String sql = "DELETE FROM porquinho WHERE id_porquinho = ?";
+            String sql =
+                    "DELETE FROM porquinho " +
+                    "WHERE " +
+                        "id_porquinho = ?";
             template.update(sql, porquinho.getId_porquinho());
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +81,11 @@ public class PorquinhoRepository {
     }
 
     public Porquinho encontraPorId(Integer id) {
-        String sql = "SELECT * FROM porquinho WHERE id_porquinho = ?";
+        String sql =
+                "SELECT * " +
+                "FROM porquinho " +
+                "WHERE " +
+                    "id_porquinho = ?";
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Porquinho.class), id);
     }
 }
