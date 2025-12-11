@@ -35,12 +35,14 @@ public class ExtratoRepository {
                          ")";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
+            // PreparedStatement faz o banco pre-compilar a 'query', enquanto aguarda o envio dos dados para a execução
             template.update(con -> {
                 PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, extrato.getDescricao());
                 ps.setString(2, extrato.getTp_transacao());
                 ps.setBigDecimal(3, extrato.getVl_transacao());
                 ps.setTimestamp(4, Timestamp.valueOf(extrato.getDt_transacao().atStartOfDay()));
+                // LocalDate -> Timestamp, preciso fazer isso por que o banco exige um horário
                 ps.setInt(5, extrato.getId_usuario());
                 return ps;
             }, keyHolder);
@@ -69,12 +71,14 @@ public class ExtratoRepository {
                     ")";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
+            // PreparedStatement faz o banco pre-compilar a 'query', enquanto aguarda o envio dos dados para a execução
             template.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, extrato.getDescricao());
                 ps.setString(2, extrato.getTp_transacao());
                 ps.setBigDecimal(3, extrato.getVl_transacao());
-                ps.setTimestamp(4, Timestamp.valueOf(extrato.getDt_transacao().atStartOfDay())); // LocalDate -> Timestamp
+                ps.setTimestamp(4, Timestamp.valueOf(extrato.getDt_transacao().atStartOfDay()));
+                // LocalDate -> Timestamp, preciso fazer isso por que o banco exige um horário
                 ps.setInt(5, extrato.getId_usuario());
                 ps.setInt(6, extrato.getId_forma_pgmt());
                 ps.setInt(7, extrato.getId_tipo_gasto());

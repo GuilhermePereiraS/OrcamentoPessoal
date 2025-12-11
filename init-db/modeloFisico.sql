@@ -71,8 +71,11 @@ CREATE TABLE orcamento_tipo_gasto (
     FOREIGN KEY (id_tipo_gasto) REFERENCES Tipo_gasto (id_tipo_gasto)
 );
 
+-- -------------------------------//-------------------------------------
+
 CREATE FUNCTION atualizaSaldo()
-    RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+AS $$
 DECLARE
 linha RECORD;
 valor NUMERIC := 0;
@@ -101,8 +104,7 @@ WHERE usuario.id_usuario = argIdUsuario;
 
 RETURN NEW;
 END;
-$$
-LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- trigger abaixo
 CREATE TRIGGER trigger_atualiza_saldo
@@ -111,6 +113,8 @@ CREATE TRIGGER trigger_atualiza_saldo
     DELETE
     ON extrato
 FOR EACH ROW EXECUTE FUNCTION atualizaSaldo();
+
+-- -----------------------------------//---------------------------------------
 
 INSERT INTO Tipo_gasto (descricao)
 VALUES
